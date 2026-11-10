@@ -1,0 +1,791 @@
+<section
+  id="TsscResearchDevelopment-{{ section.id }}"
+  class="tssc-research-development"
+  aria-labelledby="TsscResearchDevelopmentHeading-{{ section.id }}"
+  style="
+    --research-background: {{ section.settings.background_color }};
+    --research-text: {{ section.settings.text_color }};
+    --research-muted: {{ section.settings.caption_color }};
+    --research-accent: {{ section.settings.accent_color }};
+    --research-line: {{ section.settings.line_color }};
+    --research-padding-top: {{ section.settings.padding_top }}px;
+    --research-padding-bottom: {{ section.settings.padding_bottom }}px;
+  "
+>
+  <div class="tssc-research-development__inner">
+    <header class="tssc-research-development__header">
+      <h3 id="TsscResearchDevelopmentHeading-{{ section.id }}" class="tssc-research-development__heading">
+        <span>{{ section.settings.heading | escape }}</span>
+        {% if section.settings.italic_heading != blank %}
+          <em>{{ section.settings.italic_heading | escape }}</em>
+        {% endif %}
+      </h3>
+
+      {% if section.settings.intro_text != blank %}
+        <div class="tssc-research-development__intro rte">
+          {{ section.settings.intro_text }}
+        </div>
+      {% endif %}
+    </header>
+
+    <ol class="tssc-research-development__timeline">
+      <li class="tssc-research-development__event tssc-research-development__event--right">
+        <div class="tssc-research-development__axis">
+          <h4 class="tssc-research-development__year"><span>{{ section.settings.year_1 | escape }}</span></h4>
+          <span class="tssc-research-development__connector" aria-hidden="true">
+            <span class="tssc-research-development__dot"></span>
+            <span class="tssc-research-development__line"></span>
+            <span class="tssc-research-development__dot"></span>
+          </span>
+        </div>
+        <div class="tssc-research-development__projects tssc-research-development__projects--right">
+          {% render 'tssc-research-project', section: section, project_number: 1 %}
+        </div>
+      </li>
+
+      <li class="tssc-research-development__event tssc-research-development__event--left">
+        <div class="tssc-research-development__axis">
+          <h4 class="tssc-research-development__year"><span>{{ section.settings.year_2 | escape }}</span></h4>
+          <span class="tssc-research-development__connector" aria-hidden="true">
+            <span class="tssc-research-development__dot"></span>
+            <span class="tssc-research-development__line"></span>
+            <span class="tssc-research-development__dot"></span>
+          </span>
+        </div>
+        <div class="tssc-research-development__projects tssc-research-development__projects--left">
+          {% render 'tssc-research-project', section: section, project_number: 2 %}
+        </div>
+      </li>
+
+      <li class="tssc-research-development__event tssc-research-development__event--both">
+        <div class="tssc-research-development__axis">
+          <h4 class="tssc-research-development__year"><span>{{ section.settings.year_3 | escape }}</span></h4>
+          <span class="tssc-research-development__connector" aria-hidden="true">
+            <span class="tssc-research-development__dot"></span>
+            <span class="tssc-research-development__line"></span>
+            <span class="tssc-research-development__dot"></span>
+          </span>
+        </div>
+        <div class="tssc-research-development__projects tssc-research-development__projects--left tssc-research-development__projects--pair">
+          {% render 'tssc-research-project', section: section, project_number: 3 %}
+          {% render 'tssc-research-project', section: section, project_number: 5 %}
+        </div>
+        <div class="tssc-research-development__projects tssc-research-development__projects--right">
+          {% render 'tssc-research-project', section: section, project_number: 4 %}
+        </div>
+      </li>
+
+      <li class="tssc-research-development__event tssc-research-development__event--right">
+        <div class="tssc-research-development__axis">
+          <h4 class="tssc-research-development__year"><span>{{ section.settings.year_4 | escape }}</span></h4>
+          <span class="tssc-research-development__connector" aria-hidden="true">
+            <span class="tssc-research-development__dot"></span>
+            <span class="tssc-research-development__line"></span>
+            <span class="tssc-research-development__dot"></span>
+          </span>
+        </div>
+        <div class="tssc-research-development__projects tssc-research-development__projects--right">
+          {% render 'tssc-research-project', section: section, project_number: 6 %}
+        </div>
+      </li>
+
+      <li class="tssc-research-development__event tssc-research-development__event--left">
+        <div class="tssc-research-development__axis">
+          <h4 class="tssc-research-development__year"><span>{{ section.settings.year_5 | escape }}</span></h4>
+          <span class="tssc-research-development__connector" aria-hidden="true">
+            <span class="tssc-research-development__dot"></span>
+            <span class="tssc-research-development__line"></span>
+            <span class="tssc-research-development__dot"></span>
+          </span>
+        </div>
+        <div class="tssc-research-development__projects tssc-research-development__projects--left">
+          {% render 'tssc-research-project', section: section, project_number: 7 %}
+        </div>
+      </li>
+
+      <li class="tssc-research-development__event tssc-research-development__event--right">
+        <div class="tssc-research-development__axis">
+          <h4 class="tssc-research-development__year"><span>{{ section.settings.year_6 | escape }}</span></h4>
+        </div>
+        <div class="tssc-research-development__projects tssc-research-development__projects--right tssc-research-development__projects--pair">
+          {% render 'tssc-research-project', section: section, project_number: 8 %}
+          {% render 'tssc-research-project', section: section, project_number: 9 %}
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+{% style %}
+  #TsscResearchDevelopment-{{ section.id }},
+  #TsscResearchDevelopment-{{ section.id }} * {
+    box-sizing: border-box;
+  }
+
+  #TsscResearchDevelopment-{{ section.id }} {
+    width: 100%;
+    padding-block: var(--research-padding-top) var(--research-padding-bottom);
+    color: var(--research-text);
+    background: var(--research-background);
+  }
+
+  #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__inner {
+    width: min(100%, 1440px);
+    margin-inline: auto;
+    padding-inline: clamp(24px, 5vw, 72px);
+  }
+
+  #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__header {
+    width: min(100%, 660px);
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__heading {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0 0.22em;
+    margin: 0 0 28px;
+    color: var(--research-text);
+    font-family: var(--font-h3--family, var(--font-heading--family));
+    font-size: clamp(34px, 3.35vw, 48px);
+    font-weight: var(--font-h3--weight, 400);
+    letter-spacing: var(--font-h3--letter-spacing, normal);
+    line-height: 1.12;
+  }
+
+  #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__heading em {
+    font-style: italic;
+    font-weight: inherit;
+  }
+
+  #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__intro {
+    color: var(--research-text);
+    font-family: var(--font-paragraph--family);
+    font-size: 16px;
+    line-height: 1.55;
+  }
+
+  #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__intro p {
+    margin: 0;
+  }
+
+  #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__intro p + p {
+    margin-top: 18px;
+  }
+
+  #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__timeline {
+    position: relative;
+    display: grid;
+    gap: 28px;
+    margin: clamp(48px, 6vw, 72px) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__event {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 164px minmax(0, 1fr);
+    gap: clamp(32px, 4vw, 56px);
+    align-items: stretch;
+    min-height: 220px;
+  }
+
+  #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__axis {
+    position: relative;
+    z-index: 2;
+    grid-column: 2;
+    grid-row: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    min-width: 0;
+  }
+
+  #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__year {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 100%;
+    min-height: 76px;
+    margin: 0;
+    padding: 12px 18px;
+    color: #ffffff;
+    background: var(--research-accent);
+    font-family: var(--font-h3--family, var(--font-heading--family));
+    font-size: clamp(32px, 3vw, 42px);
+    font-weight: 400;
+    line-height: 1;
+    text-align: center;
+  }
+
+  #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__connector {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    align-items: center;
+    min-height: 116px;
+    padding: 14px 0 18px;
+  }
+
+  #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__year > span {
+    display: block;
+    line-height: 1;
+    transform: translateY(-0.1em);
+  }
+
+  #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__dot {
+    display: block;
+    flex: 0 0 auto;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--research-accent);
+  }
+
+  #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__line {
+    display: block;
+    flex: 1 1 auto;
+    width: 1px;
+    min-height: 64px;
+    margin-block: 5px;
+    background-image: linear-gradient(to bottom, var(--research-line) 50%, transparent 50%);
+    background-size: 1px 10px;
+  }
+
+  #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__projects {
+    display: flex;
+    gap: clamp(20px, 3vw, 36px);
+    align-items: flex-start;
+    min-width: 0;
+  }
+
+  #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__projects--left {
+    grid-column: 1;
+    grid-row: 1;
+    justify-content: flex-end;
+  }
+
+  #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__projects--right {
+    grid-column: 3;
+    grid-row: 1;
+    justify-content: flex-start;
+  }
+
+  #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__project {
+    width: min(100%, 180px);
+    margin: 0;
+  }
+
+  #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__project--wide {
+    width: min(100%, 360px);
+  }
+
+  #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__project-media {
+    width: 100%;
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
+    background: #f5f5f5;
+  }
+
+  #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__project--wide .tssc-research-development__project-media {
+    aspect-ratio: 2 / 1;
+  }
+
+  #TsscResearchDevelopment-{{ section.id }} :is(.tssc-research-development__project-image, .tssc-research-development__placeholder, .tssc-research-development__placeholder svg) {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__project-image {
+    object-fit: cover;
+  }
+
+  #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__caption {
+    margin-top: 12px;
+    color: var(--research-muted);
+    font-family: var(--font-paragraph--family);
+    font-size: 14px;
+    line-height: 1.45;
+    text-align: center;
+    overflow-wrap: anywhere;
+  }
+
+  #TsscResearchDevelopment-{{ section.id }} :is(a, button):focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+  }
+
+  @media screen and (max-width: 1099px) {
+    #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__inner {
+      padding-inline: 40px;
+    }
+
+    #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__event {
+      grid-template-columns: minmax(0, 1fr) 140px minmax(0, 1fr);
+      gap: 28px;
+    }
+
+    #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__project {
+      width: min(100%, 150px);
+    }
+
+    #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__project--wide {
+      width: min(100%, 300px);
+    }
+
+    #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__projects--pair {
+      gap: 16px;
+    }
+  }
+
+  @media screen and (max-width: 799px) {
+    #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__header {
+      text-align: left;
+      margin-inline: 0;
+    }
+
+    #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__heading {
+      justify-content: flex-start;
+    }
+
+    #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__timeline {
+      gap: 48px;
+      padding-left: 40px;
+    }
+
+    #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__timeline::before {
+      content: '';
+      position: absolute;
+      top: 24px;
+      bottom: 24px;
+      left: 10px;
+      width: 1px;
+      background-image: linear-gradient(to bottom, var(--research-line) 50%, transparent 50%);
+      background-size: 1px 10px;
+      transform: none;
+    }
+
+    #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__event {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      min-height: 0;
+    }
+
+    #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__axis {
+      display: block;
+      width: auto;
+    }
+
+    #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__connector {
+      display: none;
+    }
+
+    #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__year {
+      width: 140px;
+      min-height: 64px;
+      font-size: 32px;
+    }
+
+    #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__year::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: -36px;
+      width: 12px;
+      height: 12px;
+      border: 3px solid var(--research-background);
+      border-radius: 50%;
+      background: var(--research-accent);
+      transform: translateY(-50%);
+    }
+
+    #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__projects {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 28px;
+      width: 100%;
+    }
+
+    #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__projects--left,
+    #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__projects--right {
+      justify-content: initial;
+    }
+
+    #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__project,
+    #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__project--wide {
+      width: 100%;
+      max-width: 360px;
+    }
+
+    #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__project--wide {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #TsscResearchDevelopment-{{ section.id }} {
+      padding-block: min(var(--research-padding-top), 56px) min(var(--research-padding-bottom), 56px);
+    }
+
+    #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__inner {
+      padding-inline: 20px;
+    }
+
+    #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__heading {
+      margin-bottom: 24px;
+      font-size: clamp(32px, 9vw, 40px);
+    }
+  }
+
+  @media screen and (max-width: 479px) {
+    #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__inner {
+      padding-inline: 16px;
+    }
+
+    #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__timeline {
+      padding-left: 32px;
+    }
+
+    #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__year::before {
+      left: -28px;
+    }
+
+    #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__projects {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 28px;
+    }
+
+    #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__project,
+    #TsscResearchDevelopment-{{ section.id }} .tssc-research-development__project--wide {
+      grid-column: 1;
+      width: min(100%, 320px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #TsscResearchDevelopment-{{ section.id }} *,
+    #TsscResearchDevelopment-{{ section.id }} *::before,
+    #TsscResearchDevelopment-{{ section.id }} *::after {
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+    }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "TSSC Research development",
+  "tag": "div",
+  "class": "tssc-research-development-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Research and"
+    },
+    {
+      "type": "text",
+      "id": "italic_heading",
+      "label": "Italic heading text",
+      "default": "Development"
+    },
+    {
+      "type": "richtext",
+      "id": "intro_text",
+      "label": "Introduction",
+      "default": "<p>Since completing her MA, Rachel has continued developing compostable sequins that are commercially viable, washable and made from natural materials. Along the way, she has worked with partners including the BioComposites Centre at Bangor University and the University of Leeds, supported by an Innovate UK Sustainable Innovation Fund project.</p><p>She has also worked closely with the Royal College of Art, the University of Leeds and the University of Bradford on an AHRC-supported Future Fashion Factory project to further refine biodegradable sequins and bring them closer to practical use.</p>"
+    },
+    {
+      "type": "text",
+      "id": "year_1",
+      "label": "First year",
+      "default": "2020"
+    },
+    {
+      "type": "text",
+      "id": "year_2",
+      "label": "Second year",
+      "default": "2022"
+    },
+    {
+      "type": "text",
+      "id": "year_3",
+      "label": "Third year",
+      "default": "2023"
+    },
+    {
+      "type": "text",
+      "id": "year_4",
+      "label": "Fourth year",
+      "default": "2024"
+    },
+    {
+      "type": "text",
+      "id": "year_5",
+      "label": "Fifth year",
+      "default": "2025"
+    },
+    {
+      "type": "text",
+      "id": "year_6",
+      "label": "Sixth year",
+      "default": "2026"
+    },
+    {
+      "type": "header",
+      "content": "2020 project"
+    },
+    {
+      "type": "url",
+      "id": "project_1_image_url",
+      "label": "Image URL"
+    },
+    {
+      "type": "text",
+      "id": "project_1_image_alt",
+      "label": "Image description",
+      "default": "Overlapping blue and white bioplastic sequins"
+    },
+    {
+      "type": "text",
+      "id": "project_1_caption",
+      "label": "Caption",
+      "default": "Bioplastic developed with BioComposites Centre"
+    },
+    {
+      "type": "header",
+      "content": "2022 project"
+    },
+    {
+      "type": "url",
+      "id": "project_2_image_url",
+      "label": "Image URL"
+    },
+    {
+      "type": "text",
+      "id": "project_2_image_alt",
+      "label": "Image description",
+      "default": "Colourful flower-like arrangement of experimental bioplastic sequins"
+    },
+    {
+      "type": "text",
+      "id": "project_2_caption",
+      "label": "Caption",
+      "default": "Bioplastic sequins developed with UoL and RCA"
+    },
+    {
+      "type": "header",
+      "content": "2023 projects"
+    },
+    {
+      "type": "url",
+      "id": "project_3_image_url",
+      "label": "Digitally stitched image URL"
+    },
+    {
+      "type": "text",
+      "id": "project_3_image_alt",
+      "label": "Digitally stitched image description",
+      "default": "Red and white biobased sequins digitally stitched into flowing stripes"
+    },
+    {
+      "type": "text",
+      "id": "project_3_caption",
+      "label": "Digitally stitched caption",
+      "default": "Biobased sequins developed during a FFF funded project – digitally stitched"
+    },
+    {
+      "type": "url",
+      "id": "project_4_image_url",
+      "label": "Biobased sequins image URL"
+    },
+    {
+      "type": "text",
+      "id": "project_4_image_alt",
+      "label": "Biobased sequins image description",
+      "default": "Two close-up studies of translucent white biobased sequins"
+    },
+    {
+      "type": "text",
+      "id": "project_4_caption",
+      "label": "Biobased sequins caption",
+      "default": "Biobased sequins developed during a FFF funded project"
+    },
+    {
+      "type": "url",
+      "id": "project_5_image_url",
+      "label": "Cupped sequins image URL"
+    },
+    {
+      "type": "text",
+      "id": "project_5_image_alt",
+      "label": "Cupped sequins image description",
+      "default": "Red cupped biobased sequins arranged in curved stitched lines"
+    },
+    {
+      "type": "text",
+      "id": "project_5_caption",
+      "label": "Cupped sequins caption",
+      "default": "Cupped biobased sequins developed during a FFF funded project"
+    },
+    {
+      "type": "header",
+      "content": "2024 project"
+    },
+    {
+      "type": "url",
+      "id": "project_6_image_url",
+      "label": "Image URL"
+    },
+    {
+      "type": "text",
+      "id": "project_6_image_alt",
+      "label": "Image description",
+      "default": "Rows of colourful experimental bioplastic beads"
+    },
+    {
+      "type": "text",
+      "id": "project_6_caption",
+      "label": "Caption",
+      "default": "Bioplastic beads developed during a FFF funded project"
+    },
+    {
+      "type": "header",
+      "content": "2025 project"
+    },
+    {
+      "type": "url",
+      "id": "project_7_image_url",
+      "label": "Image URL"
+    },
+    {
+      "type": "text",
+      "id": "project_7_image_alt",
+      "label": "Image description",
+      "default": "Silver, white and clear compostable sequins"
+    },
+    {
+      "type": "text",
+      "id": "project_7_caption",
+      "label": "Caption",
+      "default": "Compostable sequins developed with Futamura"
+    },
+    {
+      "type": "header",
+      "content": "2026 projects"
+    },
+    {
+      "type": "url",
+      "id": "project_8_image_url",
+      "label": "Silver sequins image URL"
+    },
+    {
+      "type": "text",
+      "id": "project_8_image_alt",
+      "label": "Silver sequins image description",
+      "default": "Silver compostable sequins stitched in overlapping rows"
+    },
+    {
+      "type": "text",
+      "id": "project_8_caption",
+      "label": "Silver sequins caption",
+      "default": "Compostable silver coloured sequins and flowers developed with Futamura"
+    },
+    {
+      "type": "url",
+      "id": "project_9_image_url",
+      "label": "Silver flowers image URL"
+    },
+    {
+      "type": "text",
+      "id": "project_9_image_alt",
+      "label": "Silver flowers image description",
+      "default": "Silver compostable sequin flowers with overlapping stitched sequins"
+    },
+    {
+      "type": "text",
+      "id": "project_9_caption",
+      "label": "Silver flowers caption",
+      "default": "Compostable silver coloured sequins and flowers developed with Futamura"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#32151D"
+    },
+    {
+      "type": "color",
+      "id": "caption_color",
+      "label": "Captions",
+      "default": "#696166"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Year background",
+      "default": "#962648"
+    },
+    {
+      "type": "color",
+      "id": "line_color",
+      "label": "Timeline",
+      "default": "#E8BAC8"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 32,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 32,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "default": 72
+    }
+  ],
+  "presets": [
+    {
+      "name": "TSSC Research development",
+      "category": "TSSC",
+      "settings": {
+        "project_1_image_url": "https://cdn.shopify.com/s/files/1/0978/1139/8980/files/Bioplastic_developed_with_BioComposites_Centre.webp?v=1787683191",
+        "project_2_image_url": "https://cdn.shopify.com/s/files/1/0978/1139/8980/files/Bioplastic_sequins_developed_with_UoL_and_RCA.webp?v=1787683191",
+        "project_3_image_url": "https://cdn.shopify.com/s/files/1/0978/1139/8980/files/Biobased_sequins_developed_during_a_FFF_funded_project_-_digitally_stitched.webp?v=1787683192",
+        "project_4_image_url": "https://cdn.shopify.com/s/files/1/0978/1139/8980/files/Biobased_sequins_developed.webp?v=1787683192",
+        "project_5_image_url": "https://cdn.shopify.com/s/files/1/0978/1139/8980/files/Cupped_biobased_sequins_developed_during_a_FFF_funded_project.webp?v=1787683192",
+        "project_6_image_url": "https://cdn.shopify.com/s/files/1/0978/1139/8980/files/Bioplastic_beads_developed_during_a_FFF_funded_project_2024.webp?v=1787683192",
+        "project_7_image_url": "https://cdn.shopify.com/s/files/1/0978/1139/8980/files/silver_white_clear_biobased_sequins.webp?v=1790100378",
+        "project_8_image_url": "https://cdn.shopify.com/s/files/1/0978/1139/8980/files/silver_sequins_biobased.webp?v=1790100378",
+        "project_9_image_url": "https://cdn.shopify.com/s/files/1/0978/1139/8980/files/silver_flowers_biobased.webp?v=1790100378"
+      }
+    }
+  ]
+}
+{% endschema %}

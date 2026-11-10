@@ -1,0 +1,94 @@
+<section class="tssc-cta-banner" id="tssc-cta-banner-{{ section.id }}">
+  <div class="tssc-cta-banner__content">
+    {% assign title_words = section.settings.title | default: 'In Addition to Sequins' | split: ' ' %}
+    {% assign title_count = title_words.size %}
+    <h3 class="tssc-cta-banner__title">
+      {% for word in title_words %}
+        {% assign index = forloop.index0 %}
+        {% assign remaining = title_count | minus: index %}
+        {% if remaining <= 1 %}
+          <span class="tssc-italic">{{ word }}</span>
+        {% else %}
+          {{ word }}
+        {% endif %}
+        {% unless forloop.last %} {% endunless %}
+      {% endfor %}
+    </h3>
+
+    <div class="tssc-cta-banner__body">
+      {{ section.settings.description }}
+    </div>
+
+    {% if section.settings.button_label != blank %}
+      <div class="tssc-cta-banner__cta">
+        <a href="{{ section.settings.button_link | default: routes.root_url }}" class="button tssc-cta-banner__button">
+          {{ section.settings.button_label }}
+        </a>
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="tssc-cta-banner__image-wrap">
+    <img
+      src="{{ section.settings.image | default: 'https://cdn.shopify.com/s/files/1/0978/1139/8980/files/cta_img.webp?v=1784021860' }}"
+      alt="{{ section.settings.image_alt | default: 'Iridescent sequin scales close-up' }}"
+      class="tssc-cta-banner__image"
+      loading="lazy"
+      width="{{ section.settings.image_width | default: 2880 }}"
+      height="{{ section.settings.image_height | default: 800 }}"
+    >
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "TSSC CTA banner",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title (H3, last word italic)",
+      "default": "In Addition to Sequins"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>We offer sustainable textile consultancy services for brands and designers seeking to align with eco-friendly practices. For more information, please don't hesitate to get in touch.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Discuss Your Project"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "url",
+      "id": "image",
+      "label": "Image URL"
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Image alt text",
+      "default": "Iridescent sequin scales close-up"
+    },
+    { "type": "number", "id": "image_width", "label": "Image intrinsic width", "default": 2880 },
+    { "type": "number", "id": "image_height", "label": "Image intrinsic height", "default": 800 }
+  ],
+  "presets": [
+    {
+      "name": "TSSC CTA banner",
+      "category": "TSSC",
+      "settings": {
+        "image": "https://cdn.shopify.com/s/files/1/0978/1139/8980/files/cta_img.webp?v=1784021860"
+      }
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,15 @@
+{% comment %}
+  Crawlable links between the store's established collection handles.
+{% endcomment %}
+{% assign related_collection_handles = '20-recycled-plastic,100-recycled-plastic,circles,squares,spools,punchinella,seconds' | split: ',' %}
+<nav class="tssc-related-collections page-width" aria-label="Related sequin collections">
+  <span class="tssc-related-collections__label">Explore related collections:</span>
+  <ul class="tssc-related-collections__list" role="list">
+    {% for related_handle in related_collection_handles %}
+      {% assign related_collection = collections[related_handle] %}
+      {% if related_collection != blank and related_collection.id != current_collection.id %}
+        <li><a href="{{ related_collection.url }}">{{ related_collection.title | escape }}</a></li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+</nav>

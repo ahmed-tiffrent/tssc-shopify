@@ -1,0 +1,492 @@
+<section
+  id="TsscMinimisingImpact-{{ section.id }}"
+  class="tssc-minimising-impact"
+  aria-labelledby="TsscMinimisingImpactHeading-{{ section.id }}"
+  style="
+    --min-impact-background: {{ section.settings.background_color }};
+    --min-impact-text: {{ section.settings.text_color }};
+    --min-impact-divider: {{ section.settings.divider_color }};
+    --min-impact-padding-top: {{ section.settings.padding_top }}px;
+    --min-impact-padding-bottom: {{ section.settings.padding_bottom }}px;
+  "
+>
+  <div class="tssc-minimising-impact__inner">
+    <h3 id="TsscMinimisingImpactHeading-{{ section.id }}" class="tssc-minimising-impact__heading">
+      <span>{{ section.settings.heading | escape }}</span>
+      {% if section.settings.italic_heading != blank %}
+        <em>{{ section.settings.italic_heading | escape }}</em>
+      {% endif %}
+    </h3>
+
+    <article class="tssc-minimising-impact__featured">
+      <div class="tssc-minimising-impact__featured-media">
+        {% if section.settings.featured_image_url != blank %}
+          <img
+            class="tssc-minimising-impact__featured-image"
+            src="{{ section.settings.featured_image_url }}"
+            alt="{{ section.settings.featured_image_alt | escape }}"
+            width="2240"
+            height="600"
+            loading="lazy"
+            decoding="async"
+          >
+        {% else %}
+          <div class="tssc-minimising-impact__placeholder" aria-hidden="true">
+            {{ 'lifestyle-1' | placeholder_svg_tag }}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="tssc-minimising-impact__featured-content">
+        {% if section.settings.featured_title != blank %}
+          <h4 class="tssc-minimising-impact__featured-title">
+            {{ section.settings.featured_title | escape }}
+          </h4>
+        {% endif %}
+
+        {% if section.settings.featured_text != blank %}
+          <div class="tssc-minimising-impact__featured-text rte">
+            {{ section.settings.featured_text }}
+          </div>
+        {% endif %}
+      </div>
+    </article>
+
+    {% if section.blocks.size > 0 %}
+      <ul class="tssc-minimising-impact__grid" role="list">
+        {% for block in section.blocks %}
+          <li class="tssc-minimising-impact__item" {{ block.shopify_attributes }}>
+            <div class="tssc-minimising-impact__item-media">
+              {% if block.settings.image_url != blank %}
+                <img
+                  class="tssc-minimising-impact__item-image"
+                  src="{{ block.settings.image_url }}"
+                  alt="{{ block.settings.image_alt | escape }}"
+                  width="1024"
+                  height="1200"
+                  loading="lazy"
+                  decoding="async"
+                >
+              {% else %}
+                <div class="tssc-minimising-impact__placeholder" aria-hidden="true">
+                  {{ 'image' | placeholder_svg_tag }}
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="tssc-minimising-impact__item-content">
+              {% if block.settings.title != blank %}
+                <h4 class="tssc-minimising-impact__item-title">
+                  {{ block.settings.title | escape }}
+                </h4>
+              {% endif %}
+
+              {% if block.settings.text != blank %}
+                <div class="tssc-minimising-impact__item-text rte">
+                  {{ block.settings.text }}
+                </div>
+              {% endif %}
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+</section>
+
+{% style %}
+  #TsscMinimisingImpact-{{ section.id }},
+  #TsscMinimisingImpact-{{ section.id }} * {
+    box-sizing: border-box;
+  }
+
+  #TsscMinimisingImpact-{{ section.id }} {
+    width: 100%;
+    padding-block: var(--min-impact-padding-top) var(--min-impact-padding-bottom);
+    color: var(--min-impact-text);
+    background: var(--min-impact-background);
+  }
+
+  #TsscMinimisingImpact-{{ section.id }} .tssc-minimising-impact__inner {
+    width: min(100%, 1440px);
+    margin-inline: auto;
+    padding-inline: clamp(24px, 6vw, 96px);
+  }
+
+  #TsscMinimisingImpact-{{ section.id }} .tssc-minimising-impact__heading {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 0.22em;
+    margin: 0 0 clamp(32px, 4vw, 48px);
+    color: var(--min-impact-text);
+    font-family: var(--font-h3--family, var(--font-heading--family));
+    font-size: clamp(34px, 3.35vw, 48px);
+    font-weight: var(--font-h3--weight, 400);
+    letter-spacing: var(--font-h3--letter-spacing, normal);
+    line-height: 1.12;
+  }
+
+  #TsscMinimisingImpact-{{ section.id }} .tssc-minimising-impact__heading em {
+    font-style: italic;
+    font-weight: inherit;
+  }
+
+  #TsscMinimisingImpact-{{ section.id }} .tssc-minimising-impact__featured {
+    margin: 0;
+    padding-bottom: clamp(32px, 4vw, 48px);
+    border-bottom: 1px solid var(--min-impact-divider);
+  }
+
+  #TsscMinimisingImpact-{{ section.id }} .tssc-minimising-impact__featured-media {
+    width: 100%;
+    overflow: hidden;
+    aspect-ratio: 224 / 60;
+    background: #f5f5f5;
+  }
+
+  #TsscMinimisingImpact-{{ section.id }} :is(.tssc-minimising-impact__featured-image, .tssc-minimising-impact__item-image) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  #TsscMinimisingImpact-{{ section.id }} .tssc-minimising-impact__placeholder,
+  #TsscMinimisingImpact-{{ section.id }} .tssc-minimising-impact__placeholder svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  #TsscMinimisingImpact-{{ section.id }} .tssc-minimising-impact__featured-content {
+    padding-top: 24px;
+  }
+
+  #TsscMinimisingImpact-{{ section.id }} :is(.tssc-minimising-impact__featured-title, .tssc-minimising-impact__item-title) {
+    margin: 0 0 10px;
+    color: var(--min-impact-text);
+    font-family: var(--font-h4--family, var(--font-heading--family));
+    font-size: var(--font-h4--size, 24px);
+    font-weight: var(--font-h4--weight, 400);
+    line-height: var(--font-h4--line-height, 1.25);
+  }
+
+  #TsscMinimisingImpact-{{ section.id }} :is(.tssc-minimising-impact__featured-text, .tssc-minimising-impact__item-text) {
+    color: var(--min-impact-text);
+    font-family: var(--font-paragraph--family);
+    font-size: 16px;
+    line-height: 1.55;
+    overflow-wrap: anywhere;
+  }
+
+  #TsscMinimisingImpact-{{ section.id }} :is(.tssc-minimising-impact__featured-text, .tssc-minimising-impact__item-text) p {
+    margin: 0;
+  }
+
+  #TsscMinimisingImpact-{{ section.id }} :is(.tssc-minimising-impact__featured-text, .tssc-minimising-impact__item-text) p + p {
+    margin-top: 10px;
+  }
+
+  #TsscMinimisingImpact-{{ section.id }} .tssc-minimising-impact__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(40px, 5vw, 64px) clamp(40px, 5vw, 72px);
+    margin: 0;
+    padding: clamp(40px, 5vw, 56px) 0 0;
+    list-style: none;
+  }
+
+  #TsscMinimisingImpact-{{ section.id }} .tssc-minimising-impact__item {
+    display: grid;
+    grid-template-columns: minmax(160px, 0.95fr) minmax(0, 1fr);
+    gap: clamp(24px, 2.5vw, 36px);
+    align-items: start;
+    min-width: 0;
+  }
+
+  #TsscMinimisingImpact-{{ section.id }} .tssc-minimising-impact__item-media {
+    width: 100%;
+    overflow: hidden;
+    aspect-ratio: 1024 / 1200;
+    background: #f5f5f5;
+  }
+
+  #TsscMinimisingImpact-{{ section.id }} .tssc-minimising-impact__item-content {
+    min-width: 0;
+    padding-top: 16px;
+  }
+
+  #TsscMinimisingImpact-{{ section.id }} :is(a, button):focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+  }
+
+  @media screen and (min-width: 1441px) {
+    #TsscMinimisingImpact-{{ section.id }} .tssc-minimising-impact__inner {
+      padding-inline: 80px;
+    }
+  }
+
+  @media screen and (max-width: 1199px) {
+    #TsscMinimisingImpact-{{ section.id }} .tssc-minimising-impact__grid {
+      gap: 40px;
+    }
+
+    #TsscMinimisingImpact-{{ section.id }} .tssc-minimising-impact__item {
+      grid-template-columns: minmax(145px, 0.9fr) minmax(0, 1.1fr);
+      gap: 24px;
+    }
+  }
+
+  @media screen and (max-width: 899px) {
+    #TsscMinimisingImpact-{{ section.id }} .tssc-minimising-impact__inner {
+      padding-inline: 40px;
+    }
+
+    #TsscMinimisingImpact-{{ section.id }} .tssc-minimising-impact__featured-media {
+      aspect-ratio: 16 / 6;
+    }
+
+    #TsscMinimisingImpact-{{ section.id }} .tssc-minimising-impact__grid {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 40px;
+    }
+
+    #TsscMinimisingImpact-{{ section.id }} .tssc-minimising-impact__item {
+      grid-template-columns: minmax(190px, 0.8fr) minmax(0, 1.2fr);
+      gap: 32px;
+    }
+
+    #TsscMinimisingImpact-{{ section.id }} .tssc-minimising-impact__item-content {
+      align-self: center;
+      padding-top: 0;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #TsscMinimisingImpact-{{ section.id }} {
+      padding-block: min(var(--min-impact-padding-top), 56px) min(var(--min-impact-padding-bottom), 56px);
+    }
+
+    #TsscMinimisingImpact-{{ section.id }} .tssc-minimising-impact__inner {
+      padding-inline: 20px;
+    }
+
+    #TsscMinimisingImpact-{{ section.id }} .tssc-minimising-impact__heading {
+      margin-bottom: 32px;
+      font-size: clamp(32px, 9vw, 40px);
+    }
+
+    #TsscMinimisingImpact-{{ section.id }} .tssc-minimising-impact__featured-media {
+      aspect-ratio: 16 / 7;
+    }
+
+    #TsscMinimisingImpact-{{ section.id }} .tssc-minimising-impact__featured-content {
+      padding-top: 20px;
+    }
+
+    #TsscMinimisingImpact-{{ section.id }} .tssc-minimising-impact__item {
+      grid-template-columns: 150px minmax(0, 1fr);
+      gap: 20px;
+    }
+  }
+
+  @media screen and (max-width: 549px) {
+    #TsscMinimisingImpact-{{ section.id }} .tssc-minimising-impact__inner {
+      padding-inline: 16px;
+    }
+
+    #TsscMinimisingImpact-{{ section.id }} .tssc-minimising-impact__featured-media {
+      aspect-ratio: 4 / 3;
+    }
+
+    #TsscMinimisingImpact-{{ section.id }} .tssc-minimising-impact__featured-image {
+      object-position: center;
+    }
+
+    #TsscMinimisingImpact-{{ section.id }} .tssc-minimising-impact__item {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 20px;
+    }
+
+    #TsscMinimisingImpact-{{ section.id }} .tssc-minimising-impact__item-media {
+      width: min(100%, 280px);
+    }
+
+    #TsscMinimisingImpact-{{ section.id }} .tssc-minimising-impact__item-title {
+      font-size: clamp(20px, 6vw, 24px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #TsscMinimisingImpact-{{ section.id }} *,
+    #TsscMinimisingImpact-{{ section.id }} *::before,
+    #TsscMinimisingImpact-{{ section.id }} *::after {
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+    }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "TSSC Minimising impact",
+  "tag": "div",
+  "class": "tssc-minimising-impact-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Minimising Negative"
+    },
+    {
+      "type": "text",
+      "id": "italic_heading",
+      "label": "Italic heading text",
+      "default": "Impact"
+    },
+    {
+      "type": "url",
+      "id": "featured_image_url",
+      "label": "Net Zero image URL"
+    },
+    {
+      "type": "text",
+      "id": "featured_image_alt",
+      "label": "Net Zero image description",
+      "default": "Wind turbines generating renewable energy over a field at sunset"
+    },
+    {
+      "type": "text",
+      "id": "featured_title",
+      "label": "Net Zero title",
+      "default": "Net Zero by 2035"
+    },
+    {
+      "type": "richtext",
+      "id": "featured_text",
+      "label": "Net Zero text",
+      "default": "<p>TSSC has set a target of reaching Net Zero emissions by 2035, using 2022 as its carbon footprint baseline. The goal is to reduce at least 90% of emissions across Scope 1, 2 and 3, then offset the small remainder through verified carbon capture.</p>"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#32151D"
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "Divider",
+      "default": "#D9D9D9"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 32,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 32,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "default": 80
+    }
+  ],
+  "blocks": [
+    {
+      "type": "impact",
+      "name": "Impact point",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "url",
+          "id": "image_url",
+          "label": "Image URL"
+        },
+        {
+          "type": "text",
+          "id": "image_alt",
+          "label": "Image description"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Impact point"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Describe the action being taken to minimise environmental impact.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "TSSC Minimising impact",
+      "category": "TSSC",
+      "settings": {
+        "featured_image_url": "https://cdn.shopify.com/s/files/1/0978/1139/8980/files/net_zero.webp?v=1787680430"
+      },
+      "blocks": [
+        {
+          "type": "impact",
+          "settings": {
+            "image_url": "https://cdn.shopify.com/s/files/1/0978/1139/8980/files/Tree_planting.webp?v=1787680431",
+            "image_alt": "Hands holding a young tree ready for planting",
+            "title": "Tree funding and habitat restoration",
+            "text": "<p>For every order placed, TSSC funds one tree, with a minimum commitment of 100 trees per month, through Ecologi's projects. This makes each order part of a wider restoration effort rather than a standalone transaction.</p>"
+          }
+        },
+        {
+          "type": "impact",
+          "settings": {
+            "image_url": "https://cdn.shopify.com/s/files/1/0978/1139/8980/files/carbon_reduction.webp?v=1787680430",
+            "image_alt": "Industrial chimney representing carbon emissions reduction",
+            "title": "Carbon reduction",
+            "text": "<p>Alongside its own reduction work, TSSC supports verified climate projects through Ecologi. To date, the business has helped prevent 105.98 metric tonnes of CO₂e from entering the atmosphere and remove a further 21 metric tonnes of CO₂e.</p>"
+          }
+        },
+        {
+          "type": "impact",
+          "settings": {
+            "image_url": "https://cdn.shopify.com/s/files/1/0978/1139/8980/files/plastic_removal.webp?v=1787680431",
+            "image_alt": "Discarded plastic waste floating underwater",
+            "title": "Plastic removal",
+            "text": "<p>As part of its wider impact strategy, TSSC has assessed its historic use of synthetic plastics and funded the collection of an equivalent amount of ocean-bound plastic through Plastic Bank. The current total is 2,200kg of plastic, roughly equal to 110,000 plastic bottles.</p>"
+          }
+        },
+        {
+          "type": "impact",
+          "settings": {
+            "image_url": "https://cdn.shopify.com/s/files/1/0978/1139/8980/files/1_for_the_planet.webp?v=1787680431",
+            "image_alt": "One Percent for the Planet membership graphic over a mountain landscape",
+            "title": "1% For The Planet and Redress",
+            "text": "<p>We’re members of 1% For The Planet, which means we give 1% of annual revenue to environmental nonprofits. Our chosen partner is Redress, which works to reduce waste in the fashion industry and support a more circular future.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

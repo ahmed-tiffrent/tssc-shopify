@@ -1,0 +1,149 @@
+<section class="tssc-testimonials" id="tssc-testimonials-{{ section.id }}">
+  <div class="tssc-testimonials__header">
+    {% assign title_words = section.settings.title | default: 'Experiences Shared by Clients' | split: ' ' %}
+    {% assign title_count = title_words.size %}
+    <h2 class="tssc-testimonials__title">
+      {% for word in title_words %}
+        {% assign index = forloop.index0 %}
+        {% assign remaining = title_count | minus: index %}
+        {% if remaining <= 1 %}
+          <span class="tssc-italic">{{ word }}</span>
+        {% else %}
+          {{ word }}
+        {% endif %}
+        {% unless forloop.last %} {% endunless %}
+      {% endfor %}
+    </h2>
+    <div class="tssc-testimonials__intro">
+      {{ section.settings.intro_text }}
+    </div>
+  </div>
+
+  <div class="tssc-testimonials__carousel-wrap">
+    <button type="button" class="tssc-testimonials__arrow tssc-testimonials__arrow--prev" aria-label="Previous testimonials">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+
+    <div class="tssc-testimonials__track" id="tssc-testimonials-track-{{ section.id }}">
+      {% for block in section.blocks %}
+        {% if block.type == 'testimonial' %}
+          <div class="tssc-testimonials__card">
+            <img
+              src="{{ section.settings.quote_icon | default: 'https://cdn.shopify.com/s/files/1/0978/1139/8980/files/Quote_Icon_dece08d2-926f-4711-af5e-8e50070b7e99.png?v=1784024533' }}"
+              alt="Quote icon"
+              class="tssc-testimonials__quote-icon"
+              width="48" height="48"
+              loading="lazy"
+            >
+            <p class="tssc-testimonials__text" data-full-text="{{ block.settings.quote | escape }}">{{ block.settings.quote | truncate: 140 }}</p>
+            <div class="tssc-testimonials__rating">
+              <img
+                src="{{ section.settings.stars_icon | default: 'https://cdn.shopify.com/s/files/1/0978/1139/8980/files/stars_icon_566390b2-4788-43ff-bbd6-c49398b9900d.png?v=1784024533' }}"
+                alt="5 star rating"
+                class="tssc-testimonials__stars"
+                width="122" height="18"
+                loading="lazy"
+              >
+              <p class="tssc-testimonials__name">{{ block.settings.name }}</p>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <button type="button" class="tssc-testimonials__arrow tssc-testimonials__arrow--next" aria-label="Next testimonials">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+
+  <div class="tssc-testimonials__marquee-wrap">
+    <div class="tssc-testimonials__marquee-track">
+      {% for i in (1..2) %}
+        {% for block in section.blocks %}
+          {% if block.type == 'gallery_image' %}
+            <img src="{{ block.settings.image }}" alt="{{ block.settings.alt | default: 'Customer sequin photo' }}" class="tssc-testimonials__marquee-img" loading="lazy" width="405" height="405">
+          {% endif %}
+        {% endfor %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<script>
+(function() {
+  var track = document.getElementById('tssc-testimonials-track-{{ section.id }}');
+  var wrap = track.closest('.tssc-testimonials-block') || track.parentElement.parentElement;
+  var prevBtn = wrap.querySelector('.tssc-testimonials__arrow--prev');
+  var nextBtn = wrap.querySelector('.tssc-testimonials__arrow--next');
+
+  function getCardStep() {
+    var card = track.querySelector('.tssc-testimonials__card');
+    if (!card) return 0;
+    var gap = parseInt(getComputedStyle(track).columnGap || 32);
+    return card.offsetWidth + gap;
+  }
+
+  prevBtn.addEventListener('click', function() {
+    track.scrollBy({ left: -getCardStep(), behavior: 'smooth' });
+  });
+
+  nextBtn.addEventListener('click', function() {
+    track.scrollBy({ left: getCardStep(), behavior: 'smooth' });
+  });
+
+  track.querySelectorAll('.tssc-testimonials__text').forEach(function(p) {
+    var full = p.getAttribute('data-full-text');
+    if (full && full.length > p.textContent.length) {
+      p.setAttribute('title', full);
+    }
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "TSSC Testimonials",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Title (H2, last word italic)", "default": "Experiences Shared by Clients" },
+    { "type": "richtext", "id": "intro_text", "label": "Intro text", "default": "<p>Our sequins have been used by brands, designers, students, and artists, with customers frequently describing them as beautiful, exactly as pictured, and perfect for their projects.</p>" },
+    { "type": "url", "id": "quote_icon", "label": "Quote icon URL" },
+    { "type": "url", "id": "stars_icon", "label": "Stars icon URL" }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        { "type": "textarea", "id": "quote", "label": "Quote text" },
+        { "type": "text", "id": "name", "label": "Customer name" }
+      ]
+    },
+    {
+      "type": "gallery_image",
+      "name": "Gallery image",
+      "settings": [
+        { "type": "url", "id": "image", "label": "Image URL" },
+        { "type": "text", "id": "alt", "label": "Alt text" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "TSSC Testimonials",
+      "category": "TSSC",
+      "blocks": [
+        { "type": "testimonial", "settings": { "quote": "Outstanding quality, super fast delivery, the product it's even better than the pictures - and, it's sustainable! Can't wish for more, and will definitely order again", "name": "Silvia" } },
+        { "type": "testimonial", "settings": { "quote": "This has been one of the best Etsy experiences ever. Rachel promises and then delivers the best. AAAAA", "name": "Linda" } },
+        { "type": "testimonial", "settings": { "quote": "Very pleased with my purchase. Lovely item quick dispatch and superfast delivery. 1st Class lovely seller. Thanks", "name": "Margaret" } },
+        { "type": "gallery_image", "settings": { "image": "https://cdn.shopify.com/s/files/1/0978/1139/8980/files/carousel_image_5.jpg?v=1784024535" } },
+        { "type": "gallery_image", "settings": { "image": "https://cdn.shopify.com/s/files/1/0978/1139/8980/files/carousel_image_6.jpg?v=1784024534" } },
+        { "type": "gallery_image", "settings": { "image": "https://cdn.shopify.com/s/files/1/0978/1139/8980/files/carousel_image_7.jpg?v=1784024534" } },
+        { "type": "gallery_image", "settings": { "image": "https://cdn.shopify.com/s/files/1/0978/1139/8980/files/carousel_image_1.webp?v=1784024618" } },
+        { "type": "gallery_image", "settings": { "image": "https://cdn.shopify.com/s/files/1/0978/1139/8980/files/carousel_image_2.webp?v=1784024616" } },
+        { "type": "gallery_image", "settings": { "image": "https://cdn.shopify.com/s/files/1/0978/1139/8980/files/carousel_image_3.webp?v=1784024618" } },
+        { "type": "gallery_image", "settings": { "image": "https://cdn.shopify.com/s/files/1/0978/1139/8980/files/carousel_image_4.webp?v=1784024616" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

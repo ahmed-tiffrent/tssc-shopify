@@ -1,0 +1,176 @@
+{{ 'tssc-faq-page.css' | asset_url | stylesheet_tag }}
+
+<section class="tssc-faq-page" aria-labelledby="tssc-faq-page-title-{{ section.id }}">
+  <header class="tssc-faq-page__intro">
+    <div>
+      <h1 class="tssc-faq-page__title" id="tssc-faq-page-title-{{ section.id }}">{% assign title_words = section.settings.title | split: ' ' %}{% for word in title_words %}{% if forloop.last %}<em>{{ word }}</em>{% else %}{{ word }} {% endif %}{% endfor %}</h1>
+    </div>
+    <p class="tssc-faq-page__lead">{{ section.settings.intro }}</p>
+  </header>
+
+  <nav class="tssc-faq-page__index" aria-label="FAQ topics">
+    <a class="tssc-faq-page__index-link" href="#choosing">Choosing sequins</a>
+    <a class="tssc-faq-page__index-link" href="#using">Using &amp; care</a>
+    <a class="tssc-faq-page__index-link" href="#materials">Materials &amp; impact</a>
+    <a class="tssc-faq-page__index-link" href="#orders">Orders &amp; support</a>
+  </nav>
+
+  <section class="tssc-faq-page__group" id="choosing" aria-labelledby="faq-choosing-title">
+    <h2 class="tssc-faq-page__group-heading" id="faq-choosing-title">Choosing the Right <em>Sequins</em></h2>
+    <p class="tssc-faq-page__group-intro">Use the product title, selected options and these guides together to choose a shape, size and finish that work for your project.</p>
+    <div class="tssc-faq-page__list">
+      <details class="tssc-faq-page__item" open>
+        <summary class="tssc-faq-page__question"><h3>How do I choose the best sequin shape for my project?</h3></summary>
+        <div class="tssc-faq-page__answer"><p>Start with the visual effect you want. Circles give classic all-over coverage; squares create a graphic tiled surface; triangles add direction; and oval, teardrop and pointed-oval shapes are especially useful for petal, leaf, feather and scale-like designs. Try a small arrangement on your fabric before committing to the full piece.</p></div>
+      </details>
+      <details class="tssc-faq-page__item">
+        <summary class="tssc-faq-page__question"><h3>Which sequin size should I choose?</h3></summary>
+        <div class="tssc-faq-page__answer"><p>Smaller sequins suit detailed motifs, tighter curves and dense texture. Larger sequins cover more area and read more boldly from a distance. The exact dimension is in each product title; a test swatch is the most reliable way to judge scale, coverage and drape.</p></div>
+      </details>
+      <details class="tssc-faq-page__item">
+        <summary class="tssc-faq-page__question"><h3>What is the difference between a centre hole and a side hole?</h3></summary>
+        <div class="tssc-faq-page__answer"><p>A centre hole creates an even, anchored look and is a useful choice for regular coverage. A side hole gives the sequin direction, which can create movement in layered, scale-like or fringed designs. Choose the fixing style shown on the selected product variant.</p></div>
+      </details>
+      <details class="tssc-faq-page__item">
+        <summary class="tssc-faq-page__question"><h3>What is the difference between flat and cupped sequins?</h3></summary>
+        <div class="tssc-faq-page__answer"><p>Flat sequins sit smoothly against the textile. Cupped sequins add more dimension and reflect light from more angles. Availability varies by product, so use the selected variant and product photography as your guide.</p></div>
+      </details>
+      <details class="tssc-faq-page__item">
+        <summary class="tssc-faq-page__question"><h3>How do I choose a colour and finish online?</h3></summary>
+        <div class="tssc-faq-page__answer"><p>Use the colour name, swatch, finish filter and selected variant together. Screen colours can vary, and some finishes are designed to shift with light or viewing angle, so test a small quantity first when you need a close match for an existing material or production run.</p></div>
+      </details>
+    </div>
+  </section>
+
+  <section class="tssc-faq-page__group" id="using" aria-labelledby="faq-using-title">
+    <h2 class="tssc-faq-page__group-heading" id="faq-using-title">Using and Caring for <em>Sequins</em></h2>
+    <p class="tssc-faq-page__group-intro">Different product formats suit different workflows. Test the selected product with your final textile and construction method before production.</p>
+    <div class="tssc-faq-page__list">
+      <details class="tssc-faq-page__item" open>
+        <summary class="tssc-faq-page__question"><h3>What is the difference between loose sequins and sequins on the spool?</h3></summary>
+        <div class="tssc-faq-page__answer"><p>Loose sequins are intended for hand application and creative embellishment. Sequins on the spool are supplied as a continuous punched length for digital embroidery machines with compatible sequin attachments; they are not individually strung loose sequins.</p></div>
+      </details>
+      <details class="tssc-faq-page__item">
+        <summary class="tssc-faq-page__question"><h3>Will spool sequins work with my embroidery machine?</h3></summary>
+        <div class="tssc-faq-page__answer"><p>Spool sequins are designed for digital embroidery machines with a compatible sequin attachment. Check the attachment specification, sequin size, feed direction and your machine manual before ordering. Always run a sample using your final fabric, stabiliser and design density.</p></div>
+      </details>
+      <details class="tssc-faq-page__item">
+        <summary class="tssc-faq-page__question"><h3>How should I sew loose sequins?</h3></summary>
+        <div class="tssc-faq-page__answer"><p>Use a small, secure stitch through the fixing hole. For some centre-hole designs, a bead can help cover and protect the stitch. The best thread, needle and stitch depend on the sequin size and your fabric, so test on an offcut first.</p></div>
+      </details>
+      <details class="tssc-faq-page__item">
+        <summary class="tssc-faq-page__question"><h3>How should I wash a finished sequin piece?</h3></summary>
+        <div class="tssc-faq-page__answer"><p>Gently hand wash finished work when needed. Avoid machine washing, steam and harsh chemicals, and always test your complete construction method before making or cleaning a final garment.</p></div>
+      </details>
+      <details class="tssc-faq-page__item">
+        <summary class="tssc-faq-page__question"><h3>What is Punchinella and how can I use it?</h3></summary>
+        <div class="tssc-faq-page__answer"><p>Punchinella is the patterned material left after sequins are punched from film. It is supplied as a connected sheet or length rather than individual sequins, making it useful for textured overlays, trims and experimental surface work. Cut and test a small piece before finishing a full edge or motif.</p></div>
+      </details>
+    </div>
+  </section>
+
+  <section class="tssc-faq-page__group" id="materials" aria-labelledby="faq-materials-title">
+    <h2 class="tssc-faq-page__group-heading" id="faq-materials-title">Materials and <em>Impact</em></h2>
+    <p class="tssc-faq-page__group-intro">We make it easy to identify the material and product format from the shop filters and product information.</p>
+    <div class="tssc-faq-page__list">
+      <details class="tssc-faq-page__item" open>
+        <summary class="tssc-faq-page__question"><h3>What are recycled PET sequins?</h3></summary>
+        <div class="tssc-faq-page__answer"><p>Recycled PET sequins are decorative sequins made using PET film that contains recycled plastic. TSSC offers products made with either 20% recycled PET or 100% recycled PET. The exact material is stated in each product title and option.</p></div>
+      </details>
+      <details class="tssc-faq-page__item">
+        <summary class="tssc-faq-page__question"><h3>What is the difference between 20% and 100% recycled PET?</h3></summary>
+        <div class="tssc-faq-page__answer"><p>The percentage describes the recycled content of the PET film. A 20% recycled PET product contains 20% recycled plastic, while a 100% recycled PET product uses fully recycled PET film. Available colours, shapes and finishes can differ, so check the exact product before ordering.</p></div>
+      </details>
+      <details class="tssc-faq-page__item" open>
+        <summary class="tssc-faq-page__question"><h3>What recycled material is used in each product?</h3></summary>
+        <div class="tssc-faq-page__answer"><p>The material is stated in the product title and filters, including 20% recycled plastic and 100% recycled plastic options. Select the exact product and variant you need, as material, shape, colour and finish availability can differ across the range.</p></div>
+      </details>
+      <details class="tssc-faq-page__item">
+        <summary class="tssc-faq-page__question"><h3>Are all shapes, colours and finishes available in both materials?</h3></summary>
+        <div class="tssc-faq-page__answer"><p>No. Availability depends on the product. Use the shop filters to narrow by material, shape, hole position, style, size, finish and colour; the visible products and product options show the combinations that can be selected.</p></div>
+      </details>
+      <details class="tssc-faq-page__item">
+        <summary class="tssc-faq-page__question"><h3>What are Seconds?</h3></summary>
+        <div class="tssc-faq-page__answer"><p>Seconds are offered as a creative-use option when stock does not fit the usual first-quality range. They are best for projects where variation is welcome, such as samples, experiments, costume, art and one-off work. Read the product information and selected option carefully before ordering.</p></div>
+      </details>
+      <details class="tssc-faq-page__item">
+        <summary class="tssc-faq-page__question"><h3>How are TSSC sequins manufactured?</h3></summary>
+        <div class="tssc-faq-page__answer"><p>The recycled PET film is produced in China. TSSC then punches and cuts the sequins in its UK workshop. This is why we describe the sequins as punched and cut in the UK rather than saying the film is made in the UK.</p></div>
+      </details>
+      <details class="tssc-faq-page__item">
+        <summary class="tssc-faq-page__question"><h3>What biobased and biodegradable sequin research has TSSC been involved in?</h3></summary>
+        <div class="tssc-faq-page__answer"><p>TSSC has taken part in research and development work on biobased and biodegradable sequins with UK universities and project partners. These materials are in development and are not presented as products currently available to buy. Read the <a href="/pages/sustainability">Sustainability page</a> for the project history.</p></div>
+      </details>
+      <details class="tssc-faq-page__item">
+        <summary class="tssc-faq-page__question"><h3>Where can I learn more about your sustainability work?</h3></summary>
+        <div class="tssc-faq-page__answer"><p>Visit our <a href="/pages/sustainability">Sustainability page</a> for more about our material choices, impact work and development of lower-impact alternatives.</p></div>
+      </details>
+    </div>
+  </section>
+
+  <section class="tssc-faq-page__group" id="orders" aria-labelledby="faq-orders-title">
+    <h2 class="tssc-faq-page__group-heading" id="faq-orders-title">Orders, Quantities and <em>Support</em></h2>
+    <p class="tssc-faq-page__group-intro">The selected product option is always the source of truth for the item you are adding to cart.</p>
+    <div class="tssc-faq-page__list">
+      <details class="tssc-faq-page__item" open>
+        <summary class="tssc-faq-page__question"><h3>What does the selected weight, quantity or length mean?</h3></summary>
+        <div class="tssc-faq-page__answer"><p>Choose the exact option shown on the product card or product page. Piece counts can vary with shape and size, while spool products are selected by length. The option label provides the most accurate guide to what you will receive.</p></div>
+      </details>
+      <details class="tssc-faq-page__item">
+        <summary class="tssc-faq-page__question"><h3>How many sequins are in 5g, 10g, 25g, 50g or 100g?</h3></summary>
+        <div class="tssc-faq-page__answer"><p>The number varies because larger shapes weigh more than smaller shapes. Where a piece count is available, it is shown in the weight and quantity option for that product. Use that selected option as the most accurate guide rather than one general count for every sequin.</p></div>
+      </details>
+      <details class="tssc-faq-page__item">
+        <summary class="tssc-faq-page__question"><h3>Why is an option unavailable?</h3></summary>
+        <div class="tssc-faq-page__answer"><p>An unavailable add-to-cart button means that the selected product combination is not currently available. Choose another displayed option or contact us if you need help finding a suitable alternative.</p></div>
+      </details>
+      <details class="tssc-faq-page__item">
+        <summary class="tssc-faq-page__question"><h3>Can I request a different quantity or bespoke sequin?</h3></summary>
+        <div class="tssc-faq-page__answer"><p>Yes. If you need a quantity, shape, colour or production option that is not shown, please get in touch with your project details. We can help you identify the closest existing product or discuss a bespoke request.</p></div>
+      </details>
+      <details class="tssc-faq-page__item">
+        <summary class="tssc-faq-page__question"><h3>Where can I get help choosing a product?</h3></summary>
+        <div class="tssc-faq-page__answer"><p>Send us your project details, including the intended application, fabric, preferred shape, size, colour and quantity. The more context you can share, the easier it is to recommend a suitable option.</p></div>
+      </details>
+    </div>
+  </section>
+
+  <aside class="tssc-faq-page__contact" aria-labelledby="faq-contact-title">
+    <h2 id="faq-contact-title">Still <em>Choosing?</em></h2>
+    <p>Tell us what you are making and we will help you find the right sequin format, shape and option for your project.</p>
+    <a class="tssc-faq-page__contact-link" href="/pages/contact">Contact us <span aria-hidden="true">&nbsp;→</span></a>
+  </aside>
+</section>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"How do I choose the best sequin shape for my project?","acceptedAnswer":{"@type":"Answer","text":"Circles give classic all-over coverage; squares create a graphic tiled surface; triangles add direction; and oval, teardrop and pointed-oval shapes are useful for petal, leaf, feather and scale-like designs."}},
+    {"@type":"Question","name":"Which sequin size should I choose?","acceptedAnswer":{"@type":"Answer","text":"Smaller sequins suit detailed motifs, tighter curves and dense texture. Larger sequins cover more area and read more boldly from a distance. Test a small arrangement on the final fabric before committing to a full piece."}},
+    {"@type":"Question","name":"What is the difference between a centre hole and a side hole?","acceptedAnswer":{"@type":"Answer","text":"A centre hole creates an even, anchored look for regular coverage. A side hole gives the sequin direction and can create movement in layered, scale-like or fringed designs."}},
+    {"@type":"Question","name":"What is the difference between flat and cupped sequins?","acceptedAnswer":{"@type":"Answer","text":"Flat sequins sit smoothly against the textile. Cupped sequins add dimension and reflect light from more angles."}},
+    {"@type":"Question","name":"What is the difference between loose sequins and sequins on the spool?","acceptedAnswer":{"@type":"Answer","text":"Loose sequins are intended for hand application. Sequins on the spool are supplied as a continuous punched length for digital embroidery machines with compatible sequin attachments; they are not individually strung loose sequins."}},
+    {"@type":"Question","name":"How should I wash a finished sequin piece?","acceptedAnswer":{"@type":"Answer","text":"Gently hand wash finished work when needed. Avoid machine washing, steam and harsh chemicals, and test the complete construction method before making or cleaning a final garment."}},
+    {"@type":"Question","name":"What is Punchinella?","acceptedAnswer":{"@type":"Answer","text":"Punchinella is the patterned material left after sequins are punched from film. It is supplied as a connected sheet or length rather than individual sequins."}},
+    {"@type":"Question","name":"What are recycled PET sequins?","acceptedAnswer":{"@type":"Answer","text":"Recycled PET sequins are decorative sequins made using PET film that contains recycled plastic. TSSC offers products made with either 20% recycled PET or 100% recycled PET."}},
+    {"@type":"Question","name":"What is the difference between 20% and 100% recycled PET?","acceptedAnswer":{"@type":"Answer","text":"The percentage describes the recycled content of the PET film. A 20% recycled PET product contains 20% recycled plastic, while a 100% recycled PET product uses fully recycled PET film."}},
+    {"@type":"Question","name":"How are TSSC sequins manufactured?","acceptedAnswer":{"@type":"Answer","text":"The recycled PET film is produced in China. TSSC then punches and cuts the sequins in its UK workshop."}},
+    {"@type":"Question","name":"How many sequins are in 5g, 10g, 25g, 50g or 100g?","acceptedAnswer":{"@type":"Answer","text":"The number varies because larger shapes weigh more than smaller shapes. Where a piece count is available, it is shown in the weight and quantity option for that product."}},
+    {"@type":"Question","name":"Can I request a different quantity or bespoke sequin?","acceptedAnswer":{"@type":"Answer","text":"Yes. Customers can get in touch with project details to identify the closest existing product or discuss a bespoke request."}},
+    {"@type":"Question","name":"What are Seconds?","acceptedAnswer":{"@type":"Answer","text":"Seconds are offered as a creative-use option when stock does not fit the usual first-quality range. They are best for projects where variation is welcome."}}
+  ]
+}
+</script>
+
+{% schema %}
+{
+  "name": "TSSC FAQ page",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Page title", "default": "Frequently Asked Questions About Sustainable Sequins" },
+    { "type": "textarea", "id": "intro", "label": "Introduction", "default": "Clear answers about choosing, using and caring for our recycled sequins, Punchinella and spool products." }
+  ],
+  "presets": [{ "name": "TSSC FAQ page", "category": "TSSC" }]
+}
+{% endschema %}

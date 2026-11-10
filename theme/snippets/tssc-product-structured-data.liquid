@@ -1,0 +1,60 @@
+{% comment %}
+  Compact Product schema. Shopify's default product structured_data expands
+  every option combination into hasVariant, which adds hundreds of kilobytes
+  to these high-variant product pages. A representative Offer retains the
+  required rich-result fields without duplicating the whole catalogue in HTML.
+{% endcomment %}
+{% liquid
+  assign schema_variant = product.selected_or_first_available_variant
+  assign schema_description = product.metafields.global.description_tag | default: product.description | strip_html | strip | truncate: 5000
+  assign schema_image = schema_variant.featured_image | default: product.featured_image
+  assign schema_rating = product.metafields.reviews.rating.value.rating
+  assign schema_rating_scale = product.metafields.reviews.rating.value.scale_max | default: 5
+  assign schema_rating_count = product.metafields.reviews.rating_count.value | default: product.metafields.reviews.rating_count
+  assign schema_image_url = blank
+  if schema_image != blank
+    assign schema_image_url = schema_image | image_url: width: 2000
+    unless schema_image_url contains '://'
+      assign schema_image_url = schema_image_url | prepend: 'https:'
+    endunless
+  endif
+  assign schema_availability = 'https://schema.org/OutOfStock'
+  if schema_variant.available
+    assign schema_availability = 'https://schema.org/InStock'
+  endif
+%}
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "@id": {{ canonical_url | append: '#product' | json }},
+    "name": {{ product.title | json }},
+    "url": {{ canonical_url | json }},
+    "description": {{ schema_description | json }},
+    "productID": {{ product.id | json }},
+    "brand": {
+      "@type": "Brand",
+      "name": {{ product.vendor | default: shop.name | json }}
+    }{% if schema_rating != blank and schema_rating_count != blank and schema_rating_count > 0 %},
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": {{ schema_rating | json }},
+      "bestRating": {{ schema_rating_scale | json }},
+      "ratingCount": {{ schema_rating_count | json }}
+    }{% endif %}{% if schema_image_url != blank %},
+    "image": [{{ schema_image_url | json }}]{% endif %}{% if schema_variant.sku != blank %},
+    "sku": {{ schema_variant.sku | json }}{% endif %},
+    "offers": {
+      "@type": "Offer",
+      "url": {{ canonical_url | append: '?variant=' | append: schema_variant.id | json }},
+      "priceCurrency": {{ cart.currency.iso_code | default: shop.currency | json }},
+      "price": {{ schema_variant.price | divided_by: 100.0 | json }},
+      "availability": {{ schema_availability | json }},
+      "itemCondition": "https://schema.org/NewCondition",
+      "seller": {
+        "@type": "Organization",
+        "name": {{ shop.name | json }}
+      }
+    }
+  }
+</script>

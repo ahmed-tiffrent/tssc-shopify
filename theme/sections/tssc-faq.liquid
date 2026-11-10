@@ -1,0 +1,128 @@
+<section class="tssc-faq" id="tssc-faq-{{ section.id }}">
+  <div class="tssc-faq__header">
+    <h2 class="tssc-faq__title">{{ section.settings.title | default: 'Frequently Asked Questions' }}</h2>
+    <p class="tssc-faq__subtitle">{{ section.settings.subtitle | default: "Still feeling unsure? More questions? These might help!" }} <a class="tssc-faq__full-link" href="/pages/faq">Explore all FAQs<span class="visually-hidden"> about choosing, using and caring for sequins</span></a>.</p>
+  </div>
+
+  <div class="tssc-faq__list">
+    {% liquid
+      assign product_title = product.title | downcase
+      assign product_faq_type = 'general'
+
+      if product.handle contains 'punchinella'
+        assign product_faq_type = 'punchinella'
+      elsif product.handle contains 'second' or product_title contains 'seconds'
+        assign product_faq_type = 'seconds'
+      elsif product_title contains 'spool'
+        assign product_faq_type = 'spool'
+      elsif product_title contains 'pointed oval'
+        assign product_faq_type = 'pointed_oval'
+      elsif product_title contains 'teardrop'
+        assign product_faq_type = 'teardrop'
+      elsif product_title contains 'triangle'
+        assign product_faq_type = 'triangle'
+      elsif product_title contains 'square'
+        assign product_faq_type = 'square'
+      elsif product_title contains 'circle'
+        assign product_faq_type = 'circle'
+      elsif product_title contains 'oval'
+        assign product_faq_type = 'oval'
+      endif
+    %}
+
+    {% case product_faq_type %}
+      {% when 'circle' %}
+        {% render 'tssc-product-faq-item', open: true, question: 'Which circle size is right for my design?', answer: 'Smaller circles are useful for fine detail and dense embellishment; mid-sized circles give versatile coverage; larger circles create a bolder, more visible effect. Try a small sample first when scale or drape is important.' %}
+        {% render 'tssc-product-faq-item', question: 'Should I choose a centre hole or side hole?', answer: 'A centre hole gives an even, anchored look and is a natural choice for all-over coverage. A side hole lets the sequin sit directionally, so it can create a more fluid, scale-like or layered effect.' %}
+        {% render 'tssc-product-faq-item', question: 'What is the difference between flat and cupped circles?', answer: 'Flat circles lie smoothly against the surface. Cupped circles add more dimension and catch the light from more angles. Choose the finish and profile shown in the selected variant, then test it on your chosen fabric.' %}
+        {% render 'tssc-product-faq-item', question: 'How should I attach and care for loose circle sequins?', answer: 'Use a small, secure stitch through the hole; a bead can help cover and protect a centre stitch where appropriate. For finished pieces, gentle hand washing is recommended. Avoid machine washing, steam and harsh chemicals.' %}
+
+      {% when 'square' %}
+        {% render 'tssc-product-faq-item', open: true, question: 'What effect do square sequins create?', answer: 'Squares create a crisp, graphic surface with clear lines and corners. Aligning them gives a tiled look, while changing their direction produces a more irregular, light-catching texture.' %}
+        {% render 'tssc-product-faq-item', question: 'Should I keep every square facing the same way?', answer: 'For a clean geometric pattern, keep the orientation consistent and work from a marked guide. For a more expressive finish, rotate individual squares or layer them in small groups before committing to the full design.' %}
+        {% render 'tssc-product-faq-item', question: 'Which square size should I choose?', answer: 'Use smaller squares for detailed areas and tighter curves; use larger squares where you want the shape and finish to be read from a distance. Sampling on the final fabric is the best way to judge coverage.' %}
+        {% render 'tssc-product-faq-item', question: 'How should I care for a square-sequin design?', answer: 'Secure each sequin with a small stitch, then hand wash finished work gently when needed. Avoid machine washing, steam and harsh chemicals, which can affect the surface and your chosen attachment method.' %}
+
+      {% when 'triangle' %}
+        {% render 'tssc-product-faq-item', open: true, question: 'How does triangle direction change the design?', answer: 'Pointing triangles in one direction creates movement, while alternating them can form chevrons, scales or a more scattered texture. Lay out a small section first to decide which direction suits your design.' %}
+        {% render 'tssc-product-faq-item', question: 'Can I overlap triangle sequins?', answer: 'Yes. Slight overlaps can build coverage and reduce gaps, especially in directional patterns. Start from the edge or base of the motif so subsequent rows sit cleanly over the previous row.' %}
+        {% render 'tssc-product-faq-item', question: 'How do I choose a triangle size?', answer: 'Smaller triangles work well for detailed motifs and gentle curves. Larger sizes read more boldly and cover more area, but benefit from a simple placement plan on the finished fabric.' %}
+        {% render 'tssc-product-faq-item', question: 'What is the safest way to care for triangle sequins?', answer: 'Test your stitch and fabric together before making the full piece. Gentle hand washing is recommended for finished work; avoid machine washing, steam and harsh chemicals.' %}
+
+      {% when 'pointed_oval' %}
+        {% render 'tssc-product-faq-item', open: true, question: 'Which way should pointed oval sequins face?', answer: 'Use the pointed end to guide the eye: point it outward for petals, downward for fringe-like movement, or overlap repeated rows for feathers and scales. A quick sample helps you refine the direction before sewing.' %}
+        {% render 'tssc-product-faq-item', question: 'Do pointed ovals work well in layers?', answer: 'Yes. Their elongated shape is particularly effective when rows overlap slightly. Begin at the bottom or outer edge of a motif so each new row covers the stitch line beneath it.' %}
+        {% render 'tssc-product-faq-item', question: 'Why does the number of pieces vary between options?', answer: 'Loose sequins are sold by the selected weight or quantity. The number of pieces changes with the shape and size, so use the option label on this product for the most accurate guide.' %}
+        {% render 'tssc-product-faq-item', question: 'How should I wash a pointed-oval sequin design?', answer: 'Use a secure stitch and test it on a fabric offcut first. For finished pieces, wash gently by hand and avoid machine washing, steam and harsh chemicals.' %}
+
+      {% when 'teardrop' %}
+        {% render 'tssc-product-faq-item', open: true, question: 'How can I use teardrop sequins in a motif?', answer: 'Teardrops work beautifully as petals, leaves, scales and falling-droplet details. Point them toward or away from the centre of a motif to change the sense of movement.' %}
+        {% render 'tssc-product-faq-item', question: 'Should teardrops overlap?', answer: 'A small overlap creates fuller coverage and a layered, organic surface. Arrange a few pieces on your fabric before stitching to choose the spacing and direction that gives the desired result.' %}
+        {% render 'tssc-product-faq-item', question: 'How do I select the right amount?', answer: 'The option label shows the selected weight or quantity. Larger teardrops cover more area per piece, while smaller ones offer more detail, so a small swatch is the best way to estimate your requirement.' %}
+        {% render 'tssc-product-faq-item', question: 'How should finished teardrop sequin work be cared for?', answer: 'Secure the selected hole with a small stitch and test your method before starting. Finished work should be gently hand washed only; avoid machine washing, steam and harsh chemicals.' %}
+
+      {% when 'oval' %}
+        {% render 'tssc-product-faq-item', open: true, question: 'What can I create with oval sequins?', answer: 'Ovals can create soft, organic coverage and work well in petals, scales, leaf-like motifs and layered all-over embellishment. Their direction has a visible effect, so try a small layout before sewing.' %}
+        {% render 'tssc-product-faq-item', question: 'How should I arrange oval sequins?', answer: 'Keep the ovals aligned for a calm, regular surface, or rotate them for more movement. Overlapping in rows will give fuller coverage and can help conceal stitch lines.' %}
+        {% render 'tssc-product-faq-item', question: 'Which oval size is best for my project?', answer: 'Smaller ovals suit detail and curved areas; larger ovals create a stronger statement and cover more surface. Check the exact dimensions in the product title and test on the final material when possible.' %}
+        {% render 'tssc-product-faq-item', question: 'How do I care for a finished oval-sequin piece?', answer: 'Use a secure stitch and test the attachment on an offcut. Gentle hand washing is recommended; avoid machine washing, steam and harsh chemicals.' %}
+
+      {% when 'spool' %}
+        {% render 'tssc-product-faq-item', open: true, question: 'Are sequins on the spool suitable for my machine?', answer: 'Spool sequins are intended for digital embroidery machines with a compatible sequin attachment. Check your machine manual, attachment size and the selected sequin dimensions before ordering or starting production.' %}
+        {% render 'tssc-product-faq-item', question: 'Are the sequins on a spool individually strung?', answer: 'No. They are supplied as a continuous punched length rather than as individually strung loose sequins. This format is designed to feed through the appropriate machine attachment.' %}
+        {% render 'tssc-product-faq-item', question: 'How do I choose between the available spool lengths?', answer: 'Choose the length that suits your test run or production requirement, using the exact option shown on this product. It is sensible to allow extra for sampling, machine set-up and the end of a run.' %}
+        {% render 'tssc-product-faq-item', question: 'What should I test before embroidering a final piece?', answer: 'Run a sample using the final fabric, stabiliser, design density and chosen spool. Check feed direction, stitch placement and tension before moving to the finished garment or textile.' %}
+
+      {% when 'punchinella' %}
+        {% render 'tssc-product-faq-item', open: true, question: 'What is Punchinella?', answer: 'Punchinella is the patterned material left after sequins are punched from the film. Its open, repeating pattern makes it useful for bold texture, overlays, trims and experimental surface work.' %}
+        {% render 'tssc-product-faq-item', question: 'How is Punchinella different from loose sequins?', answer: 'Punchinella is supplied as a connected sheet or length rather than individual pieces. Use it where you want the negative space and repeating pattern to be part of the design.' %}
+        {% render 'tssc-product-faq-item', question: 'Can I cut Punchinella to shape?', answer: 'Yes. Cut a small test piece first, then choose a stitch, edge finish or other method that suits your fabric and intended use. Testing helps you avoid snagging and gives the cleanest edge for your design.' %}
+        {% render 'tssc-product-faq-item', question: 'How should I care for a Punchinella embellishment?', answer: 'Treat the attached piece gently and test your construction method first. For finished textiles, gentle hand washing is recommended; avoid machine washing, steam and harsh chemicals.' %}
+
+      {% when 'seconds' %}
+        {% render 'tssc-product-faq-item', open: true, question: 'What are Seconds?', answer: 'Seconds are offered as a creative-use option when stock does not fit the usual first-quality range. Check the product images, description and selected option carefully, as the character and available quantities can vary.' %}
+        {% render 'tssc-product-faq-item', question: 'Are Seconds suitable for a colour-matched production run?', answer: 'They are best chosen for projects where variation is welcome, such as samples, experiments, costume, art and one-off work. For colour-critical production, choose the standard product range and test a sample first.' %}
+        {% render 'tssc-product-faq-item', question: 'Why can Seconds availability change quickly?', answer: 'Seconds stock is limited and can be updated as it becomes available. The current product options show what can be selected now, so please choose your required option before adding to cart.' %}
+        {% render 'tssc-product-faq-item', question: 'How should I test Seconds before using them?', answer: 'Make a small sample with your intended fabric, stitch or adhesive method. This lets you assess the appearance, handling and suitability for your particular project before committing to a larger design.' %}
+
+      {% else %}
+        {% render 'tssc-product-faq-item', open: true, question: 'How do I choose the right size?', answer: 'Smaller sequins are useful for detailed work and tighter curves, while larger sizes create faster coverage and a bolder visual effect. Refer to the dimensions in the product title and make a small sample when possible.' %}
+        {% render 'tssc-product-faq-item', question: 'How do I choose the right hole position and profile?', answer: 'Choose the option that supports the effect you want: a centre hole gives an even anchor, while an off-centre hole can create more direction and movement. Flat and cupped options also change how the surface catches light.' %}
+        {% render 'tssc-product-faq-item', question: 'What does the selected weight or quantity mean?', answer: 'Choose the exact option needed for your project. Piece counts can differ between sizes and shapes, so the product option is the most reliable guide for what you will receive.' %}
+        {% render 'tssc-product-faq-item', question: 'How should I care for a finished sequin piece?', answer: 'Test your attachment method on an offcut first. Gentle hand washing is recommended for finished work; avoid machine washing, steam and harsh chemicals.' %}
+    {% endcase %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "TSSC FAQ",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Title (H2)", "default": "Product FAQs" },
+    { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "Guidance for choosing, using and caring for this sequin." }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question (H4)" },
+        { "type": "textarea", "id": "answer", "label": "Answer" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "TSSC FAQ",
+      "category": "TSSC",
+      "blocks": [
+        { "type": "question", "settings": { "question": "What makes your sequins different?", "answer": "Our recycled PET film is produced in China, then the sequins are punched and cut in our UK workshop. They are offered in formats for both hand and digital application, with a wide choice of shapes, sizes, colours and finishes." } },
+        { "type": "question", "settings": { "question": "What materials do you use?", "answer": "We currently produce sequins using recycled PET film, and we are also developing biodegradable options. The aim is to offer beautiful embellishment choices with less environmental impact than conventional fully virgin-plastic sequins." } },
+        { "type": "question", "settings": { "question": "What is the difference between loose sequins and sequins on the spool?", "answer": "Loose sequins are designed for hand application, making them suitable for sewing, embellishment, and craft use. Sequins on the spool are made for digital embroidery machines with sequin attachments and are supplied as a continuous punched length rather than individual loose pieces." } },
+        { "type": "question", "settings": { "question": "Are your sequins suitable for both small and large orders?", "answer": "Yes. The range is designed to work for independent designers, students, makers, and larger brands. Because we work to order, the service is flexible enough for small quantities and scalable enough for production needs." } },
+        { "type": "question", "settings": { "question": "Can these sequins be used on fashion garments?", "answer": "Yes. They are suitable for fashion, embellishment, craft, and other creative applications where sequins are needed as a decorative or design feature. The choice of shape, size, and application method depends on the final use." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

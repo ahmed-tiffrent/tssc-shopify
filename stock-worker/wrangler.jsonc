@@ -1,0 +1,32 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "tssc-punchinella-stock",
+  "main": "worker.js",
+  "compatibility_date": "2026-09-16",
+  "account_id": "YOUR_CLOUDFLARE_ACCOUNT_ID",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "tssc-punchinella-stock-db",
+      "database_id": "YOUR_D1_DATABASE_ID"
+    }
+  ],
+  "queues": {
+    "producers": [
+      {
+        "binding": "ETSY_SYNC_QUEUE",
+        "queue": "tssc-etsy-sync"
+      }
+    ],
+    "consumers": [
+      {
+        "queue": "tssc-etsy-sync",
+        "max_batch_size": 1,
+        "max_batch_timeout": 5,
+        "max_concurrency": 1,
+        "max_retries": 12,
+        "retry_delay": 60
+      }
+    ]
+  }
+}

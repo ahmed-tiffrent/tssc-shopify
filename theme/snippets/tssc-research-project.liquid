@@ -1,0 +1,40 @@
+{% liquid
+  assign image_url_key = 'project_' | append: project_number | append: '_image_url'
+  assign image_alt_key = 'project_' | append: project_number | append: '_image_alt'
+  assign caption_key = 'project_' | append: project_number | append: '_caption'
+  assign image_url = section.settings[image_url_key]
+  assign image_alt = section.settings[image_alt_key]
+  assign caption = section.settings[caption_key]
+  assign image_width = 800
+  assign image_height = 800
+
+  if project_number == 4
+    assign image_width = 1600
+  endif
+%}
+
+<figure class="tssc-research-development__project{% if project_number == 4 %} tssc-research-development__project--wide{% endif %}">
+  <div class="tssc-research-development__project-media">
+    {% if image_url != blank %}
+      <img
+        class="tssc-research-development__project-image"
+        src="{{ image_url }}"
+        alt="{{ image_alt | escape }}"
+        width="{{ image_width }}"
+        height="{{ image_height }}"
+        loading="lazy"
+        decoding="async"
+      >
+    {% else %}
+      <div class="tssc-research-development__placeholder" aria-hidden="true">
+        {{ 'image' | placeholder_svg_tag }}
+      </div>
+    {% endif %}
+  </div>
+
+  {% if caption != blank %}
+    <figcaption class="tssc-research-development__caption">
+      {{ caption | escape }}
+    </figcaption>
+  {% endif %}
+</figure>

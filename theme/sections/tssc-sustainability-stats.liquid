@@ -1,0 +1,127 @@
+<section class="tssc-sustain-stats" id="tssc-sustain-stats-{{ section.id }}">
+  <div class="tssc-sustain-stats__header">
+    <div class="tssc-sustain-stats__header-col--title">
+      {% assign title_words = section.settings.title | default: 'Sustainability With Real Impact' | split: ' ' %}
+      {% assign title_count = title_words.size %}
+      <h2 class="tssc-sustain-stats__title">
+        {% for word in title_words %}
+          {% assign index = forloop.index0 %}
+          {% assign remaining = title_count | minus: index %}
+          {% if remaining <= 1 %}
+            <span class="tssc-italic">{{ word }}</span>
+          {% else %}
+            {{ word }}
+          {% endif %}
+          {% unless forloop.last %} {% endunless %}
+        {% endfor %}
+      </h2>
+    </div>
+    <div class="tssc-sustain-stats__header-col--text">
+      <div class="tssc-sustain-stats__intro">
+        {{ section.settings.intro_text }}
+      </div>
+    </div>
+  </div>
+
+  <div class="tssc-sustain-stats__row">
+    <div class="tssc-sustain-stats__image-col">
+      <img
+        src="{{ section.settings.image | default: 'https://cdn.shopify.com/s/files/1/0978/1139/8980/files/section_image_right.webp?v=1784022923' }}"
+        alt="{{ section.settings.image_alt | default: 'Paper flower detail' }}"
+        class="tssc-sustain-stats__image"
+        loading="lazy"
+        width="352"
+        height="472"
+      >
+    </div>
+
+    <div class="tssc-sustain-stats__stat-col">
+      <div class="tssc-sustain-stats__stat-item">
+        <img src="{{ section.settings.icon_1 | default: 'https://cdn.shopify.com/s/files/1/0978/1139/8980/files/trees.png?v=1784022858' }}" alt="Trees icon" class="tssc-sustain-stats__icon" width="48" height="48" loading="lazy">
+        <h5 class="tssc-sustain-stats__stat-number">{{ section.settings.stat_1_number | default: '5722' }}</h5>
+        <p class="tssc-sustain-stats__stat-text">{{ section.settings.stat_1_text | default: 'trees funded through our work so far, supporting restoration projects with every order.' }}</p>
+      </div>
+      <div class="tssc-sustain-stats__divider"></div>
+      <div class="tssc-sustain-stats__stat-item">
+        <img src="{{ section.settings.icon_2 | default: 'https://cdn.shopify.com/s/files/1/0978/1139/8980/files/cloud_img.png?v=1784022858' }}" alt="Cloud icon" class="tssc-sustain-stats__icon" width="48" height="48" loading="lazy">
+        <h5 class="tssc-sustain-stats__stat-number">{{ section.settings.stat_2_number | default: '26' }}</h5>
+        <p class="tssc-sustain-stats__stat-text">{{ section.settings.stat_2_text | default: 'tCO2e removed, reflecting our contribution to carbon removal and broader environmental action.' }}</p>
+      </div>
+    </div>
+
+    <div class="tssc-sustain-stats__stat-col">
+      <div class="tssc-sustain-stats__stat-item">
+        <img src="{{ section.settings.icon_3 | default: 'https://cdn.shopify.com/s/files/1/0978/1139/8980/files/waterbottle.png?v=1784022859' }}" alt="Water bottle icon" class="tssc-sustain-stats__icon" width="48" height="48" loading="lazy">
+        <h5 class="tssc-sustain-stats__stat-number">{{ section.settings.stat_3_number | default: '110,000 (2,200kg)' }}</h5>
+        <p class="tssc-sustain-stats__stat-text">{{ section.settings.stat_3_text | default: 'Plastic bottles prevented from entering the sea through our ocean-bound plastic recovery support.' }}</p>
+      </div>
+      <div class="tssc-sustain-stats__divider"></div>
+      <div class="tssc-sustain-stats__stat-item">
+        <img src="{{ section.settings.icon_4 | default: 'https://cdn.shopify.com/s/files/1/0978/1139/8980/files/flower_img.png?v=1784022858' }}" alt="Flower icon" class="tssc-sustain-stats__icon" width="48" height="48" loading="lazy">
+        <h5 class="tssc-sustain-stats__stat-number">{{ section.settings.stat_4_number | default: '130' }}</h5>
+        <p class="tssc-sustain-stats__stat-text">{{ section.settings.stat_4_text | default: 'm2 UK wildflower + wetland habitat restored, supporting biodiversity and helping create healthier ecosystems.' }}</p>
+      </div>
+    </div>
+  </div>
+
+  {% if section.settings.button_label != blank %}
+    <div class="tssc-sustain-stats__cta">
+      <a href="{{ section.settings.button_link | default: routes.root_url }}" class="button tssc-sustain-stats__button">
+        {{ section.settings.button_label }}
+      </a>
+      <a
+        href="https://ecologi.com/thesustainablesequincompany"
+        class="button tssc-sustain-stats__button tssc-sustain-stats__button--secondary"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span class="tssc-sustain-stats__secondary-label">See Our Ecologi Impact</span>
+        <span class="visually-hidden"> (opens in a new tab)</span>
+      </a>
+    </div>
+  {% endif %}
+</section>
+
+{% schema %}
+{
+  "name": "TSSC Sustainability stats",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Title (H2, last word italic)", "default": "Sustainability With Real Impact" },
+    { "type": "richtext", "id": "intro_text", "label": "Intro text", "default": "<p>Across everything we do, our focus is on reducing impact, improving material choices, and developing lower-impact alternatives for the future.</p>" },
+    { "type": "url", "id": "image", "label": "Left image URL" },
+    { "type": "text", "id": "image_alt", "label": "Left image alt text", "default": "Paper flower detail" },
+    { "type": "header", "content": "Stat 1 — Trees" },
+    { "type": "url", "id": "icon_1", "label": "Icon 1 URL" },
+    { "type": "text", "id": "stat_1_number", "label": "Stat 1 number", "default": "5722" },
+    { "type": "textarea", "id": "stat_1_text", "label": "Stat 1 text", "default": "trees funded through our work so far, supporting restoration projects with every order." },
+    { "type": "header", "content": "Stat 2 — CO2" },
+    { "type": "url", "id": "icon_2", "label": "Icon 2 URL" },
+    { "type": "text", "id": "stat_2_number", "label": "Stat 2 number", "default": "26" },
+    { "type": "textarea", "id": "stat_2_text", "label": "Stat 2 text", "default": "tCO2e removed, reflecting our contribution to carbon removal and broader environmental action." },
+    { "type": "header", "content": "Stat 3 — Bottles" },
+    { "type": "url", "id": "icon_3", "label": "Icon 3 URL" },
+    { "type": "text", "id": "stat_3_number", "label": "Stat 3 number", "default": "110,000 (2,200kg)" },
+    { "type": "textarea", "id": "stat_3_text", "label": "Stat 3 text", "default": "Plastic bottles prevented from entering the sea through our ocean-bound plastic recovery support." },
+    { "type": "header", "content": "Stat 4 — Habitat" },
+    { "type": "url", "id": "icon_4", "label": "Icon 4 URL" },
+    { "type": "text", "id": "stat_4_number", "label": "Stat 4 number", "default": "130" },
+    { "type": "textarea", "id": "stat_4_text", "label": "Stat 4 text", "default": "m2 UK wildflower + wetland habitat restored, supporting biodiversity and helping create healthier ecosystems." },
+    { "type": "header", "content": "Button" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Read About Sustainability" },
+    { "type": "url", "id": "button_link", "label": "Button link" }
+  ],
+  "presets": [
+    {
+      "name": "TSSC Sustainability stats",
+      "category": "TSSC",
+      "settings": {
+        "image": "https://cdn.shopify.com/s/files/1/0978/1139/8980/files/section_image_right.webp?v=1784022923",
+        "icon_1": "https://cdn.shopify.com/s/files/1/0978/1139/8980/files/trees.png?v=1784022858",
+        "icon_2": "https://cdn.shopify.com/s/files/1/0978/1139/8980/files/cloud_img.png?v=1784022858",
+        "icon_3": "https://cdn.shopify.com/s/files/1/0978/1139/8980/files/waterbottle.png?v=1784022859",
+        "icon_4": "https://cdn.shopify.com/s/files/1/0978/1139/8980/files/flower_img.png?v=1784022858"
+      }
+    }
+  ]
+}
+{% endschema %}

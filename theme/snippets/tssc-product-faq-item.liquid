@@ -1,0 +1,16 @@
+{% comment %}
+  Renders one accessible product FAQ item.
+  Accepts: question, answer, open (optional)
+{% endcomment %}
+<details class="tssc-faq__item" {% if open %}open{% endif %}>
+  <summary class="tssc-faq__question">
+    <span class="tssc-faq__icon" aria-hidden="true">
+      <span class="tssc-faq__icon-line tssc-faq__icon-line--h"></span>
+      <span class="tssc-faq__icon-line tssc-faq__icon-line--v"></span>
+    </span>
+    <h4 class="tssc-faq__question-text">{{ question }}</h4>
+  </summary>
+  <div class="tssc-faq__answer">
+    <p>{{ answer }}</p>
+  </div>
+</details>

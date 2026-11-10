@@ -1,0 +1,92 @@
+{% liquid
+  assign wishlist_variant = variant | default: product.selected_or_first_available_variant
+  assign wishlist_image = wishlist_variant.featured_image | default: product.featured_media.preview_image | default: product.featured_image
+  assign wishlist_product_url = product.url | split: '?' | first
+  assign wishlist_url = wishlist_product_url
+  assign wishlist_colour = blank
+  assign wishlist_colour_value = blank
+
+  if wishlist_variant != blank
+    assign wishlist_url = wishlist_product_url | append: '?variant=' | append: wishlist_variant.id
+  endif
+
+  if colour == blank and wishlist_variant != blank and wishlist_variant.title != 'Default Title'
+    assign wishlist_detail = wishlist_variant.title
+  else
+    assign wishlist_detail = colour
+  endif
+
+  for product_option in product.options_with_values
+    assign option_name_key = product_option.name | downcase | strip
+    if option_name_key == 'colour' or option_name_key == 'color'
+      assign colour_option_index = product_option.position | minus: 1
+      assign wishlist_colour = wishlist_variant.options[colour_option_index]
+      for product_option_value in product_option.values
+        if product_option_value.name == wishlist_colour
+          assign wishlist_colour_value = product_option_value
+          break
+        endif
+      endfor
+      break
+    endif
+  endfor
+%}
+
+{% if product != blank and wishlist_variant != blank %}
+  <button
+    class="tssc-wishlist-button{% if context == 'product' %} tssc-wishlist-button--product{% endif %}"
+    type="button"
+    aria-pressed="false"
+    aria-label="Add {{ product.title | escape }} to favourites"
+    data-wishlist-toggle
+    {% if context == 'product' %}data-product-wishlist{% endif %}
+    data-wishlist-key="{{ wishlist_variant.id }}"
+    data-wishlist-product-id="{{ product.id }}"
+    data-wishlist-variant-id="{{ wishlist_variant.id }}"
+    data-wishlist-title="{{ product.title | escape }}"
+    data-wishlist-detail="{{ wishlist_detail | escape }}"
+    {% if wishlist_colour != blank %}
+      data-wishlist-colour="{{ wishlist_colour | escape }}"
+      {% if wishlist_colour_value.swatch.image != blank %}
+        data-wishlist-colour-swatch-image="{{ wishlist_colour_value.swatch.image | image_url: width: 40 | escape }}"
+      {% elsif wishlist_colour_value.swatch.color != blank %}
+        data-wishlist-colour-swatch-colour="rgb({{ wishlist_colour_value.swatch.color.rgb }})"
+      {% elsif wishlist_colour_value.variant.featured_image != blank %}
+        data-wishlist-colour-swatch-image="{{ wishlist_colour_value.variant.featured_image | image_url: width: 40 | escape }}"
+      {% endif %}
+    {% endif %}
+    data-wishlist-url="{{ wishlist_url | escape }}"
+    data-wishlist-price="{{ wishlist_variant.price | money | escape }}"
+    data-productid="{{ product.id }}"
+    data-variant="{{ wishlist_variant.id }}"
+    data-title="{{ product.title | escape }}"
+    data-variant-title="{{ wishlist_variant.title | escape }}"
+    data-display-name="{{ product.title | escape }}{% unless wishlist_variant.title == 'Default Title' %} - {{ wishlist_variant.title | escape }}{% endunless %}"
+    data-price="{{ wishlist_variant.price }}"
+    data-compareatprice="{{ wishlist_variant.compare_at_price | default: 0 }}"
+    data-handle="{{ product.handle | escape }}"
+    data-url="{{ wishlist_url | escape }}"
+    {% if context == 'product' %}
+      data-wishlist-checkout-ready="true"
+    {% endif %}
+    {% if wishlist_image != blank %}
+      data-wishlist-image="{{ wishlist_image | image_url: width: 720 | escape }}"
+      data-image="{{ wishlist_image | image_url: width: 720 | escape }}"
+    {% endif %}
+  >
+    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24">
+      <path
+        class="tssc-wishlist-button__heart"
+        d="M12 20.4 4.35 13A5.35 5.35 0 0 1 12 5.54 5.35 5.35 0 0 1 19.65 13L12 20.4Z"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.6"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+    {% if context == 'product' %}
+      <span class="tssc-wishlist-button__label" data-wishlist-label>Add to favourites</span>
+    {% endif %}
+  </button>
+{% endif %}

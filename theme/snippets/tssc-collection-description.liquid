@@ -1,0 +1,27 @@
+{% comment %}Fallback copy is used only when the collection description is blank.{% endcomment %}
+{% case collection.handle %}
+  {% when 'all', 'frontpage' %}
+    Browse TSSC recycled PET sequins, sequin spools, Punchinella and Seconds in the available shapes, sizes, colours and finishes.
+  {% when '20-recycled-plastic' %}
+    Shop sequins made with 20% recycled PET film in the available shapes, sizes, colours, finishes and fixing styles.
+  {% when '100-recycled-plastic' %}
+    Shop sequins made with 100% recycled PET film in the available shapes, sizes, colours, finishes and fixing styles.
+  {% when 'circles' %}
+    Browse recycled PET circle sequins in a range of sizes, colours, finishes, hole positions and flat or cupped styles.
+  {% when 'squares' %}
+    Browse recycled PET square sequins in the available sizes, colours, finishes and material options.
+  {% when 'spools' %}
+    Browse recycled PET sequin spools supplied in continuous lengths for digital embroidery machines with compatible sequin attachments.
+  {% when 'punchinella' %}
+    Browse Punchinella, the patterned film left after sequins are punched, supplied as connected sheets or lengths for creative surface work.
+  {% when 'seconds' %}
+    Browse limited TSSC Seconds for samples, experiments, costume, art and projects where variation is welcome. Material composition varies by product.
+  {% when 'ovals' %}
+    Browse recycled PET oval sequins for layered, petal, leaf, feather and scale-like embellishment designs.
+  {% when 'pointed-ovals' %}
+    Browse recycled PET pointed oval sequins for directional, layered, petal, leaf and feather-like embellishment designs.
+  {% when 'teardrops' %}
+    Browse recycled PET teardrop sequins for directional, layered and statement embellishment designs.
+  {% when 'triangles' %}
+    Browse recycled PET triangle sequins for graphic, directional and layered embellishment designs.
+{% endcase %}

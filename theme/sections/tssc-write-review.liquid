@@ -1,0 +1,500 @@
+{% liquid
+  assign review_product = product
+  assign form_id = 'TsscProductReviewForm-' | append: section.id
+%}
+
+<section
+  id="TsscWriteReview-{{ section.id }}"
+  class="tssc-write-review"
+  aria-labelledby="TsscWriteReviewHeading-{{ section.id }}"
+  style="
+    --review-background: {{ section.settings.background_color }};
+    --review-text: {{ section.settings.text_color }};
+    --review-accent: {{ section.settings.accent_color }};
+  "
+>
+  <div class="tssc-write-review__inner">
+    <div class="tssc-write-review__intro">
+      <h2 id="TsscWriteReviewHeading-{{ section.id }}" class="tssc-write-review__heading">
+        <span>{{ section.settings.heading | escape }}</span>
+        <em>{{ section.settings.italic_heading | escape }}</em>
+      </h2>
+      {% if section.settings.intro != blank %}
+        <div class="tssc-write-review__copy rte">{{ section.settings.intro }}</div>
+      {% endif %}
+    </div>
+
+    <details class="tssc-write-review__disclosure"{% if request.query_string contains 'contact_posted=true' %} open{% endif %}>
+      <summary class="tssc-write-review__summary">
+        <span>Write a review</span>
+        <span class="tssc-write-review__summary-icon" aria-hidden="true">+</span>
+      </summary>
+
+      <div class="tssc-write-review__form-wrap">
+        {% form 'contact', id: form_id, class: 'tssc-write-review__form', enctype: 'multipart/form-data' %}
+          <input type="hidden" name="contact[Subject]" value="Product review: {{ review_product.title | escape }}">
+          <input type="hidden" name="contact[Product]" value="{{ review_product.title | escape }}">
+          <input type="hidden" name="contact[Product URL]" value="{{ shop.url }}{{ review_product.url }}">
+          <input type="hidden" name="contact[Variant]" value="{{ review_product.selected_or_first_available_variant.title | escape }}">
+
+          {% if form.posted_successfully? %}
+            <p class="tssc-write-review__message" role="status" tabindex="-1">
+              Thank you. Your review has been sent to our team for moderation.
+            </p>
+          {% else %}
+            {% if form.errors %}
+              <div class="tssc-write-review__errors" role="alert" tabindex="-1">
+                {{ form.errors | default_errors }}
+              </div>
+            {% endif %}
+
+            <div class="tssc-write-review__fields">
+              <div class="tssc-write-review__field">
+                <label for="ReviewName-{{ section.id }}">Name <span class="tssc-write-review__required" aria-hidden="true">*</span><span class="visually-hidden">required</span></label>
+                <input id="ReviewName-{{ section.id }}" type="text" name="contact[Name]" autocomplete="name" required>
+              </div>
+
+              <div class="tssc-write-review__field">
+                <label for="ReviewEmail-{{ section.id }}">Email <span class="tssc-write-review__required" aria-hidden="true">*</span><span class="visually-hidden">required</span></label>
+                <input id="ReviewEmail-{{ section.id }}" type="email" name="contact[email]" autocomplete="email" required>
+              </div>
+
+              <div class="tssc-write-review__field">
+                <label for="ReviewRating-{{ section.id }}">Rating <span class="tssc-write-review__required" aria-hidden="true">*</span><span class="visually-hidden">required</span></label>
+                <select id="ReviewRating-{{ section.id }}" name="contact[Rating]" required>
+                  <option value="">Choose a rating</option>
+                  <option value="5 out of 5">5: Excellent</option>
+                  <option value="4 out of 5">4: Very good</option>
+                  <option value="3 out of 5">3: Good</option>
+                  <option value="2 out of 5">2: Fair</option>
+                  <option value="1 out of 5">1: Poor</option>
+                </select>
+              </div>
+
+              <div class="tssc-write-review__field tssc-write-review__photo-field">
+                <span class="tssc-write-review__field-label">Project photo <span>(optional)</span></span>
+                <input
+                  id="ReviewProjectPhoto-{{ section.id }}"
+                  class="tssc-write-review__file-input visually-hidden"
+                  type="file"
+                  name="contact[Project photo]"
+                  accept="image/jpeg,image/png,image/webp,image/heic,image/heif"
+                  aria-describedby="ReviewProjectPhotoStatus-{{ section.id }} ReviewProjectPhotoHelp-{{ section.id }}"
+                  data-review-photo-input
+                >
+                <div class="tssc-write-review__photo-control">
+                  <button
+                    class="tssc-write-review__upload-button"
+                    type="button"
+                    aria-controls="ReviewProjectPhoto-{{ section.id }}"
+                    aria-describedby="ReviewProjectPhotoStatus-{{ section.id }} ReviewProjectPhotoHelp-{{ section.id }}"
+                    data-review-photo-trigger
+                  >
+                    Upload photo
+                </button>
+                  <div class="tssc-write-review__file-status-row">
+                    <span id="ReviewProjectPhotoStatus-{{ section.id }}" class="tssc-write-review__file-name" aria-live="polite">
+                      No photo selected
+                    </span>
+                    <button class="tssc-write-review__remove-photo" type="button" data-review-photo-remove hidden>
+                      <span aria-hidden="true">×</span><span class="visually-hidden">Remove selected photo</span>
+                    </button>
+                  </div>
+                </div>
+                <span id="ReviewProjectPhotoHelp-{{ section.id }}" class="tssc-write-review__file-help">
+                  JPEG, PNG, WebP or HEIC, up to 10 MB.
+                </span>
+              </div>
+
+              <div class="tssc-write-review__field tssc-write-review__field--wide">
+                <label for="ReviewBody-{{ section.id }}">Your review <span>(optional)</span></label>
+                <textarea id="ReviewBody-{{ section.id }}" name="contact[Review]" rows="6"></textarea>
+              </div>
+            </div>
+
+            <p class="tssc-write-review__note">Your review will be sent to our team for moderation. Your email will not be displayed.</p>
+            <button class="button tssc-write-review__submit" type="submit">Submit review</button>
+          {% endif %}
+        {% endform %}
+      </div>
+    </details>
+  </div>
+</section>
+
+{% style %}
+  #TsscWriteReview-{{ section.id }},
+  #TsscWriteReview-{{ section.id }} * {
+    box-sizing: border-box;
+  }
+
+  #TsscWriteReview-{{ section.id }} {
+    width: 100%;
+    background: var(--review-background);
+    color: var(--review-text);
+  }
+
+  #TsscWriteReview-{{ section.id }} .tssc-write-review__inner {
+    width: min(100%, 1120px);
+    margin-inline: auto;
+    padding: clamp(44px, 5vw, 72px) clamp(20px, 4vw, 64px);
+  }
+
+  #TsscWriteReview-{{ section.id }} .tssc-write-review__intro {
+    max-width: 760px;
+    margin: 0 auto clamp(24px, 3vw, 34px);
+    text-align: center;
+  }
+
+  #TsscWriteReview-{{ section.id }} .tssc-write-review__heading {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0 0.22em;
+    margin: 0 0 18px;
+    font-family: var(--font-h2--family);
+    font-size: 36px;
+    font-style: var(--font-h2--style);
+    font-weight: var(--font-h2--weight);
+    letter-spacing: var(--font-h2--letter-spacing);
+    line-height: var(--font-h2--line-height);
+  }
+
+  #TsscWriteReview-{{ section.id }} .tssc-write-review__heading em {
+    font-weight: inherit;
+  }
+
+  #TsscWriteReview-{{ section.id }} .tssc-write-review__copy,
+  #TsscWriteReview-{{ section.id }} .tssc-write-review__copy p {
+    margin: 0;
+    font-size: clamp(16px, 1.4vw, 19px);
+    line-height: 1.6;
+  }
+
+  #TsscWriteReview-{{ section.id }} .tssc-write-review__disclosure {
+    border-block: 1px solid rgb(50 21 29 / 22%);
+  }
+
+  #TsscWriteReview-{{ section.id }} .tssc-write-review__summary {
+    display: flex;
+    min-height: 74px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 18px 4px;
+    color: var(--review-text);
+    cursor: pointer;
+    font-size: clamp(18px, 1.6vw, 22px);
+    font-weight: 500;
+    list-style: none;
+  }
+
+  #TsscWriteReview-{{ section.id }} .tssc-write-review__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  #TsscWriteReview-{{ section.id }} .tssc-write-review__summary-icon {
+    color: var(--review-accent);
+    font-size: 30px;
+    font-weight: 400;
+    line-height: 1;
+    transition: transform 180ms ease;
+  }
+
+  #TsscWriteReview-{{ section.id }} .tssc-write-review__disclosure[open] .tssc-write-review__summary-icon {
+    transform: rotate(45deg);
+  }
+
+  #TsscWriteReview-{{ section.id }} .tssc-write-review__summary:focus-visible,
+  #TsscWriteReview-{{ section.id }} :is(input, select, textarea, button):focus-visible {
+    outline: 2px solid var(--review-accent);
+    outline-offset: 3px;
+  }
+
+  #TsscWriteReview-{{ section.id }} .tssc-write-review__form-wrap {
+    padding: 8px 4px clamp(32px, 5vw, 52px);
+  }
+
+  #TsscWriteReview-{{ section.id }} .tssc-write-review__fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+  }
+
+  #TsscWriteReview-{{ section.id }} .tssc-write-review__field {
+    display: grid;
+    gap: 8px;
+    align-content: start;
+  }
+
+  #TsscWriteReview-{{ section.id }} .tssc-write-review__field--wide {
+    grid-column: 1 / -1;
+  }
+
+  #TsscWriteReview-{{ section.id }} .tssc-write-review__field label {
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  #TsscWriteReview-{{ section.id }} .tssc-write-review__field-label {
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  #TsscWriteReview-{{ section.id }} .tssc-write-review__required {
+    color: var(--review-accent);
+  }
+
+  #TsscWriteReview-{{ section.id }} .tssc-write-review__field label span:not(.tssc-write-review__required),
+  #TsscWriteReview-{{ section.id }} .tssc-write-review__field-label span,
+  #TsscWriteReview-{{ section.id }} .tssc-write-review__note {
+    color: rgb(50 21 29 / 70%);
+    font-weight: 400;
+  }
+
+  #TsscWriteReview-{{ section.id }} :is(input, select, textarea) {
+    width: 100%;
+    min-height: 50px;
+    padding: 12px 14px;
+    border: 1px solid rgb(50 21 29 / 55%);
+    border-radius: 0;
+    background: #fff;
+    color: var(--review-text);
+    font: inherit;
+  }
+
+  #TsscWriteReview-{{ section.id }} select {
+    padding-right: 46px;
+    padding-left: 16px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 10'%3E%3Cpath d='m1 1 7 7 7-7' fill='none' stroke='%2332151d' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    background-size: 14px 9px;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  #TsscWriteReview-{{ section.id }} textarea {
+    min-height: 150px;
+    resize: vertical;
+  }
+
+  #TsscWriteReview-{{ section.id }} .tssc-write-review__photo-control {
+    display: block;
+    width: 100%;
+    min-height: 50px;
+  }
+
+  #TsscWriteReview-{{ section.id }} .tssc-write-review__upload-button {
+    display: inline-flex;
+    width: 100%;
+    min-height: 50px;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 11px 20px;
+    border: 1px solid rgb(50 21 29 / 55%);
+    color: var(--review-text);
+    background: #fff;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 500;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  #TsscWriteReview-{{ section.id }} .tssc-write-review__file-input:focus-visible + .tssc-write-review__photo-control .tssc-write-review__upload-button {
+    outline: 2px solid var(--review-accent);
+    outline-offset: 3px;
+  }
+
+  #TsscWriteReview-{{ section.id }} .tssc-write-review__upload-button:hover {
+    color: #fff;
+    background: var(--review-accent);
+  }
+
+  #TsscWriteReview-{{ section.id }} .tssc-write-review__file-name,
+  #TsscWriteReview-{{ section.id }} .tssc-write-review__file-help {
+    color: rgb(50 21 29 / 70%);
+    font-size: 14px;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+  }
+
+  #TsscWriteReview-{{ section.id }} .tssc-write-review__file-status-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  #TsscWriteReview-{{ section.id }} .tssc-write-review__file-name {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  #TsscWriteReview-{{ section.id }} .tssc-write-review__remove-photo {
+    display: grid;
+    width: 32px;
+    height: 32px;
+    flex: 0 0 32px;
+    margin-inline-start: auto;
+    place-items: center;
+    border: 0;
+    color: var(--review-accent);
+    background: transparent;
+    cursor: pointer;
+    font: inherit;
+    font-size: 26px;
+    line-height: 1;
+  }
+
+  #TsscWriteReview-{{ section.id }} .tssc-write-review__remove-photo:hover {
+    color: var(--review-text);
+  }
+
+  #TsscWriteReview-{{ section.id }} .tssc-write-review__remove-photo:focus-visible {
+    outline: 2px solid var(--review-accent);
+    outline-offset: 2px;
+  }
+
+  #TsscWriteReview-{{ section.id }} .tssc-write-review__note {
+    margin: 18px 0;
+    font-size: 14px;
+  }
+
+  #TsscWriteReview-{{ section.id }} .tssc-write-review__submit {
+    min-height: 52px;
+    padding-inline: 28px;
+    border: 1px solid var(--review-accent);
+    background: var(--review-accent);
+    color: #fff;
+    font-weight: 600;
+  }
+
+  #TsscWriteReview-{{ section.id }} .tssc-write-review__message,
+  #TsscWriteReview-{{ section.id }} .tssc-write-review__errors {
+    margin: 0;
+    padding: 18px;
+    border: 1px solid var(--review-accent);
+  }
+
+  @media screen and (max-width: 899px) {
+    #TsscWriteReview-{{ section.id }} .tssc-write-review__fields {
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+
+    #TsscWriteReview-{{ section.id }} .tssc-write-review__field--wide {
+      grid-column: auto;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #TsscWriteReview-{{ section.id }} .tssc-write-review__heading {
+      font-size: 26px;
+    }
+
+    #TsscWriteReview-{{ section.id }} .tssc-write-review__submit {
+      width: 100%;
+    }
+
+  }
+
+  @media screen and (min-width: 750px) and (max-width: 989px) {
+    #TsscWriteReview-{{ section.id }} .tssc-write-review__heading {
+      font-size: 30px;
+    }
+  }
+{% endstyle %}
+
+<script>
+  (() => {
+    const section = document.getElementById('TsscWriteReview-{{ section.id }}');
+    const input = section?.querySelector('[data-review-photo-input]');
+    const trigger = section?.querySelector('[data-review-photo-trigger]');
+    const remove = section?.querySelector('[data-review-photo-remove]');
+    const status = document.getElementById('ReviewProjectPhotoStatus-{{ section.id }}');
+
+    if (!(input instanceof HTMLInputElement) || !(trigger instanceof HTMLButtonElement) || !(remove instanceof HTMLButtonElement) || !(status instanceof HTMLElement)) return;
+
+    trigger.addEventListener('click', () => input.click());
+
+    remove.addEventListener('click', () => {
+      input.value = '';
+      input.setCustomValidity('');
+      status.textContent = 'No photo selected';
+      remove.hidden = true;
+      trigger.focus();
+    });
+
+    input.addEventListener('change', () => {
+      const file = input.files?.[0];
+      input.setCustomValidity('');
+
+      if (!file) {
+        status.textContent = 'No photo selected';
+        remove.hidden = true;
+        return;
+      }
+
+      remove.hidden = false;
+
+      if (file.size > 10 * 1024 * 1024) {
+        input.setCustomValidity('Please choose a photo smaller than 10 MB.');
+        status.textContent = 'Photo is too large';
+        input.reportValidity();
+        return;
+      }
+
+      status.textContent = file.name;
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "TSSC Write a review",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Share Your"
+    },
+    {
+      "type": "text",
+      "id": "italic_heading",
+      "label": "Italic heading",
+      "default": "Project"
+    },
+    {
+      "type": "richtext",
+      "id": "intro",
+      "label": "Introduction",
+      "default": "<p>Used these sequins in a project? Tell other makers what you created and how they worked for you.</p>"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#32151d"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent",
+      "default": "#962648"
+    }
+  ],
+  "presets": [
+    {
+      "name": "TSSC Write a review"
+    }
+  ]
+}
+{% endschema %}

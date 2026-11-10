@@ -1,0 +1,144 @@
+<section class="tssc-section tssc-category-rail" id="tssc-category-rail-{{ section.id }}">
+  <div class="tssc-category-rail__inner">
+    <header class="tssc-category-rail__header">
+      {% if section.settings.heading != blank %}
+        <h2 class="tssc-heading-xl">
+          {{ section.settings.heading | escape | replace: 'Category', '<span class="tssc-italic">Category</span>' }}
+        </h2>
+      {% else %}
+        <h2 class="tssc-heading-xl">
+          Shop by <span class="tssc-italic">Category</span>
+        </h2>
+      {% endif %}
+    </header>
+
+    <div class="tssc-category-rail__body">
+      <button
+        type="button"
+        class="tssc-category-rail__arrow tssc-category-rail__arrow--prev"
+        aria-label="Previous categories"
+      >
+        &#8592;
+      </button>
+
+      <div class="tssc-category-rail__track" data-track>
+        {% for block in section.blocks %}
+          {% assign collection = block.settings.collection %}
+          {% if collection %}
+            <article class="tssc-category-card" {{ block.shopify_attributes }}>
+              <a href="{{ collection.url }}" class="tssc-category-card__link">
+                {% if block.settings.image != blank %}
+                  <div class="tssc-category-card__image-wrap">
+                    {{ block.settings.image
+                      | image_url: width: 600, height: 814, crop: "center"
+                      | image_tag:
+                        class: 'tssc-category-card__image',
+                        alt: collection.title,
+                        loading: 'lazy',
+                        widths: '176, 240, 300, 352, 480, 600',
+                        sizes: '(max-width: 749px) 42vw, (max-width: 1199px) 28vw, 20vw'
+                    }}
+                  </div>
+                {% elsif collection.image %}
+                  <div class="tssc-category-card__image-wrap">
+                    {{ collection.image
+                      | image_url: width: 600, height: 814, crop: "center"
+                      | image_tag:
+                        class: 'tssc-category-card__image',
+                        alt: collection.title,
+                        loading: 'lazy',
+                        widths: '176, 240, 300, 352, 480, 600',
+                        sizes: '(max-width: 749px) 42vw, (max-width: 1199px) 28vw, 20vw'
+                    }}
+                  </div>
+                {% endif %}
+
+                <h3 class="tssc-heading-sm tssc-category-card__title">
+                  {{ collection.title }}
+                </h3>
+              </a>
+            </article>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      <button
+        type="button"
+        class="tssc-category-rail__arrow tssc-category-rail__arrow--next"
+        aria-label="Next categories"
+      >
+        &#8594;
+      </button>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      const sectionEl = document.getElementById('tssc-category-rail-{{ section.id }}');
+      if (!sectionEl) return;
+
+      const track = sectionEl.querySelector('[data-track]');
+      const prevBtn = sectionEl.querySelector('.tssc-category-rail__arrow--prev');
+      const nextBtn = sectionEl.querySelector('.tssc-category-rail__arrow--next');
+
+      if (!track || !prevBtn || !nextBtn) return;
+
+      const getStep = () => {
+        const card = track.querySelector('.tssc-category-card');
+        if (!card) return 0;
+        const cardRect = card.getBoundingClientRect();
+        const styles = window.getComputedStyle(track);
+        const gap = parseFloat(styles.columnGap || styles.gap || 0);
+        return cardRect.width + gap;
+      };
+
+      const scrollByStep = (direction) => {
+        const step = getStep();
+        if (!step) return;
+        track.scrollBy({ left: direction * step, behavior: 'smooth' });
+      };
+
+      prevBtn.addEventListener('click', () => scrollByStep(-1));
+      nextBtn.addEventListener('click', () => scrollByStep(1));
+    })();
+  </script>
+</section>
+
+{% schema %}
+{
+  "name": "TSSC category rail",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Shop by Category"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category card",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Custom image (optional)"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "TSSC category rail",
+      "category": "TSSC"
+    }
+  ]
+}
+{% endschema %}

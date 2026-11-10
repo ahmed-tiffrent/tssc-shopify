@@ -1,0 +1,501 @@
+<section
+  id="TsscPositiveProducts-{{ section.id }}"
+  class="tssc-positive-products"
+  aria-labelledby="TsscPositiveProductsHeading-{{ section.id }}"
+  style="
+    --positive-products-background: {{ section.settings.background_color }};
+    --positive-products-text: {{ section.settings.text_color }};
+    --positive-products-accent: {{ section.settings.accent_color }};
+    --positive-products-divider: {{ section.settings.divider_color }};
+    --positive-products-padding-top: {{ section.settings.padding_top }}px;
+    --positive-products-padding-bottom: {{ section.settings.padding_bottom }}px;
+  "
+>
+  <div class="tssc-positive-products__inner">
+    <header class="tssc-positive-products__header">
+      <h3 id="TsscPositiveProductsHeading-{{ section.id }}" class="tssc-positive-products__heading">
+        <span>{{ section.settings.heading | escape }}</span>
+        {% if section.settings.italic_heading != blank %}
+          <em>{{ section.settings.italic_heading | escape }}</em>
+        {% endif %}
+      </h3>
+
+      <div class="tssc-positive-products__intro">
+        {% if section.settings.intro_text != blank %}
+          <div class="tssc-positive-products__intro-text rte">
+            {{ section.settings.intro_text }}
+          </div>
+        {% endif %}
+
+        {% if section.settings.button_label != blank and section.settings.button_link != blank %}
+          <a class="tssc-positive-products__button" href="{{ section.settings.button_link }}">
+            <span>{{ section.settings.button_label | escape }}</span>
+            <svg aria-hidden="true" viewBox="0 0 20 20" width="18" height="18" focusable="false">
+              <path d="M4 10h11M11 6l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        {% endif %}
+      </div>
+    </header>
+
+    {% if section.blocks.size > 0 %}
+      <ul class="tssc-positive-products__list" role="list">
+        {% for block in section.blocks %}
+          <li class="tssc-positive-products__item" {{ block.shopify_attributes }}>
+            <div class="tssc-positive-products__media">
+              {% if block.settings.image_url != blank %}
+                <img
+                  class="tssc-positive-products__image"
+                  src="{{ block.settings.image_url }}"
+                  alt="{{ block.settings.image_alt | escape }}"
+                  width="600"
+                  height="600"
+                  loading="lazy"
+                  decoding="async"
+                >
+              {% else %}
+                <div class="tssc-positive-products__placeholder" aria-hidden="true">
+                  {{ 'image' | placeholder_svg_tag }}
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="tssc-positive-products__item-content">
+              {% if block.settings.title != blank %}
+                <h4 class="tssc-positive-products__item-title">
+                  {{ block.settings.title | escape }}
+                </h4>
+              {% endif %}
+
+              {% if block.settings.text != blank %}
+                <div class="tssc-positive-products__item-text rte">
+                  {{ block.settings.text }}
+                </div>
+              {% endif %}
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+</section>
+
+{% style %}
+  #TsscPositiveProducts-{{ section.id }},
+  #TsscPositiveProducts-{{ section.id }} * {
+    box-sizing: border-box;
+  }
+
+  #TsscPositiveProducts-{{ section.id }} {
+    width: 100%;
+    padding-block: var(--positive-products-padding-top) var(--positive-products-padding-bottom);
+    color: var(--positive-products-text);
+    background: var(--positive-products-background);
+  }
+
+  #TsscPositiveProducts-{{ section.id }} .tssc-positive-products__inner {
+    width: min(100%, 1440px);
+    margin-inline: auto;
+    padding-inline: clamp(24px, 6vw, 96px);
+  }
+
+  #TsscPositiveProducts-{{ section.id }} .tssc-positive-products__header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 0.9fr);
+    gap: clamp(40px, 8vw, 128px);
+    align-items: start;
+    padding-bottom: clamp(32px, 4vw, 48px);
+    border-bottom: 1px solid var(--positive-products-divider);
+  }
+
+  #TsscPositiveProducts-{{ section.id }} .tssc-positive-products__heading {
+    margin: 0;
+    color: var(--positive-products-text);
+    font-family: var(--font-h3--family, var(--font-heading--family));
+    font-size: clamp(34px, 3.35vw, 48px);
+    font-weight: var(--font-h3--weight, 400);
+    letter-spacing: var(--font-h3--letter-spacing, normal);
+    line-height: 1.12;
+  }
+
+  #TsscPositiveProducts-{{ section.id }} .tssc-positive-products__heading span,
+  #TsscPositiveProducts-{{ section.id }} .tssc-positive-products__heading em {
+    display: block;
+  }
+
+  #TsscPositiveProducts-{{ section.id }} .tssc-positive-products__heading em {
+    margin-top: 4px;
+    font-style: italic;
+    font-weight: inherit;
+  }
+
+  #TsscPositiveProducts-{{ section.id }} .tssc-positive-products__intro-text {
+    max-width: 54ch;
+    font-family: var(--font-paragraph--family);
+    font-size: 16px;
+    line-height: 1.55;
+  }
+
+  #TsscPositiveProducts-{{ section.id }} .tssc-positive-products__intro-text p {
+    margin: 0;
+  }
+
+  #TsscPositiveProducts-{{ section.id }} .tssc-positive-products__intro-text p + p {
+    margin-top: 12px;
+  }
+
+  #TsscPositiveProducts-{{ section.id }} .tssc-positive-products__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    margin-top: 24px;
+    padding: 10px 18px;
+    color: #ffffff;
+    background: var(--positive-products-accent);
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.3;
+    text-decoration: none;
+  }
+
+  #TsscPositiveProducts-{{ section.id }} .tssc-positive-products__button svg {
+    flex: 0 0 auto;
+    transition: transform 180ms ease;
+  }
+
+  #TsscPositiveProducts-{{ section.id }} .tssc-positive-products__button:hover svg {
+    transform: translateX(3px);
+  }
+
+  #TsscPositiveProducts-{{ section.id }} :is(a, button):focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+  }
+
+  #TsscPositiveProducts-{{ section.id }} .tssc-positive-products__list {
+    display: grid;
+    gap: clamp(28px, 3vw, 40px);
+    margin: 0;
+    padding: clamp(40px, 5vw, 64px) 0 0;
+    list-style: none;
+  }
+
+  #TsscPositiveProducts-{{ section.id }} .tssc-positive-products__item {
+    display: grid;
+    grid-template-columns: clamp(120px, 12vw, 160px) minmax(0, 1fr);
+    gap: clamp(24px, 3vw, 40px);
+    align-items: center;
+    min-width: 0;
+  }
+
+  #TsscPositiveProducts-{{ section.id }} .tssc-positive-products__media {
+    width: 100%;
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
+    background: #f5f5f5;
+  }
+
+  #TsscPositiveProducts-{{ section.id }} :is(.tssc-positive-products__image, .tssc-positive-products__placeholder, .tssc-positive-products__placeholder svg) {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  #TsscPositiveProducts-{{ section.id }} .tssc-positive-products__image {
+    object-fit: cover;
+  }
+
+  #TsscPositiveProducts-{{ section.id }} .tssc-positive-products__placeholder svg {
+    object-fit: cover;
+  }
+
+  #TsscPositiveProducts-{{ section.id }} .tssc-positive-products__item-content {
+    min-width: 0;
+    max-width: 980px;
+  }
+
+  #TsscPositiveProducts-{{ section.id }} .tssc-positive-products__item-title {
+    margin: 0 0 10px;
+    color: var(--positive-products-text);
+    font-family: var(--font-h4--family, var(--font-heading--family));
+    font-size: var(--font-h4--size, 24px);
+    font-weight: var(--font-h4--weight, 400);
+    line-height: var(--font-h4--line-height, 1.25);
+  }
+
+  #TsscPositiveProducts-{{ section.id }} .tssc-positive-products__item-text {
+    color: var(--positive-products-text);
+    font-family: var(--font-paragraph--family);
+    font-size: 16px;
+    line-height: 1.55;
+    overflow-wrap: anywhere;
+  }
+
+  #TsscPositiveProducts-{{ section.id }} .tssc-positive-products__item-text p {
+    margin: 0;
+  }
+
+  #TsscPositiveProducts-{{ section.id }} .tssc-positive-products__item-text p + p {
+    margin-top: 10px;
+  }
+
+  @media screen and (min-width: 1441px) {
+    #TsscPositiveProducts-{{ section.id }} .tssc-positive-products__inner {
+      padding-inline: 80px;
+    }
+  }
+
+  @media screen and (max-width: 1023px) {
+    #TsscPositiveProducts-{{ section.id }} .tssc-positive-products__inner {
+      padding-inline: 40px;
+    }
+
+    #TsscPositiveProducts-{{ section.id }} .tssc-positive-products__header {
+      grid-template-columns: minmax(0, 0.9fr) minmax(300px, 1.1fr);
+      gap: 48px;
+    }
+
+    #TsscPositiveProducts-{{ section.id }} .tssc-positive-products__item {
+      grid-template-columns: 120px minmax(0, 1fr);
+      gap: 28px;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #TsscPositiveProducts-{{ section.id }} {
+      padding-block: min(var(--positive-products-padding-top), 56px) min(var(--positive-products-padding-bottom), 56px);
+    }
+
+    #TsscPositiveProducts-{{ section.id }} .tssc-positive-products__inner {
+      padding-inline: 20px;
+    }
+
+    #TsscPositiveProducts-{{ section.id }} .tssc-positive-products__header {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 24px;
+      padding-bottom: 32px;
+    }
+
+    #TsscPositiveProducts-{{ section.id }} .tssc-positive-products__heading {
+      font-size: clamp(32px, 9vw, 40px);
+    }
+
+    #TsscPositiveProducts-{{ section.id }} .tssc-positive-products__button {
+      margin-top: 20px;
+    }
+
+    #TsscPositiveProducts-{{ section.id }} .tssc-positive-products__list {
+      gap: 32px;
+      padding-top: 40px;
+    }
+
+    #TsscPositiveProducts-{{ section.id }} .tssc-positive-products__item {
+      grid-template-columns: 104px minmax(0, 1fr);
+      gap: 20px;
+      align-items: start;
+    }
+
+    #TsscPositiveProducts-{{ section.id }} .tssc-positive-products__item-title {
+      margin-bottom: 8px;
+    }
+  }
+
+  @media screen and (max-width: 479px) {
+    #TsscPositiveProducts-{{ section.id }} .tssc-positive-products__inner {
+      padding-inline: 16px;
+    }
+
+    #TsscPositiveProducts-{{ section.id }} .tssc-positive-products__item {
+      grid-template-columns: 88px minmax(0, 1fr);
+      gap: 16px;
+    }
+
+    #TsscPositiveProducts-{{ section.id }} .tssc-positive-products__item-title {
+      font-size: clamp(19px, 5.5vw, 22px);
+    }
+  }
+
+  @media screen and (max-width: 359px) {
+    #TsscPositiveProducts-{{ section.id }} .tssc-positive-products__item {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    #TsscPositiveProducts-{{ section.id }} .tssc-positive-products__media {
+      width: min(100%, 180px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #TsscPositiveProducts-{{ section.id }} *,
+    #TsscPositiveProducts-{{ section.id }} *::before,
+    #TsscPositiveProducts-{{ section.id }} *::after {
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+    }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "TSSC Positive products",
+  "tag": "div",
+  "class": "tssc-positive-products-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Maximising Positive"
+    },
+    {
+      "type": "text",
+      "id": "italic_heading",
+      "label": "Italic heading line",
+      "default": "Products"
+    },
+    {
+      "type": "richtext",
+      "id": "intro_text",
+      "label": "Introduction",
+      "default": "<p>How we design sequins, packaging and materials to have a more positive impact from the start.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "View Shop"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#32151D"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Button colour",
+      "default": "#962648"
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "Divider",
+      "default": "#D9D9D9"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 32,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "default": 72
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 32,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "default": 80
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Positive product point",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "url",
+          "id": "image_url",
+          "label": "Image URL"
+        },
+        {
+          "type": "text",
+          "id": "image_alt",
+          "label": "Image description"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Positive product point"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Describe how this product choice creates a more positive impact.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "TSSC Positive products",
+      "category": "TSSC",
+      "settings": {
+        "button_link": "/collections/all"
+      },
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "image_url": "https://cdn.shopify.com/s/files/1/0978/1139/8980/files/Recycled_plastic.webp?v=1787679595",
+            "image_alt": "Clear flower-shaped sequins on recycled material",
+            "title": "Made from recycled plastic",
+            "text": "<p>Our sequins are made from either Global Recycled Standard certified 100% recycled plastic or 20% recycled plastic, giving customers lower-impact solutions.</p>"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "image_url": "https://cdn.shopify.com/s/files/1/0978/1139/8980/files/packaging.webp?v=1787679596",
+            "image_alt": "Sequins arranged in recyclable cardboard packaging",
+            "title": "Packaging that uses less",
+            "text": "<p>We use recycled card boxes, paper wraps, recycled stickers and paper tape wherever possible. Larger orders use biodegradable bags and recycled or reused padding.</p>"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "image_url": "https://cdn.shopify.com/s/files/1/0978/1139/8980/files/less_waste.webp?v=1787679595",
+            "image_alt": "Circular sequin offcuts being reused for craft materials",
+            "title": "Designing for less waste",
+            "text": "<p>Sequin cutting creates offcuts, known as punchinella. We minimise waste through shape design, sell punchinella for reuse and donate imperfect pieces to community groups. We also incorporate our waste into other products such as buttons and jewellery.</p>"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "image_url": "https://cdn.shopify.com/s/files/1/0978/1139/8980/files/lower_impact_spools.webp?v=1787679595",
+            "image_alt": "Recycled card spool holding a strand of red sequins",
+            "title": "Lower-impact spools",
+            "text": "<p>For digital embroidery, we’ve developed spools made from recycled card and plant-based glue, helping reduce plastic waste after use.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

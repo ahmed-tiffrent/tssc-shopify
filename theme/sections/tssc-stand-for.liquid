@@ -1,0 +1,291 @@
+{%- liquid
+  assign section_title = section.settings.title | default: 'What We Stand For'
+  assign title_words = section_title | split: ' '
+  assign italic_start_index = title_words.size | minus: 2
+-%}
+
+<section class="tssc-stand-for" id="tssc-stand-for-{{ section.id }}" aria-labelledby="tssc-stand-for-title-{{ section.id }}">
+  <img
+    class="tssc-stand-for__flower tssc-stand-for__flower--top"
+    src="{{ section.settings.flower_image_url | default: 'https://cdn.shopify.com/s/files/1/0978/1139/8980/files/flower_pic.webp?v=1787504348' }}"
+    alt="Decorative sequin flower"
+    aria-hidden="true"
+    width="180"
+    height="180"
+    loading="lazy"
+  >
+
+  <div class="tssc-stand-for__inner">
+    <h2 class="tssc-stand-for__title" id="tssc-stand-for-title-{{ section.id }}">
+      {%- for word in title_words -%}
+        {%- unless forloop.first %}&#32;{% endunless -%}
+        <span class="tssc-stand-for__title-word">
+          {%- if forloop.index0 >= italic_start_index -%}
+            <em>{{ word }}</em>
+          {%- else -%}
+            {{ word }}
+          {%- endif -%}
+        </span>
+      {%- endfor -%}
+    </h2>
+
+    <ul class="tssc-stand-for__list" role="list">
+      {%- for block in section.blocks -%}
+        <li class="tssc-stand-for__card" {{ block.shopify_attributes }}>
+          <div class="tssc-stand-for__card-title-row">
+            <svg class="tssc-stand-for__check" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+              <circle cx="20" cy="20" r="17.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+              <path d="m13.5 20.3 4.1 4.1 8.9-9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <h3 class="tssc-stand-for__card-title">{{ block.settings.title }}</h3>
+          </div>
+          {%- if block.settings.text != blank -%}
+            <p class="tssc-stand-for__card-text">{{ block.settings.text }}</p>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+
+  <img
+    class="tssc-stand-for__flower tssc-stand-for__flower--bottom"
+    src="{{ section.settings.flower_image_url | default: 'https://cdn.shopify.com/s/files/1/0978/1139/8980/files/flower_pic.webp?v=1787504348' }}"
+    alt="Decorative sequin flower"
+    aria-hidden="true"
+    width="180"
+    height="180"
+    loading="lazy"
+  >
+</section>
+
+<style>
+  #tssc-stand-for-{{ section.id }} {
+    --stand-for-background: #962648;
+    --stand-for-card: #fff4f7;
+    --stand-for-text: #32151d;
+    position: relative;
+    overflow: hidden;
+    padding: clamp(58px, 6vw, 88px) clamp(24px, 7.5vw, 184px) clamp(70px, 5vw, 76px);
+    color: #fff;
+    background: var(--stand-for-background);
+  }
+
+  #tssc-stand-for-{{ section.id }} .tssc-stand-for__inner {
+    position: relative;
+    z-index: 1;
+    max-width: 1262px;
+    margin: 0 auto;
+  }
+
+  #tssc-stand-for-{{ section.id }} .tssc-stand-for__title {
+    margin: 0 0 clamp(38px, 4.8vw, 62px);
+    color: inherit;
+    font-family: var(--font-h2--family);
+    font-size: clamp(2.35rem, 3.65vw, 3.7rem);
+    font-style: var(--font-h2--style);
+    font-weight: var(--font-h2--weight);
+    letter-spacing: var(--font-h2--letter-spacing);
+    line-height: 1.1;
+    text-align: center;
+    text-transform: var(--font-h2--case);
+  }
+
+  #tssc-stand-for-{{ section.id }} .tssc-stand-for__title em {
+    font-style: italic;
+  }
+
+  #tssc-stand-for-{{ section.id }} .tssc-stand-for__list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(22px, 2.5vw, 36px);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  #tssc-stand-for-{{ section.id }} .tssc-stand-for__card {
+    display: flex;
+    min-height: clamp(178px, 14vw, 194px);
+    padding: clamp(26px, 2.5vw, 36px);
+    flex-direction: column;
+    justify-content: center;
+    color: var(--stand-for-text);
+    background: var(--stand-for-card);
+  }
+
+  #tssc-stand-for-{{ section.id }} .tssc-stand-for__card-title-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  #tssc-stand-for-{{ section.id }} .tssc-stand-for__check {
+    width: 37px;
+    height: 37px;
+    flex: 0 0 37px;
+  }
+
+  #tssc-stand-for-{{ section.id }} .tssc-stand-for__card-title {
+    margin: 0;
+    font-family: var(--font-h3--family, var(--font-h2--family));
+    font-size: clamp(1.65rem, 2.05vw, 2rem);
+    font-style: var(--font-h3--style, var(--font-h2--style));
+    font-weight: var(--font-h3--weight, var(--font-h2--weight));
+    letter-spacing: var(--font-h3--letter-spacing, var(--font-h2--letter-spacing));
+    line-height: 1.16;
+    text-transform: var(--font-h3--case, var(--font-h2--case));
+  }
+
+  #tssc-stand-for-{{ section.id }} .tssc-stand-for__card-text {
+    margin: 18px 0 0;
+    font-family: var(--font-paragraph--family);
+    font-size: var(--font-paragraph--size, 16px);
+    font-style: var(--font-paragraph--style);
+    font-weight: var(--font-paragraph--weight);
+    letter-spacing: .025em;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+  }
+
+  #tssc-stand-for-{{ section.id }} .tssc-stand-for__flower {
+    position: absolute;
+    z-index: 0;
+    width: clamp(100px, 12vw, 180px);
+    height: auto;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  #tssc-stand-for-{{ section.id }} .tssc-stand-for__flower--top {
+    top: -9px;
+    left: -6px;
+  }
+
+  #tssc-stand-for-{{ section.id }} .tssc-stand-for__flower--bottom {
+    right: -6px;
+    bottom: -12px;
+    transform: rotate(180deg);
+  }
+
+  @media screen and (max-width: 989px) {
+    #tssc-stand-for-{{ section.id }} {
+      padding-right: clamp(28px, 5vw, 56px);
+      padding-left: clamp(28px, 5vw, 56px);
+    }
+
+    #tssc-stand-for-{{ section.id }} .tssc-stand-for__card {
+      min-height: 180px;
+      padding: 28px;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #tssc-stand-for-{{ section.id }} {
+      padding-top: 56px;
+      padding-bottom: 58px;
+    }
+
+    #tssc-stand-for-{{ section.id }} .tssc-stand-for__title {
+      margin-bottom: 34px;
+      font-size: clamp(2.1rem, 10vw, 2.75rem);
+    }
+
+    #tssc-stand-for-{{ section.id }} .tssc-stand-for__list {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    #tssc-stand-for-{{ section.id }} .tssc-stand-for__card {
+      min-height: 0;
+      padding: 25px 24px;
+    }
+
+    #tssc-stand-for-{{ section.id }} .tssc-stand-for__card-title {
+      font-size: 1.65rem;
+    }
+
+    #tssc-stand-for-{{ section.id }} .tssc-stand-for__card-text {
+      margin-top: 14px;
+      line-height: 1.55;
+    }
+
+    #tssc-stand-for-{{ section.id }} .tssc-stand-for__flower {
+      width: 96px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "TSSC Stand For",
+  "tag": "section",
+  "class": "tssc-stand-for-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title (last two words italic)",
+      "default": "What We Stand For"
+    },
+    {
+      "type": "url",
+      "id": "flower_image_url",
+      "label": "Decorative flower image URL"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "value",
+      "name": "Value card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "TSSC Stand For",
+      "category": "TSSC",
+      "blocks": [
+        {
+          "type": "value",
+          "settings": {
+            "title": "Recycled materials",
+            "text": "20% Recycled PET in every sequin we make"
+          }
+        },
+        {
+          "type": "value",
+          "settings": {
+            "title": "Giving back",
+            "text": "Every order contributes to tree funding"
+          }
+        },
+        {
+          "type": "value",
+          "settings": {
+            "title": "Small batch friendly",
+            "text": "Low minimum order, accessible to independent makers"
+          }
+        },
+        {
+          "type": "value",
+          "settings": {
+            "title": "Transparency",
+            "text": "Clear specs, honest colour representation, real photos"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

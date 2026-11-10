@@ -1,0 +1,211 @@
+{% liquid
+  assign sequin_range_image = section.settings.sequin_range_image | default: 'https://cdn.shopify.com/s/files/1/0978/1139/8980/files/size_chart.webp?v=1783944419'
+  assign colour_range_image = section.settings.colour_range_image | default: 'https://cdn.shopify.com/s/files/1/0978/1139/8980/files/colour_chart.webp?v=1783944419'
+  assign sequin_image_separator = '?'
+  assign colour_image_separator = '?'
+  if sequin_range_image contains '?'
+    assign sequin_image_separator = '&'
+  endif
+  if colour_range_image contains '?'
+    assign colour_image_separator = '&'
+  endif
+%}
+<section class="tssc-sequins-guide" id="tssc-sequins-guide-{{ section.id }}">
+  <div class="tssc-sequins-guide__bg">
+    <span class="tssc-sequins-guide__bg-text">
+      {{ section.settings.background_title }}
+    </span>
+  </div>
+
+  <div class="tssc-sequins-guide__card">
+    <!-- Row 1: Sequin Range -->
+    <div class="tssc-sequins-guide__row tssc-sequins-guide__row--sequin">
+      <div class="tssc-sequins-guide__col tssc-sequins-guide__col--image">
+        <button
+          type="button"
+          class="tssc-zoomable"
+          data-zoom-src="{{ sequin_range_image }}"
+          aria-label="Zoom sequin range diagram"
+        >
+          <img
+            src="{{ sequin_range_image }}{{ sequin_image_separator }}width=800"
+            srcset="{{ sequin_range_image }}{{ sequin_image_separator }}width=400 400w, {{ sequin_range_image }}{{ sequin_image_separator }}width=600 600w, {{ sequin_range_image }}{{ sequin_image_separator }}width=800 800w, {{ sequin_range_image }}{{ sequin_image_separator }}width=1000 1000w, {{ sequin_range_image }}{{ sequin_image_separator }}width=1200 1200w, {{ sequin_range_image }}{{ sequin_image_separator }}width=1600 1600w"
+            sizes="(max-width: 749px) calc(100vw - 48px), (max-width: 1199px) 45vw, 492px"
+            alt="Sequin range diagram"
+            class="tssc-sequins-guide__image"
+            loading="lazy"
+            width="2560"
+            height="2420"
+          >
+        </button>
+      </div>
+
+      <div class="tssc-sequins-guide__col tssc-sequins-guide__col--text">
+        {% assign sequin_words = section.settings.sequin_range_title | default: 'Explore the Sequin Range' | split: ' ' %}
+        {% assign sequin_count = sequin_words.size %}
+        <h2 class="tssc-sequins-guide__heading">
+          {% for word in sequin_words %}
+            {% assign index = forloop.index0 %}
+            {% assign remaining = sequin_count | minus: index %}
+            {% if remaining <= 2 %}
+              <span class="tssc-italic">{{ word }}</span>
+            {% else %}
+              {{ word }}
+            {% endif %}
+            {% unless forloop.last %} {% endunless %}
+          {% endfor %}
+        </h2>
+
+        <div class="tssc-sequins-guide__body">
+          {{ section.settings.sequin_range_body }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 2: Colour Range -->
+    <div class="tssc-sequins-guide__row tssc-sequins-guide__row--colour">
+      <div class="tssc-sequins-guide__col tssc-sequins-guide__col--text">
+        {% assign colour_words = section.settings.colour_range_title | default: 'Explore the Colour Range' | split: ' ' %}
+        {% assign colour_count = colour_words.size %}
+        <h2 class="tssc-sequins-guide__heading">
+          {% for word in colour_words %}
+            {% assign index = forloop.index0 %}
+            {% assign remaining = colour_count | minus: index %}
+            {% if remaining <= 2 %}
+              <span class="tssc-italic">{{ word }}</span>
+            {% else %}
+              {{ word }}
+            {% endif %}
+            {% unless forloop.last %} {% endunless %}
+          {% endfor %}
+        </h2>
+
+        <div class="tssc-sequins-guide__body">
+          {{ section.settings.colour_range_body }}
+        </div>
+      </div>
+
+      <div class="tssc-sequins-guide__col tssc-sequins-guide__col--image">
+        <button
+          type="button"
+          class="tssc-zoomable"
+          data-zoom-src="{{ colour_range_image }}"
+          aria-label="Zoom colour range chart"
+        >
+          <img
+            src="{{ colour_range_image }}{{ colour_image_separator }}width=800"
+            srcset="{{ colour_range_image }}{{ colour_image_separator }}width=400 400w, {{ colour_range_image }}{{ colour_image_separator }}width=600 600w, {{ colour_range_image }}{{ colour_image_separator }}width=800 800w, {{ colour_range_image }}{{ colour_image_separator }}width=1000 1000w, {{ colour_range_image }}{{ colour_image_separator }}width=1200 1200w, {{ colour_range_image }}{{ colour_image_separator }}width=1600 1600w"
+            sizes="(max-width: 749px) calc(100vw - 48px), (max-width: 1199px) 45vw, 492px"
+            alt="Colour range chart"
+            class="tssc-sequins-guide__image"
+            loading="lazy"
+            width="2560"
+            height="2420"
+          >
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="tssc-lightbox" id="tssc-lightbox" hidden>
+    <button type="button" class="tssc-lightbox__close" aria-label="Close zoom">&times;</button>
+    <img alt="Expanded sequin shapes and sizes guide" class="tssc-lightbox__image" width="2560" height="2420">
+  </div>
+</section>
+
+<script>
+  (function () {
+    function closeLightbox() {
+      const lightbox = document.getElementById('tssc-lightbox');
+      if (lightbox) lightbox.hidden = true;
+      document.body.style.removeProperty('overflow');
+    }
+
+    document.addEventListener('click', function (e) {
+      const trigger = e.target.closest('.tssc-zoomable');
+      const lightbox = document.getElementById('tssc-lightbox');
+      if (!lightbox) return;
+
+      if (trigger) {
+        const src = trigger.getAttribute('data-zoom-src');
+        const img = lightbox.querySelector('.tssc-lightbox__image');
+        img.src = src;
+        img.alt = trigger.getAttribute('aria-label') || '';
+        lightbox.hidden = false;
+        document.body.style.overflow = 'hidden';
+        return;
+      }
+
+      if (e.target.closest('.tssc-lightbox__close') || e.target === lightbox) {
+        closeLightbox();
+      }
+    });
+
+    document.addEventListener('keydown', function (e) {
+      const lightbox = document.getElementById('tssc-lightbox');
+      if (e.key === 'Escape' && lightbox && !lightbox.hidden) {
+        closeLightbox();
+      }
+    });
+
+    window.addEventListener('pagehide', closeLightbox);
+    window.addEventListener('pageshow', function () {
+      const lightbox = document.getElementById('tssc-lightbox');
+      if (!lightbox || lightbox.hidden) document.body.style.removeProperty('overflow');
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "TSSC Sequins guide",
+  "settings": [
+    {
+      "type": "text",
+      "id": "background_title",
+      "label": "Background title",
+      "default": "SEQUINS GUIDE"
+    },
+    {
+      "type": "text",
+      "id": "sequin_range_title",
+      "label": "Sequin range title (H2)",
+      "default": "Explore the Sequin Range"
+    },
+    {
+      "type": "richtext",
+      "id": "sequin_range_body",
+      "label": "Sequin range body",
+      "default": "<p>Choose from shapes, sizes, colours and finishes in <a href=\"/collections/20-recycled-plastic\">20% recycled PET</a> and <a href=\"/collections/100-recycled-plastic\">100% recycled PET</a>.</p><ul><li><strong><a href=\"/collections/all\">Loose sequins</a>:</strong> for hand stitching in a wide variety of shapes, sizes, colours and quantities.</li><li><strong><a href=\"/collections/spools\">Sequins on the spool</a>:</strong> for digital embroidery machines in continuous lengths.</li><li><strong><a href=\"/collections/punchinella\">Punchinella</a>:</strong> sheets and rolls of the patterned film left after sequins are punched.</li><li><strong><a href=\"/pages/contact\">Bespoke sequins</a>:</strong> contact us to discuss a custom shape, size, colour, finish or fixing for your project.</li></ul>"
+    },
+    {
+      "type": "url",
+      "id": "sequin_range_image",
+      "label": "Sequin range image URL"
+    },
+    {
+      "type": "text",
+      "id": "colour_range_title",
+      "label": "Colour range title (H2)",
+      "default": "Explore the Colour Range"
+    },
+    {
+      "type": "richtext",
+      "id": "colour_range_body",
+      "label": "Colour range body",
+      "default": "<p>Choose from a wide selection of shades and finishes, from shiny metallics and matte washed metals to iridescent and special effects. Each colour is available across selected shapes, sizes, and applications.</p><ul><li><strong>Shine | Metallic:</strong> bright, reflective colours with a polished finish.</li><li><strong>Matte | Washed Metal:</strong> softer, more muted tones with a flatter look.</li><li><strong>Super | Special:</strong> iridescent, neon, and unusual effects for more expressive results.</li></ul>"
+    },
+    {
+      "type": "url",
+      "id": "colour_range_image",
+      "label": "Colour range image URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "TSSC Sequins guide",
+      "category": "TSSC"
+    }
+  ]
+}
+{% endschema %}

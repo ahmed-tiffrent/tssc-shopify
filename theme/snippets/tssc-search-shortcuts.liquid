@@ -1,0 +1,53 @@
+<nav class="tssc-search-shortcuts" aria-label="Search shortcuts">
+  <span class="tssc-search-shortcuts__label">Popular searches</span>
+  <a href="{{ routes.search_url }}?q=circles&type=product">Circles</a>
+  <a href="{{ routes.search_url }}?q=sequins+on+the+spool&type=product">Sequins on the spool</a>
+  <a href="{{ routes.search_url }}?q=100%25+recycled&type=product">100% recycled</a>
+  <a href="{{ routes.search_url }}?q=metallic&type=product">Metallic</a>
+  {% if show_recently_viewed %}
+    <button type="button" data-search-recently-viewed hidden>Recently viewed</button>
+  {% endif %}
+</nav>
+
+{% stylesheet %}
+  .tssc-search-shortcuts {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 8px 18px;
+    padding: 12px var(--padding-lg);
+    border-bottom: 1px solid rgb(var(--color-foreground-rgb) / 12%);
+    overflow-x: auto;
+    scrollbar-width: thin;
+    white-space: nowrap;
+  }
+
+  .tssc-search-shortcuts__label {
+    font-weight: 600;
+  }
+
+  .tssc-search-shortcuts :is(a, button) {
+    min-height: 36px;
+    padding: 7px 0;
+    border: 0;
+    color: inherit;
+    background: transparent;
+    font: inherit;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    cursor: pointer;
+  }
+
+  .tssc-search-shortcuts :is(a, button):focus-visible {
+    outline: 3px solid #962648;
+    outline-offset: 3px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .tssc-search-shortcuts {
+      gap: 6px 16px;
+      padding: 10px 16px;
+      font-size: 14px;
+    }
+  }
+{% endstylesheet %}

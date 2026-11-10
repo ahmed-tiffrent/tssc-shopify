@@ -1,0 +1,98 @@
+<section class="tssc-brand-intro" id="tssc-brand-intro-{{ section.id }}">
+  <div class="tssc-brand-intro__row">
+    <div class="tssc-brand-intro__col tssc-brand-intro__col--image">
+      <img
+        src="{{ section.settings.image_url | default: 'https://cdn.shopify.com/s/files/1/0978/1139/8980/files/rachel1.webp?v=1783948834' }}"
+        alt="{{ section.settings.image_alt | default: 'Rachel Clowes, founder of The Sustainable Sequin Company' }}"
+        class="tssc-brand-intro__image"
+        loading="lazy"
+        width="{{ section.settings.image_width | default: 2880 }}"
+        height="{{ section.settings.image_height | default: 3032 }}"
+      >
+    </div>
+
+    <div class="tssc-brand-intro__col tssc-brand-intro__col--text">
+      <div class="tssc-brand-intro__inner">
+        {% assign title_words = section.settings.title | default: 'Sustainable Embellishment Made Beautifully' | split: ' ' %}
+        {% assign title_count = title_words.size %}
+        <h2 class="tssc-brand-intro__title">
+          {% for word in title_words %}
+            {% assign index = forloop.index0 %}
+            {% assign remaining = title_count | minus: index %}
+            {% if remaining <= 1 %}
+              <span class="tssc-italic">{{ word }}</span>
+            {% else %}
+              {{ word }}
+            {% endif %}
+            {% unless forloop.last %} {% endunless %}
+          {% endfor %}
+        </h2>
+
+        <div class="tssc-brand-intro__body">
+          {{ section.settings.description }}
+        </div>
+
+        {% if section.settings.button_label != blank %}
+          <div class="tssc-brand-intro__cta">
+            <a href="{{ section.settings.button_link | default: routes.root_url }}" class="tssc-text-button">
+              {{ section.settings.button_label }}
+            </a>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "TSSC Brand intro",
+  "settings": [
+    {
+      "type": "url",
+      "id": "image_url",
+      "label": "Image URL"
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Image alt text",
+      "default": "Rachel Clowes, founder of The Sustainable Sequin Company"
+    },
+    { "type": "number", "id": "image_width", "label": "Image intrinsic width", "default": 2880 },
+    { "type": "number", "id": "image_height", "label": "Image intrinsic height", "default": 3032 },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title (H2, last word italic)",
+      "default": "Sustainable Embellishment Made Beautifully"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Founded in 2018 by Rachel Clowes, The Sustainable Sequin Company creates lower-impact sequins for fashion brands, independent designers, students, and makers. We currently produce sequins using 20% and 100% GRS (Global Recycled Standard) certified recycled plastic, with custom-cut options available for unique projects.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Read Our Story"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "TSSC Brand intro",
+      "category": "TSSC",
+      "settings": {
+        "image_url": "https://cdn.shopify.com/s/files/1/0978/1139/8980/files/rachel1.webp?v=1783948834"
+      }
+    }
+  ]
+}
+{% endschema %}

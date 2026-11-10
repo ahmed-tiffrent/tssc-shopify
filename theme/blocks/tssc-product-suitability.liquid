@@ -1,0 +1,146 @@
+{% liquid
+  assign current_product = closest.product
+  assign product_title_key = current_product.title | downcase
+  assign product_handle_key = current_product.handle | downcase
+  assign is_spool = false
+  if product_title_key contains 'spool' or product_handle_key contains 'spool'
+    assign is_spool = true
+  endif
+
+  assign alternate_handle = blank
+  case current_product.handle
+    when '5mm-on-the-spool-circle-center-hole-flat-100-recycled-plastic'
+      assign alternate_handle = '5mm-on-the-spool-circle-center-hole-flat-20-recycled-plastic-copy'
+    when '5mm-on-the-spool-circle-center-hole-flat-20-recycled-plastic-copy'
+      assign alternate_handle = '5mm-on-the-spool-circle-center-hole-flat-100-recycled-plastic'
+    when '20mm-triangle-100-recycled-plastic'
+      assign alternate_handle = '20mm-traingle-20-recycled-plastic'
+    when '20mm-traingle-20-recycled-plastic'
+      assign alternate_handle = '20mm-triangle-100-recycled-plastic'
+    when 'punchinella-3-metres-100-recycled-plastic'
+      assign alternate_handle = 'punchinella'
+    when 'punchinella'
+      assign alternate_handle = 'punchinella-3-metres-100-recycled-plastic'
+    when '15mm-circle-side-hole-flat-100-recycled-plastic-copy'
+      assign alternate_handle = '15mm-circle-side-hole-flat-20-recycled-plastic'
+    when '15mm-circle-side-hole-flat-20-recycled-plastic'
+      assign alternate_handle = '15mm-circle-side-hole-flat-100-recycled-plastic-copy'
+    when '20mm-circle-side-hole-flat-100-recycled-plastic'
+      assign alternate_handle = 'fluoro-flamingo-20mm-circle-side-hole-flat-20-recycled-plastic'
+    when 'fluoro-flamingo-20mm-circle-side-hole-flat-20-recycled-plastic'
+      assign alternate_handle = '20mm-circle-side-hole-flat-100-recycled-plastic'
+    else
+      if current_product.handle contains '-100-recycled-plastic'
+        assign alternate_handle = current_product.handle | replace: '-100-recycled-plastic', '-20-recycled-plastic'
+      elsif current_product.handle contains '-20-recycled-plastic'
+        assign alternate_handle = current_product.handle | replace: '-20-recycled-plastic', '-100-recycled-plastic'
+      endif
+  endcase
+
+  assign alternate_product = all_products[alternate_handle]
+  assign current_variant = current_product.selected_or_first_available_variant
+  assign alternate_variant = alternate_product.selected_or_first_available_variant
+
+  if alternate_product != blank and current_variant != blank
+    for candidate_variant in alternate_product.variants
+      if candidate_variant.title == current_variant.title
+        assign alternate_variant = candidate_variant
+        break
+      endif
+    endfor
+  endif
+
+  assign alternate_material = '100% recycled'
+  if current_product.title contains '100% Recycled Plastic'
+    assign alternate_material = '20% recycled'
+  endif
+%}
+
+<div class="tssc-product-suitability" {{ block.shopify_attributes }}>
+  {% if is_spool %}
+    <p class="tssc-product-suitability__label">Suitable for digital embroidery</p>
+  {% else %}
+    <p class="tssc-product-suitability__label">Best for hand application</p>
+  {% endif %}
+  {% if alternate_product != blank %}
+    <a
+      class="tssc-product-suitability__material-link"
+      href="{{ alternate_product.url }}?variant={{ alternate_variant.id }}"
+      aria-label="View the equivalent product in {{ alternate_material }} plastic"
+    >View {{ alternate_material }}</a>
+  {% endif %}
+</div>
+
+{% stylesheet %}
+  .tssc-product-suitability {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    align-items: stretch;
+    gap: 8px;
+    color: #32151d;
+  }
+
+  .tssc-product-suitability p {
+    margin: 0;
+  }
+
+  .tssc-product-suitability__label {
+    display: inline-flex;
+    width: auto;
+    min-height: 38px;
+    align-items: center;
+    padding: 7px 11px;
+    border: 1px solid #962648;
+    color: #962648;
+    font-size: 14px !important;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .tssc-product-suitability__material-link {
+    display: inline-flex;
+    min-height: 38px;
+    align-items: center;
+    justify-content: center;
+    padding: 7px 11px;
+    border: 1px solid #111;
+    color: #111;
+    background: transparent;
+    font-size: 14px !important;
+    font-weight: 600;
+    line-height: 1.3;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 160ms ease, border-color 160ms ease;
+  }
+
+  .tssc-product-suitability__material-link:hover,
+  .tssc-product-suitability__material-link:focus-visible {
+    border-color: #8e2848;
+    color: #8e2848;
+    background: transparent;
+  }
+
+  @media screen and (max-width: 749px) {
+    .tssc-product-suitability {
+      gap: 6px;
+    }
+
+    .tssc-product-suitability__label,
+    .tssc-product-suitability__material-link {
+      min-height: 36px;
+      padding: 6px 8px;
+      font-size: 12.5px !important;
+    }
+  }
+
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Product suitability",
+  "tag": null,
+  "settings": []
+}
+{% endschema %}

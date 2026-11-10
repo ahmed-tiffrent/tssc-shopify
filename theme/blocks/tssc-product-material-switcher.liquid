@@ -1,0 +1,146 @@
+{% liquid
+  assign current_product = closest.product
+  assign current_handle = current_product.handle
+  assign alternate_handle = blank
+
+  case current_handle
+    when '5mm-on-the-spool-circle-center-hole-flat-100-recycled-plastic'
+      assign alternate_handle = '5mm-on-the-spool-circle-center-hole-flat-20-recycled-plastic-copy'
+    when '5mm-on-the-spool-circle-center-hole-flat-20-recycled-plastic-copy'
+      assign alternate_handle = '5mm-on-the-spool-circle-center-hole-flat-100-recycled-plastic'
+    when '20mm-triangle-100-recycled-plastic'
+      assign alternate_handle = '20mm-traingle-20-recycled-plastic'
+    when '20mm-traingle-20-recycled-plastic'
+      assign alternate_handle = '20mm-triangle-100-recycled-plastic'
+    when 'punchinella-3-metres-100-recycled-plastic'
+      assign alternate_handle = 'punchinella'
+    when 'punchinella'
+      assign alternate_handle = 'punchinella-3-metres-100-recycled-plastic'
+    when '15mm-circle-side-hole-flat-100-recycled-plastic-copy'
+      assign alternate_handle = '15mm-circle-side-hole-flat-20-recycled-plastic'
+    when '15mm-circle-side-hole-flat-20-recycled-plastic'
+      assign alternate_handle = '15mm-circle-side-hole-flat-100-recycled-plastic-copy'
+    when '20mm-circle-side-hole-flat-100-recycled-plastic'
+      assign alternate_handle = 'fluoro-flamingo-20mm-circle-side-hole-flat-20-recycled-plastic'
+    when 'fluoro-flamingo-20mm-circle-side-hole-flat-20-recycled-plastic'
+      assign alternate_handle = '20mm-circle-side-hole-flat-100-recycled-plastic'
+    else
+      if current_handle contains '-100-recycled-plastic'
+        assign alternate_handle = current_handle | replace: '-100-recycled-plastic', '-20-recycled-plastic'
+      elsif current_handle contains '-20-recycled-plastic'
+        assign alternate_handle = current_handle | replace: '-20-recycled-plastic', '-100-recycled-plastic'
+      endif
+  endcase
+
+  assign alternate_product = all_products[alternate_handle]
+  assign current_variant = current_product.selected_or_first_available_variant
+  assign alternate_variant = alternate_product.selected_or_first_available_variant
+
+  if alternate_product != blank and current_variant != blank
+    for candidate_variant in alternate_product.variants
+      if candidate_variant.title == current_variant.title
+        assign alternate_variant = candidate_variant
+        break
+      endif
+    endfor
+  endif
+
+  assign is_current_100 = false
+  if current_product.title contains '100% Recycled Plastic'
+    assign is_current_100 = true
+  endif
+%}
+
+{% if alternate_product != blank %}
+  <div class="tssc-product-material-switcher" {{ block.shopify_attributes }}>
+    <p class="tssc-product-material-switcher__label">
+      Material: {% if is_current_100 %}100% Recycled Plastic{% else %}20% Recycled Plastic{% endif %}
+    </p>
+    <div class="tssc-product-material-switcher__options" aria-label="Choose recycled plastic material">
+      {% if is_current_100 %}
+        <a
+          class="tssc-product-material-switcher__option"
+          href="{{ alternate_product.url }}?variant={{ alternate_variant.id }}"
+          aria-label="View the equivalent product in 20% recycled plastic"
+        >20% recycled</a>
+        <span class="tssc-product-material-switcher__option is-selected" aria-current="page">100% recycled</span>
+      {% else %}
+        <span class="tssc-product-material-switcher__option is-selected" aria-current="page">20% recycled</span>
+        <a
+          class="tssc-product-material-switcher__option"
+          href="{{ alternate_product.url }}?variant={{ alternate_variant.id }}"
+          aria-label="View the equivalent product in 100% recycled plastic"
+        >100% recycled</a>
+      {% endif %}
+    </div>
+  </div>
+{% endif %}
+
+{% stylesheet %}
+  .tssc-product-material-switcher {
+    width: 100%;
+    color: #32151d;
+  }
+
+  .tssc-product-material-switcher__label {
+    margin: 0 0 8px;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .tssc-product-material-switcher__options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .tssc-product-material-switcher__option {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+    padding: 9px 14px;
+    border: 1px solid #7d858f;
+    color: #59606a;
+    background: #fff;
+    font-size: 14px;
+    line-height: 1.2;
+    text-align: center;
+    text-decoration: none;
+    transition: border-color 160ms ease, color 160ms ease, background-color 160ms ease;
+  }
+
+  a.tssc-product-material-switcher__option:hover,
+  a.tssc-product-material-switcher__option:focus-visible {
+    border-color: #8e2848;
+    color: #8e2848;
+  }
+
+  .tssc-product-material-switcher__option.is-selected {
+    border-color: #962648;
+    color: #962648;
+    background: #fff7f9;
+  }
+
+  @media screen and (max-width: 479px) {
+    .tssc-product-material-switcher__option {
+      flex: 1 1 calc(50% - 4px);
+      min-width: 0;
+      padding-inline: 8px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tssc-product-material-switcher__option {
+      transition: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Material switcher",
+  "tag": null,
+  "settings": []
+}
+{% endschema %}

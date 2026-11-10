@@ -1,0 +1,72 @@
+<dialog
+  id="TsscWishlistDrawer"
+  class="tssc-wishlist-drawer"
+  aria-labelledby="TsscWishlistDrawerHeading"
+  data-wishlist-drawer
+>
+  <div class="tssc-wishlist-drawer__panel">
+    <header class="tssc-wishlist-drawer__header">
+      <div>
+        <p class="tssc-wishlist-drawer__eyebrow">Saved for later</p>
+        <h2 id="TsscWishlistDrawerHeading" class="tssc-wishlist-drawer__heading">Your Wishlist</h2>
+      </div>
+
+      <button
+        class="tssc-wishlist-drawer__close"
+        type="button"
+        aria-label="Close wishlist"
+        data-wishlist-close
+      >
+        <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24">
+          <path d="m6 6 12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </header>
+
+    <div class="tssc-wishlist-drawer__body">
+      <div class="tssc-wishlist-drawer__empty" data-wishlist-empty>
+        <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24">
+          <path d="M12 20.4 4.35 13A5.35 5.35 0 0 1 12 5.54 5.35 5.35 0 0 1 19.65 13L12 20.4Z" fill="none" stroke="currentColor" stroke-width="1.4"/>
+        </svg>
+        <h3>Your wishlist is empty</h3>
+        <p>Select the heart on a product to save it here for later.</p>
+        <a href="{{ routes.all_products_collection_url }}">Browse the shop</a>
+      </div>
+
+      <ul class="tssc-wishlist-drawer__list" role="list" data-wishlist-list></ul>
+    </div>
+
+  </div>
+</dialog>
+
+{% unless customer %}
+  <aside
+    class="tssc-wishlist-guest-advice"
+    aria-labelledby="TsscWishlistGuestAdviceHeading"
+    data-wishlist-guest-advice
+    hidden
+  >
+    <div class="tssc-wishlist-guest-advice__icon" aria-hidden="true">
+      <svg focusable="false" viewBox="0 0 24 24">
+        <path d="M12 20.4 4.35 13A5.35 5.35 0 0 1 12 5.54 5.35 5.35 0 0 1 19.65 13L12 20.4Z" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      </svg>
+    </div>
+    <div class="tssc-wishlist-guest-advice__content">
+      <h2 id="TsscWishlistGuestAdviceHeading">Keep your favourites handy</h2>
+      <p>Create an account to find your wishlist when you return or switch devices.</p>
+      <a href="{{ routes.account_register_url }}">Create an account</a>
+    </div>
+    <button
+      class="tssc-wishlist-guest-advice__close"
+      type="button"
+      aria-label="Dismiss account suggestion"
+      data-wishlist-guest-advice-close
+    >
+      <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24">
+        <path d="m6 6 12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </aside>
+{% endunless %}
+
+<p class="visually-hidden" role="status" aria-live="polite" aria-atomic="true" data-wishlist-live-region></p>

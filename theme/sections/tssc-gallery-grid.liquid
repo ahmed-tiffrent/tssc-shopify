@@ -1,0 +1,161 @@
+<section class="tssc-gallery-grid" id="tssc-gallery-grid-{{ section.id }}">
+  <div class="tssc-gallery-grid__inner">
+    <div class="tssc-gallery-grid__header">
+      <div class="tssc-gallery-grid__header-left">
+        {% assign title_words = section.settings.title | default: 'Chosen by Brands and Makers' | split: ' ' %}
+        {% assign title_count = title_words.size %}
+        <h2 class="tssc-gallery-grid__title">
+          {% for word in title_words %}
+            {% assign index = forloop.index0 %}
+            {% assign remaining = title_count | minus: index %}
+            {% if remaining <= 1 %}
+              <span class="tssc-italic">{{ word }}</span>
+            {% else %}
+              {{ word }}
+            {% endif %}
+            {% unless forloop.last %} {% endunless %}
+          {% endfor %}
+        </h2>
+      </div>
+
+      {% if section.settings.button_label != blank %}
+        <div class="tssc-gallery-grid__header-right">
+          <a href="{{ section.settings.button_link | default: routes.root_url }}" class="tssc-text-button tssc-gallery-grid__button">
+            {{ section.settings.button_label }}
+          </a>
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="tssc-gallery-grid__grid">
+      <div class="tssc-gallery-grid__column">
+        <div class="tssc-gallery-grid__card tssc-gallery-grid__card--top-left">
+          <img
+            src="{{ section.settings.image_1 | default: 'https://cdn.shopify.com/s/files/1/0978/1139/8980/files/top-left_img.webp?v=1784034645' }}"
+            alt="{{ section.settings.image_1_alt | default: 'Gallery image top left' }}"
+            class="tssc-gallery-grid__image"
+            loading="lazy"
+            width="600"
+            height="518"
+          >
+        </div>
+
+        <div class="tssc-gallery-grid__card tssc-gallery-grid__card--bottom-left">
+          <img
+            src="{{ section.settings.image_3 | default: 'https://cdn.shopify.com/s/files/1/0978/1139/8980/files/bottom-left_img.webp?v=1784034645' }}"
+            alt="{{ section.settings.image_3_alt | default: 'Gallery image bottom left' }}"
+            class="tssc-gallery-grid__image"
+            loading="lazy"
+            width="600"
+            height="837"
+          >
+        </div>
+      </div>
+
+      <div class="tssc-gallery-grid__column">
+        <div class="tssc-gallery-grid__card tssc-gallery-grid__card--top-right">
+          <img
+            src="{{ section.settings.image_2 | default: 'https://cdn.shopify.com/s/files/1/0978/1139/8980/files/top-right_img.webp?v=1784034646' }}"
+            alt="{{ section.settings.image_2_alt | default: 'Gallery image top right' }}"
+            class="tssc-gallery-grid__image"
+            loading="lazy"
+            width="600"
+            height="840"
+          >
+        </div>
+
+        <div class="tssc-gallery-grid__card tssc-gallery-grid__card--bottom-right">
+          <img
+            src="{{ section.settings.image_4 | default: 'https://cdn.shopify.com/s/files/1/0978/1139/8980/files/bottom-right_img.webp?v=1784034645' }}"
+            alt="{{ section.settings.image_4_alt | default: 'Gallery image bottom right' }}"
+            class="tssc-gallery-grid__image"
+            loading="lazy"
+            width="600"
+            height="515"
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "TSSC Gallery grid",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title (H2, last word italic)",
+      "default": "Chosen by Brands and Makers"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Text button label",
+      "default": "View Gallery"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Text button link"
+    },
+    {
+      "type": "url",
+      "id": "image_1",
+      "label": "Top left image URL"
+    },
+    {
+      "type": "text",
+      "id": "image_1_alt",
+      "label": "Top left image alt text",
+      "default": "Gallery image top left"
+    },
+    {
+      "type": "url",
+      "id": "image_2",
+      "label": "Top right image URL"
+    },
+    {
+      "type": "text",
+      "id": "image_2_alt",
+      "label": "Top right image alt text",
+      "default": "Gallery image top right"
+    },
+    {
+      "type": "url",
+      "id": "image_3",
+      "label": "Bottom left image URL"
+    },
+    {
+      "type": "text",
+      "id": "image_3_alt",
+      "label": "Bottom left image alt text",
+      "default": "Gallery image bottom left"
+    },
+    {
+      "type": "url",
+      "id": "image_4",
+      "label": "Bottom right image URL"
+    },
+    {
+      "type": "text",
+      "id": "image_4_alt",
+      "label": "Bottom right image alt text",
+      "default": "Gallery image bottom right"
+    }
+  ],
+  "presets": [
+    {
+      "name": "TSSC Gallery grid",
+      "category": "TSSC",
+      "settings": {
+        "image_1": "https://cdn.shopify.com/s/files/1/0978/1139/8980/files/top-left_img.webp?v=1784034645",
+        "image_2": "https://cdn.shopify.com/s/files/1/0978/1139/8980/files/top-right_img.webp?v=1784034646",
+        "image_3": "https://cdn.shopify.com/s/files/1/0978/1139/8980/files/bottom-left_img.webp?v=1784034645",
+        "image_4": "https://cdn.shopify.com/s/files/1/0978/1139/8980/files/bottom-right_img.webp?v=1784034645"
+      }
+    }
+  ]
+}
+{% endschema %}

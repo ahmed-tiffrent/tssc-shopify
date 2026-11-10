@@ -1,0 +1,60 @@
+{% comment %}
+  Store-level entity schema. Product, article and FAQ schema are rendered by
+  their own templates, so this block is intentionally limited to the homepage.
+{% endcomment %}
+{% if request.page_type == 'index' %}
+  {% liquid
+    assign site_url = request.origin | append: routes.root_url
+    assign search_url_template = request.origin | append: routes.search_url | append: '?q=' | append: '{' | append: 'search_term_string' | append: '}'
+    assign social_profiles = ''
+    assign social_setting_keys = 'social_facebook_link,social_instagram_link,social_twitter_link,social_tiktok_link,social_pinterest_link' | split: ','
+
+    for setting_key in social_setting_keys
+      assign social_url = settings[setting_key]
+      if social_url != blank
+        capture encoded_social_url
+          echo social_url | json
+        endcapture
+        if social_profiles != blank
+          assign social_profiles = social_profiles | append: ','
+        endif
+        assign social_profiles = social_profiles | append: encoded_social_url
+      endif
+    endfor
+  %}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": {{ site_url | append: '#organization' | json }},
+          "name": {{ shop.name | json }},
+          "url": {{ site_url | json }}{% if settings.logo != blank %},
+          "logo": {
+            "@type": "ImageObject",
+            "url": {{ settings.logo | image_url: width: 500 | prepend: 'https:' | json }}
+          }{% endif %},
+          "description": "The Sustainable Sequin Company sells 20% and 100% recycled PET sequins, loose sequins, sequin spools and Punchinella, with bespoke options. Recycled PET film is produced in China; sequins are punched and cut in the UK."{% if social_profiles != blank %},
+          "sameAs": [{{ social_profiles }}]{% endif %}
+        },
+        {
+          "@type": "WebSite",
+          "@id": {{ site_url | append: '#website' | json }},
+          "url": {{ site_url | json }},
+          "name": {{ shop.name | json }},
+          "inLanguage": {{ request.locale.iso_code | json }},
+          "publisher": { "@id": {{ site_url | append: '#organization' | json }} },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": {{ search_url_template | json }}
+            },
+            "query-input": "required name=search_term_string"
+          }
+        }
+      ]
+    }
+  </script>
+{% endif %}

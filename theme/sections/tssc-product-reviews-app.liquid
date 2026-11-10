@@ -1,0 +1,41 @@
+{% if section.blocks.size > 0 %}
+  <section
+    id="TsscProductReviewsApp-{{ section.id }}"
+    class="tssc-product-reviews-app"
+    aria-label="Customer reviews"
+  >
+    <div class="tssc-product-reviews-app__inner">
+      {% content_for 'blocks' %}
+    </div>
+  </section>
+{% endif %}
+
+{% stylesheet %}
+  .tssc-product-reviews-app {
+    width: 100%;
+    color: #32151d;
+    background: #fff;
+  }
+
+  .tssc-product-reviews-app__inner {
+    width: min(100%, 1440px);
+    margin-inline: auto;
+    padding: clamp(40px, 5vw, 64px) clamp(16px, 4vw, 64px);
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Product reviews app",
+  "blocks": [
+    {
+      "type": "@app"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product reviews app"
+    }
+  ]
+}
+{% endschema %}

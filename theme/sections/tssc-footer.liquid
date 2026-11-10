@@ -1,0 +1,364 @@
+<section class="tssc-footer" id="tssc-footer-{{ section.id }}">
+  <div class="tssc-footer__inner">
+
+    <!-- Logo + tagline -->
+    <div class="tssc-footer__logo-wrap">
+      <img
+        src="{{ section.settings.logo | default: 'https://cdn.shopify.com/s/files/1/0978/1139/8980/files/Logo_Black.png?v=1783595640' }}"
+        alt="{{ section.settings.logo_alt | default: 'The Sustainable Sequin Company logo' }}"
+        class="tssc-footer__logo"
+        loading="lazy"
+        width="220"
+        height="110"
+      >
+      <p class="tssc-footer__tagline">
+        {{ section.settings.tagline | default: 'Sustainable sequins for fashion, design, and embellishment. Made to order in the UK.' }}
+      </p>
+    </div>
+
+    <!-- Centered menu -->
+    <nav class="tssc-footer__nav" aria-label="Footer navigation">
+      <ul class="tssc-footer__nav-list">
+        <li class="tssc-footer__nav-item"><a href="{{ routes.root_url }}" class="tssc-footer__nav-link">Home</a></li>
+        <li class="tssc-footer__nav-item"><a href="/pages/about" class="tssc-footer__nav-link">About</a></li>
+        <li class="tssc-footer__nav-item"><a href="{{ routes.all_products_collection_url }}" class="tssc-footer__nav-link">Shop</a></li>
+        <li class="tssc-footer__nav-item"><a href="/pages/sustainability" class="tssc-footer__nav-link">Sustainability</a></li>
+        <li class="tssc-footer__nav-item"><a href="/pages/gallery" class="tssc-footer__nav-link">Gallery</a></li>
+        <li class="tssc-footer__nav-item"><a href="/pages/faq" class="tssc-footer__nav-link">FAQs</a></li>
+        <li class="tssc-footer__nav-item"><a href="/pages/contact" class="tssc-footer__nav-link">Contact</a></li>
+      </ul>
+    </nav>
+
+    <!-- Contact info row -->
+    <div class="tssc-footer__contact-block">
+      <p class="tssc-footer__label">Contact info</p>
+      <div class="tssc-footer__contact-row">
+        {% if section.settings.email != blank %}
+          <a href="mailto:{{ section.settings.email }}" class="tssc-footer__contact-link">
+            {{ section.settings.email }}
+          </a>
+        {% endif %}
+        {% if section.settings.phone != blank %}
+          <span class="tssc-footer__contact-separator">|</span>
+          <a href="tel:{{ section.settings.phone | remove: ' ' }}" class="tssc-footer__contact-link">
+            {{ section.settings.phone }}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Follow Us row -->
+    <div class="tssc-footer__social-block">
+      <p class="tssc-footer__label">Follow Us</p>
+      <div class="tssc-footer__social-row">
+        <a href="{{ section.settings.instagram | default: 'https://www.instagram.com/thesustainablesequincompany/' }}" target="_blank" rel="noopener noreferrer" class="tssc-footer__social-link">Instagram</a>
+        <a href="{{ section.settings.facebook | default: 'https://www.facebook.com/thesustainablesequincompany/' }}" target="_blank" rel="noopener noreferrer" class="tssc-footer__social-link">Facebook</a>
+        <a href="{{ section.settings.linkedin | default: 'https://www.linkedin.com/company/the-sustainable-sequin-company' }}" target="_blank" rel="noopener noreferrer" class="tssc-footer__social-link">LinkedIn</a>
+        <a href="{{ section.settings.etsy | default: 'https://www.etsy.com/uk/shop/SustainableSequinCo' }}" target="_blank" rel="noopener noreferrer" class="tssc-footer__social-link">Etsy</a>
+      </div>
+    </div>
+
+    <!-- Certification marks with Ecologi's official live tree badge -->
+    {% assign certifications_image = section.settings.certifications | default: 'https://cdn.shopify.com/s/files/1/0978/1139/8980/files/certfications.png?v=1784041050' %}
+    <div class="tssc-footer__certs">
+      <div class="tssc-footer__certs-top">
+        <svg
+          class="tssc-footer__certs-partners"
+          viewBox="0 0 390 225"
+          role="img"
+          aria-labelledby="tssc-footer-partners-title-{{ section.id }}"
+          preserveAspectRatio="xMidYMid meet"
+        >
+          <title id="tssc-footer-partners-title-{{ section.id }}">Ecologi Climate Action Workforce and 1% for the Planet member</title>
+          <image data-href="{{ certifications_image | escape }}" width="686" height="366"></image>
+        </svg>
+
+        <a
+          class="tssc-footer__ecologi-badge-link"
+          href="https://ecologi.com/thesustainablesequincompany?r=618162ca7d800b69d84564ee"
+          target="_blank"
+          rel="noopener noreferrer"
+          title="View our Ecologi profile"
+        >
+          <img
+            class="tssc-footer__ecologi-badge"
+            alt="We fund trees with Ecologi"
+            src="https://api.ecologi.com/badges/trees/618162ca7d800b69d84564ee?black=true&amp;treeOnly=true"
+            loading="lazy"
+            width="106"
+            height="80"
+          >
+        </a>
+      </div>
+
+      <svg
+        class="tssc-footer__plastic-bank"
+        viewBox="0 230 686 136"
+        role="img"
+        aria-labelledby="tssc-footer-plastic-bank-title-{{ section.id }}"
+        preserveAspectRatio="xMidYMid meet"
+      >
+        <title id="tssc-footer-plastic-bank-title-{{ section.id }}">Plastic Bank official supporter</title>
+        <image data-href="{{ certifications_image | escape }}" width="686" height="366"></image>
+      </svg>
+    </div>
+    <script>
+      // SVG <image> has no loading="lazy", so set its href as the footer nears the viewport.
+      (function () {
+        var certs = document.currentScript.previousElementSibling;
+        var images = certs.querySelectorAll('image[data-href]');
+        var load = function () {
+          images.forEach(function (image) {
+            image.setAttribute('href', image.dataset.href);
+          });
+        };
+
+        if (!('IntersectionObserver' in window)) return load();
+
+        new IntersectionObserver(function (entries, observer) {
+          if (!entries[0].isIntersecting) return;
+          observer.disconnect();
+          load();
+        }, { rootMargin: '400px 0px' }).observe(certs);
+      })();
+    </script>
+
+    <div class="tssc-footer__carbon-badge" aria-label="Website carbon emissions rating" aria-live="polite">
+      <div id="wcb" class="carbonbadge"></div>
+    </div>
+    <script src="https://unpkg.com/website-carbon-badges@1.1.3/b.min.js" defer></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        var badge = document.getElementById('wcb');
+
+        if (!badge) return;
+
+        var showPublishedHomepageResult = function () {
+          var result = document.getElementById('wcb_g');
+          var comparison = document.getElementById('wcb_2');
+          var link = document.getElementById('wcb_a');
+
+          if (!result || result.textContent.trim() !== 'No Result') return;
+
+          result.innerHTML = '0.12g of CO<sub>2</sub>/view';
+
+          if (comparison) {
+            comparison.textContent = 'Cleaner than 70% of pages tested';
+          }
+
+          if (link) {
+            link.href = 'https://www.websitecarbon.com/website/thesustainablesequincompany-com/';
+            link.setAttribute('aria-label', 'View the Website Carbon report for The Sustainable Sequin Company');
+          }
+        };
+
+        var observer = new MutationObserver(showPublishedHomepageResult);
+        observer.observe(badge, { childList: true, subtree: true, characterData: true });
+        showPublishedHomepageResult();
+      });
+    </script>
+
+    <!-- Divider + copyright -->
+    <div class="tssc-footer__divider"></div>
+
+    <div class="tssc-footer__legal-row">
+      <p class="tssc-footer__copyright">
+        {% if section.settings.copyright != blank %}
+          {{ section.settings.copyright }}
+        {% else %}
+          © {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.
+        {% endif %}
+        <span class="tssc-footer__credit-separator" aria-hidden="true"> · </span>
+        <a
+          class="tssc-footer__credit-link"
+          href="https://www.aminetiffrent.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >Built by Tiffrent</a>
+      </p>
+
+      <nav class="tssc-footer__legal-nav" aria-label="Legal and service information">
+        <a class="tssc-footer__legal-link" href="/pages/shipping-and-returns">Shipping &amp; Returns</a>
+        <a class="tssc-footer__legal-link" href="{{ shop.privacy_policy.url | default: '/policies/privacy-policy' }}">Privacy Policy</a>
+      </nav>
+    </div>
+
+    {% if shop.enabled_payment_types != empty %}
+      <div class="tssc-footer__payment-methods" aria-label="Accepted payment methods">
+        <span class="visually-hidden">Accepted payment methods</span>
+        <ul class="tssc-footer__payment-list" role="list">
+          {% for type in shop.enabled_payment_types %}
+            <li class="tssc-footer__payment-item">
+              {{ type | payment_type_svg_tag: class: 'tssc-footer__payment-icon' }}
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+  </div>
+</section>
+
+{% stylesheet %}
+  .tssc-footer__certs {
+    width: 343px;
+    max-width: 100%;
+  }
+
+  .tssc-footer__certs-top {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4%;
+    width: 100%;
+  }
+
+  .tssc-footer__certs-partners {
+    display: block;
+    width: 56%;
+    height: auto;
+    aspect-ratio: 390 / 225;
+    flex: 0 0 56%;
+  }
+
+  .tssc-footer__ecologi-badge-link {
+    display: block;
+    width: 31%;
+    flex: 0 0 31%;
+  }
+
+  .tssc-footer__ecologi-badge-link:focus-visible {
+    outline: 3px solid #8e2847;
+    outline-offset: 3px;
+  }
+
+  .tssc-footer__ecologi-badge {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .tssc-footer__plastic-bank {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 8px auto 0;
+    aspect-ratio: 686 / 136;
+  }
+
+  .tssc-footer__carbon-badge {
+    display: flex;
+    width: 100%;
+    min-height: 52px;
+    margin: 24px auto 0;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .tssc-footer__carbon-badge #wcb.carbonbadge {
+    width: 100%;
+    max-width: 420px;
+  }
+
+  .tssc-footer__carbon-badge #wcb_p {
+    display: flex;
+    justify-content: center;
+  }
+
+  @media (max-width: 749px) {
+    .tssc-footer__carbon-badge {
+      min-height: 48px;
+      margin-top: 20px;
+    }
+  }
+
+  @media (max-width: 359px) {
+    .tssc-footer__carbon-badge #wcb.carbonbadge {
+      font-size: 12px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "TSSC Footer",
+  "settings": [
+    {
+      "type": "url",
+      "id": "logo",
+      "label": "Logo image URL"
+    },
+    {
+      "type": "text",
+      "id": "logo_alt",
+      "label": "Logo alt text",
+      "default": "The Sustainable Sequin Company logo"
+    },
+    {
+      "type": "textarea",
+      "id": "tagline",
+      "label": "Tagline",
+      "default": "Sustainable sequins for fashion, design, and embellishment. Made to order in the UK."
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Contact email",
+      "default": "rachel@thesustainablesequincompany.com"
+    },
+    {
+      "type": "text",
+      "id": "phone",
+      "label": "Contact phone",
+      "default": "+44 (0)7790 867141"
+    },
+    {
+      "type": "url",
+      "id": "instagram",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "url",
+      "id": "facebook",
+      "label": "Facebook URL"
+    },
+    {
+      "type": "url",
+      "id": "linkedin",
+      "label": "LinkedIn URL"
+    },
+    {
+      "type": "url",
+      "id": "etsy",
+      "label": "Etsy URL"
+    },
+    {
+      "type": "url",
+      "id": "certifications",
+      "label": "Certifications image URL"
+    },
+    {
+      "type": "text",
+      "id": "certifications_alt",
+      "label": "Certifications alt text",
+      "default": "Certifications and memberships"
+    },
+    {
+      "type": "text",
+      "id": "copyright",
+      "label": "Copyright text",
+      "default": "© 2026 The Sustainable Sequin Company. All rights reserved."
+    }
+  ],
+  "presets": [
+    {
+      "name": "TSSC Footer",
+      "category": "TSSC",
+      "settings": {
+        "tagline": "Sustainable sequins for fashion, design, and embellishment. Made to order in the UK."
+      }
+    }
+  ]
+}
+{% endschema %}

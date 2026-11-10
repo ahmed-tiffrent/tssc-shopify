@@ -1,0 +1,504 @@
+<section
+  id="TsscFeaturedCollaborators-{{ section.id }}"
+  class="tssc-featured-collaborators"
+  aria-labelledby="TsscFeaturedCollaboratorsHeading-{{ section.id }}"
+  style="
+    --collaborators-background: {{ section.settings.background_color }};
+    --collaborators-text: {{ section.settings.text_color }};
+    --collaborators-padding-top: {{ section.settings.padding_top }}px;
+    --collaborators-padding-bottom: {{ section.settings.padding_bottom }}px;
+  "
+>
+  <div class="tssc-featured-collaborators__inner">
+    <header class="tssc-featured-collaborators__header">
+      <h3 id="TsscFeaturedCollaboratorsHeading-{{ section.id }}" class="tssc-featured-collaborators__heading">
+        <span>{{ section.settings.heading | escape }}</span>
+        {% if section.settings.italic_heading != blank %}
+          <em>{{ section.settings.italic_heading | escape }}</em>
+        {% endif %}
+      </h3>
+
+      {% if section.settings.intro_text != blank %}
+        <div class="tssc-featured-collaborators__intro rte">
+          {{ section.settings.intro_text }}
+        </div>
+      {% endif %}
+    </header>
+
+    {% if section.blocks.size > 0 %}
+      <ul class="tssc-featured-collaborators__list" role="list">
+        {% for block in section.blocks %}
+          {% liquid
+            assign image_count = 0
+            for image_number in (1..5)
+              assign image_url_key = 'image_' | append: image_number | append: '_url'
+              if block.settings[image_url_key] != blank
+                assign image_count = image_count | plus: 1
+              endif
+            endfor
+          %}
+
+          <li class="tssc-featured-collaborators__profile" {{ block.shopify_attributes }}>
+            <article aria-labelledby="TsscCollaborator-{{ section.id }}-{{ block.id }}">
+              <h4 id="TsscCollaborator-{{ section.id }}-{{ block.id }}" class="tssc-featured-collaborators__name">
+                {% if block.settings.link != blank %}
+                  <a
+                    href="{{ block.settings.link }}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="{{ block.settings.name | escape }} (opens in a new tab)"
+                  >
+                    <span>{{ block.settings.name | escape }}</span>
+                    <svg aria-hidden="true" focusable="false" viewBox="0 0 20 20" width="18" height="18">
+                      <path d="M6 14 14 6M8 6h6v6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </a>
+                {% else %}
+                  {{ block.settings.name | escape }}
+                {% endif %}
+              </h4>
+
+              {% if block.settings.description != blank %}
+                <div class="tssc-featured-collaborators__description rte">
+                  {{ block.settings.description }}
+                </div>
+              {% endif %}
+
+              {% if image_count > 0 %}
+                <ul
+                  class="tssc-featured-collaborators__gallery{% if image_count <= 3 %} tssc-featured-collaborators__gallery--compact{% endif %}"
+                  style="--collaborator-image-count: {{ image_count }};"
+                  aria-label="{{ block.settings.name | escape }} image gallery"
+                  role="list"
+                  tabindex="0"
+                >
+                  {% for image_number in (1..5) %}
+                    {% liquid
+                      assign image_url_key = 'image_' | append: image_number | append: '_url'
+                      assign image_alt_key = 'image_' | append: image_number | append: '_alt'
+                      assign image_url = block.settings[image_url_key]
+                      assign image_alt = block.settings[image_alt_key]
+                    %}
+
+                    {% if image_url != blank %}
+                      <li class="tssc-featured-collaborators__image-item">
+                        <img
+                          class="tssc-featured-collaborators__image"
+                          src="{{ image_url }}"
+                          alt="{{ image_alt | escape }}"
+                          width="1152"
+                          height="1704"
+                          loading="lazy"
+                          decoding="async"
+                        >
+                      </li>
+                    {% endif %}
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            </article>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+</section>
+
+{% style %}
+  #TsscFeaturedCollaborators-{{ section.id }},
+  #TsscFeaturedCollaborators-{{ section.id }} * {
+    box-sizing: border-box;
+  }
+
+  #TsscFeaturedCollaborators-{{ section.id }} {
+    width: 100%;
+    overflow: hidden;
+    padding-block: var(--collaborators-padding-top) var(--collaborators-padding-bottom);
+    color: var(--collaborators-text);
+    background: var(--collaborators-background);
+  }
+
+  #TsscFeaturedCollaborators-{{ section.id }} .tssc-featured-collaborators__inner {
+    width: min(100%, 1440px);
+    margin-inline: auto;
+    padding-inline: clamp(24px, 4.5vw, 64px);
+  }
+
+  #TsscFeaturedCollaborators-{{ section.id }} .tssc-featured-collaborators__header {
+    width: min(100%, 720px);
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  #TsscFeaturedCollaborators-{{ section.id }} .tssc-featured-collaborators__heading {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0 0.22em;
+    margin: 0 0 28px;
+    color: var(--collaborators-text);
+    font-family: var(--font-h3--family, var(--font-heading--family));
+    font-size: clamp(34px, 3.35vw, 48px);
+    font-weight: var(--font-h3--weight, 400);
+    letter-spacing: var(--font-h3--letter-spacing, normal);
+    line-height: 1.12;
+  }
+
+  #TsscFeaturedCollaborators-{{ section.id }} .tssc-featured-collaborators__heading em {
+    font-style: italic;
+    font-weight: inherit;
+  }
+
+  #TsscFeaturedCollaborators-{{ section.id }} .tssc-featured-collaborators__intro {
+    color: var(--collaborators-text);
+    font-family: var(--font-paragraph--family);
+    font-size: 16px;
+    line-height: 1.55;
+  }
+
+  #TsscFeaturedCollaborators-{{ section.id }} .tssc-featured-collaborators__intro p,
+  #TsscFeaturedCollaborators-{{ section.id }} .tssc-featured-collaborators__description p {
+    margin: 0;
+  }
+
+  #TsscFeaturedCollaborators-{{ section.id }} .tssc-featured-collaborators__list {
+    display: grid;
+    gap: clamp(48px, 6vw, 72px);
+    margin: clamp(56px, 7vw, 88px) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  #TsscFeaturedCollaborators-{{ section.id }} .tssc-featured-collaborators__profile {
+    min-width: 0;
+  }
+
+  #TsscFeaturedCollaborators-{{ section.id }} .tssc-featured-collaborators__name {
+    margin: 0 0 18px;
+    color: var(--collaborators-text);
+    font-family: var(--font-h4--family, var(--font-heading--family));
+    font-size: clamp(24px, 2.25vw, 32px);
+    font-weight: var(--font-h4--weight, 400);
+    line-height: 1.2;
+  }
+
+  #TsscFeaturedCollaborators-{{ section.id }} .tssc-featured-collaborators__name a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 44px;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  #TsscFeaturedCollaborators-{{ section.id }} .tssc-featured-collaborators__name a:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 5px;
+  }
+
+  #TsscFeaturedCollaborators-{{ section.id }} .tssc-featured-collaborators__name svg {
+    flex: 0 0 auto;
+  }
+
+  #TsscFeaturedCollaborators-{{ section.id }} .tssc-featured-collaborators__description {
+    max-width: 1000px;
+    color: var(--collaborators-text);
+    font-family: var(--font-paragraph--family);
+    font-size: 16px;
+    line-height: 1.55;
+  }
+
+  #TsscFeaturedCollaborators-{{ section.id }} .tssc-featured-collaborators__gallery {
+    display: grid;
+    grid-template-columns: repeat(var(--collaborator-image-count), minmax(0, 1fr));
+    gap: clamp(16px, 2vw, 24px);
+    width: 100%;
+    margin: 36px 0 0;
+    padding: 0;
+    overflow: visible;
+    list-style: none;
+    scrollbar-color: var(--collaborators-text) transparent;
+    scrollbar-width: thin;
+  }
+
+  #TsscFeaturedCollaborators-{{ section.id }} .tssc-featured-collaborators__gallery--compact {
+    max-width: 900px;
+  }
+
+  #TsscFeaturedCollaborators-{{ section.id }} .tssc-featured-collaborators__image-item {
+    min-width: 0;
+    overflow: hidden;
+    aspect-ratio: 1152 / 1704;
+    background: #f5f5f5;
+  }
+
+  #TsscFeaturedCollaborators-{{ section.id }} .tssc-featured-collaborators__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  #TsscFeaturedCollaborators-{{ section.id }} :is(a, button, [tabindex]):focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+  }
+
+  @media screen and (max-width: 899px) {
+    #TsscFeaturedCollaborators-{{ section.id }} .tssc-featured-collaborators__inner {
+      padding-inline: 40px;
+    }
+
+    #TsscFeaturedCollaborators-{{ section.id }} .tssc-featured-collaborators__gallery,
+    #TsscFeaturedCollaborators-{{ section.id }} .tssc-featured-collaborators__gallery--compact {
+      display: flex;
+      gap: 20px;
+      max-width: none;
+      padding: 0 4px 14px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      overscroll-behavior-inline: contain;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    #TsscFeaturedCollaborators-{{ section.id }} .tssc-featured-collaborators__image-item {
+      flex: 0 0 clamp(220px, 38vw, 280px);
+      scroll-snap-align: start;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #TsscFeaturedCollaborators-{{ section.id }} {
+      padding-block: min(var(--collaborators-padding-top), 56px) min(var(--collaborators-padding-bottom), 56px);
+    }
+
+    #TsscFeaturedCollaborators-{{ section.id }} .tssc-featured-collaborators__inner {
+      padding-inline: 20px;
+    }
+
+    #TsscFeaturedCollaborators-{{ section.id }} .tssc-featured-collaborators__header {
+      text-align: left;
+      margin-inline: 0;
+    }
+
+    #TsscFeaturedCollaborators-{{ section.id }} .tssc-featured-collaborators__heading {
+      justify-content: flex-start;
+      margin-bottom: 24px;
+      font-size: clamp(32px, 9vw, 40px);
+    }
+
+    #TsscFeaturedCollaborators-{{ section.id }} .tssc-featured-collaborators__list {
+      gap: 48px;
+      margin-top: 48px;
+    }
+
+    #TsscFeaturedCollaborators-{{ section.id }} .tssc-featured-collaborators__name {
+      margin-bottom: 14px;
+    }
+
+    #TsscFeaturedCollaborators-{{ section.id }} .tssc-featured-collaborators__gallery,
+    #TsscFeaturedCollaborators-{{ section.id }} .tssc-featured-collaborators__gallery--compact {
+      gap: 16px;
+      margin-top: 28px;
+    }
+
+    #TsscFeaturedCollaborators-{{ section.id }} .tssc-featured-collaborators__image-item {
+      flex-basis: min(76vw, 280px);
+    }
+  }
+
+  @media screen and (max-width: 479px) {
+    #TsscFeaturedCollaborators-{{ section.id }} .tssc-featured-collaborators__inner {
+      padding-inline: 16px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #TsscFeaturedCollaborators-{{ section.id }} *,
+    #TsscFeaturedCollaborators-{{ section.id }} *::before,
+    #TsscFeaturedCollaborators-{{ section.id }} *::after {
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+    }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "TSSC Featured collabs",
+  "tag": "div",
+  "class": "tssc-featured-collaborators-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Featured"
+    },
+    {
+      "type": "text",
+      "id": "italic_heading",
+      "label": "Italic heading text",
+      "default": "Collaborators"
+    },
+    {
+      "type": "richtext",
+      "id": "intro_text",
+      "label": "Introduction",
+      "default": "<p>Every brand we work with uses sequins in their own way, from subtle details and statement accessories to directional ready-to-wear.</p>"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#32151D"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 32,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 32,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "default": 64
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collaborator",
+      "name": "Collaborator",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name",
+          "default": "Collaborator name"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Website link"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description",
+          "default": "<p>Introduce this collaborator and their work.</p>"
+        },
+        {
+          "type": "url",
+          "id": "image_1_url",
+          "label": "First image URL"
+        },
+        {
+          "type": "text",
+          "id": "image_1_alt",
+          "label": "First image description"
+        },
+        {
+          "type": "url",
+          "id": "image_2_url",
+          "label": "Second image URL"
+        },
+        {
+          "type": "text",
+          "id": "image_2_alt",
+          "label": "Second image description"
+        },
+        {
+          "type": "url",
+          "id": "image_3_url",
+          "label": "Third image URL"
+        },
+        {
+          "type": "text",
+          "id": "image_3_alt",
+          "label": "Third image description"
+        },
+        {
+          "type": "url",
+          "id": "image_4_url",
+          "label": "Fourth image URL"
+        },
+        {
+          "type": "text",
+          "id": "image_4_alt",
+          "label": "Fourth image description"
+        },
+        {
+          "type": "url",
+          "id": "image_5_url",
+          "label": "Fifth image URL"
+        },
+        {
+          "type": "text",
+          "id": "image_5_alt",
+          "label": "Fifth image description"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "TSSC Featured collabs",
+      "category": "TSSC",
+      "blocks": [
+        {
+          "type": "collaborator",
+          "settings": {
+            "name": "Studio Clora",
+            "link": "https://www.studioclora.com/",
+            "description": "<p>Studio Clora is a luxury design label based in the South of France, known for sculptural, day-to-night jewellery and accessories that balance bold forms with a refined, modern mood.</p>",
+            "image_1_url": "https://cdn.shopify.com/s/files/1/0978/1139/8980/files/Studio_Clora_1.webp?v=1787686011",
+            "image_1_alt": "Model wearing sculptural circular earrings and embellished hair clips",
+            "image_2_url": "https://cdn.shopify.com/s/files/1/0978/1139/8980/files/Studio_Clora_2.webp?v=1787686010",
+            "image_2_alt": "Two models wearing oversized gold sequin earrings",
+            "image_3_url": "https://cdn.shopify.com/s/files/1/0978/1139/8980/files/Studio_Clora_3.webp?v=1787686010",
+            "image_3_alt": "Model with braids wearing green circular earrings and a pale pink jacket"
+          }
+        },
+        {
+          "type": "collaborator",
+          "settings": {
+            "name": "Michelle Lowe-Holder",
+            "link": "https://www.lowe-holder.com/",
+            "description": "<p>Michelle Lowe-Holder has been creating sustainable, upcycled accessories for over a decade, crafting hand-made pieces with a strong focus on zero waste, heritage techniques and UK production.</p>",
+            "image_1_url": "https://cdn.shopify.com/s/files/1/0978/1139/8980/files/Michelle_Lowe_Holder_1.webp?v=1787686011",
+            "image_1_alt": "Red-haired model in profile wearing an upcycled black and gold headpiece",
+            "image_2_url": "https://cdn.shopify.com/s/files/1/0978/1139/8980/files/Michelle_Lowe_Holder_2.webp?v=1787686011",
+            "image_2_alt": "Model wearing sculptural metallic neck and wrist accessories",
+            "image_3_url": "https://cdn.shopify.com/s/files/1/0978/1139/8980/files/Michelle_Lowe_Holder_3.webp?v=1787686011",
+            "image_3_alt": "Model wearing a woven black and gold statement collar",
+            "image_4_url": "https://cdn.shopify.com/s/files/1/0978/1139/8980/files/Michelle_Lowe_Holder_4.webp?v=1787686011",
+            "image_4_alt": "Person wearing a bright green woven statement collar",
+            "image_5_url": "https://cdn.shopify.com/s/files/1/0978/1139/8980/files/Michelle_Lowe_Holder_5.webp?v=1787686011",
+            "image_5_alt": "Model wearing a layered upcycled statement necklace"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

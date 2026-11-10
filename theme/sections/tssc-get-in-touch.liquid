@@ -1,0 +1,1154 @@
+{% liquid
+  assign form_id = 'TsscContactForm-' | append: section.id
+  assign email_address = section.settings.email | strip
+  assign telephone_href = section.settings.phone_link | strip
+%}
+
+<section
+  id="TsscGetInTouch-{{ section.id }}"
+  class="tssc-get-in-touch"
+  aria-labelledby="TsscGetInTouchHeading-{{ section.id }}"
+  style="
+    --contact-background: {{ section.settings.background_color }};
+    --contact-text: {{ section.settings.text_color }};
+    --contact-accent: {{ section.settings.accent_color }};
+    --contact-border: {{ section.settings.border_color }};
+    --contact-padding-top: {{ section.settings.padding_top }}px;
+    --contact-padding-bottom: {{ section.settings.padding_bottom }}px;
+  "
+>
+  <div class="tssc-get-in-touch__inner">
+    <div class="tssc-get-in-touch__details">
+      <header class="tssc-get-in-touch__header">
+        <h3 id="TsscGetInTouchHeading-{{ section.id }}" class="tssc-get-in-touch__heading">
+          <span>{{ section.settings.heading | escape }}</span>
+          {% if section.settings.italic_heading != blank %}
+            <em>{{ section.settings.italic_heading | escape }}</em>
+          {% endif %}
+        </h3>
+
+        {% if section.settings.intro_text != blank %}
+          <div class="tssc-get-in-touch__intro rte">
+            {{ section.settings.intro_text }}
+          </div>
+        {% endif %}
+      </header>
+
+      <address class="tssc-get-in-touch__contact-list">
+        <div class="tssc-get-in-touch__contact-row">
+          <svg class="tssc-get-in-touch__contact-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24">
+            <path d="M12 21s6-5.4 6-11a6 6 0 1 0-12 0c0 5.6 6 11 6 11Z" fill="none" stroke="currentColor" stroke-width="1.5"/>
+            <circle cx="12" cy="10" r="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+          <div>
+            <p class="tssc-get-in-touch__contact-label">Address</p>
+            {% if section.settings.address_link != blank %}
+              <a href="{{ section.settings.address_link }}">{{ section.settings.address | escape }}</a>
+            {% else %}
+              <p>{{ section.settings.address | escape }}</p>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="tssc-get-in-touch__contact-row">
+          <svg class="tssc-get-in-touch__contact-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24">
+            <path d="M7.3 3.5 4.8 5.1c-.7.5-.9 1.4-.6 2.2 2.1 5.6 6.5 10 12.1 12.1.8.3 1.7.1 2.2-.6l1.6-2.5-4-2.3-1.4 1.8a13.3 13.3 0 0 1-6.5-6.5L10 7.9l-2.7-4.4Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+          </svg>
+          <div>
+            <p class="tssc-get-in-touch__contact-label">Contact Phone</p>
+            <a href="tel:{{ telephone_href | escape }}">{{ section.settings.phone_display | escape }}</a>
+          </div>
+        </div>
+
+        <div class="tssc-get-in-touch__contact-row">
+          <svg class="tssc-get-in-touch__contact-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24">
+            <rect x="3" y="5" width="18" height="14" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/>
+            <path d="m4 7 8 6 8-6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+          </svg>
+          <div>
+            <p class="tssc-get-in-touch__contact-label">Email</p>
+            <a href="mailto:{{ email_address | escape }}">{{ email_address | escape }}</a>
+          </div>
+        </div>
+      </address>
+
+      <div class="tssc-get-in-touch__socials">
+        <h4 class="tssc-get-in-touch__social-heading">Follow Us:</h4>
+        <ul class="tssc-get-in-touch__social-list" role="list">
+          {% if section.settings.instagram_url != blank %}
+            <li>
+              <a href="{{ section.settings.instagram_url }}" target="_blank" rel="noopener" aria-label="Instagram (opens in a new tab)">
+                <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24">
+                  <rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                  <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                  <circle cx="17.4" cy="6.7" r="1" fill="currentColor"/>
+                </svg>
+              </a>
+            </li>
+          {% endif %}
+          {% if section.settings.facebook_url != blank %}
+            <li>
+              <a href="{{ section.settings.facebook_url }}" target="_blank" rel="noopener" aria-label="Facebook (opens in a new tab)">
+                <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M13.7 21v-7h2.4l.4-2.8h-2.8V9.4c0-.8.2-1.4 1.4-1.4h1.5V5.5c-.3 0-1.2-.1-2.2-.1-2.2 0-3.7 1.3-3.7 3.8v2.1H8.2V14h2.5v7" fill="currentColor"/>
+                </svg>
+              </a>
+            </li>
+          {% endif %}
+          {% if section.settings.linkedin_url != blank %}
+            <li>
+              <a href="{{ section.settings.linkedin_url }}" target="_blank" rel="noopener" aria-label="LinkedIn (opens in a new tab)">
+                <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M8.3 10.2v6.1M8.3 7.7v.1M11.2 16.3v-6.1m0 2.7c.4-1.5 4.5-2.2 4.5 1.2v2.2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+                </svg>
+              </a>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+
+    <div class="tssc-get-in-touch__form-column">
+      {% form 'contact', id: form_id, class: 'tssc-get-in-touch__form' %}
+        {% if form.posted_successfully? %}
+          <p
+            class="tssc-get-in-touch__message tssc-get-in-touch__message--success"
+            role="status"
+            tabindex="-1"
+            data-contact-success-fallback
+          >
+            {{ section.settings.success_heading | escape }} {{ section.settings.success_text | escape }}
+          </p>
+
+          <dialog
+            class="tssc-get-in-touch__dialog"
+            aria-labelledby="TsscContactDialogHeading-{{ section.id }}"
+            aria-describedby="TsscContactDialogText-{{ section.id }}"
+            data-contact-success-dialog
+          >
+            <div class="tssc-get-in-touch__dialog-content">
+              <button
+                class="tssc-get-in-touch__dialog-icon-close"
+                type="button"
+                aria-label="Close confirmation message"
+                data-contact-dialog-close
+              >
+                <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24">
+                  <path d="m6 6 12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+              </button>
+
+              <span class="tssc-get-in-touch__dialog-status-icon" aria-hidden="true">
+                <svg focusable="false" viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.4"/>
+                  <path d="m7.8 12.2 2.8 2.8 5.8-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+
+              <h3 id="TsscContactDialogHeading-{{ section.id }}" class="tssc-get-in-touch__dialog-heading">
+                {{ section.settings.success_heading | escape }}
+              </h3>
+              <p id="TsscContactDialogText-{{ section.id }}" class="tssc-get-in-touch__dialog-text">
+                {{ section.settings.success_text | escape }}
+              </p>
+
+              <button class="tssc-get-in-touch__dialog-button" type="button" data-contact-dialog-close>
+                {{ section.settings.success_button_label | escape }}
+              </button>
+            </div>
+          </dialog>
+
+          <script>
+            (() => {
+              const section = document.getElementById('TsscGetInTouch-{{ section.id }}');
+              const dialog = section?.querySelector('[data-contact-success-dialog]');
+              const fallbackMessage = section?.querySelector('[data-contact-success-fallback]');
+
+              if (!dialog || typeof dialog.showModal !== 'function') return;
+
+              const closeButtons = dialog.querySelectorAll('[data-contact-dialog-close]');
+              const closeDialog = () => {
+                if (dialog.open) dialog.close();
+              };
+              const clearSubmittedStateFromUrl = () => {
+                const currentUrl = new URL(window.location.href);
+                currentUrl.searchParams.delete('contact_posted');
+                window.history.replaceState(
+                  window.history.state,
+                  '',
+                  `${currentUrl.pathname}${currentUrl.search}${currentUrl.hash}`
+                );
+              };
+
+              closeButtons.forEach((button) => button.addEventListener('click', closeDialog));
+              dialog.addEventListener('click', (event) => {
+                if (event.target === dialog) closeDialog();
+              });
+              dialog.addEventListener('close', () => {
+                document.documentElement.classList.remove('tssc-contact-dialog-open');
+              });
+
+              fallbackMessage.hidden = true;
+              clearSubmittedStateFromUrl();
+              document.documentElement.classList.add('tssc-contact-dialog-open');
+              dialog.showModal();
+              dialog.querySelector('[data-contact-dialog-close]')?.focus();
+            })();
+          </script>
+        {% endif %}
+
+        {% if form.errors %}
+          <div class="tssc-get-in-touch__message tssc-get-in-touch__message--error" role="alert">
+            <p>Please correct the following:</p>
+            {{ form.errors | default_errors }}
+          </div>
+        {% endif %}
+
+        <p class="tssc-get-in-touch__required-note">
+          <span aria-hidden="true">*</span> Required fields
+        </p>
+
+        <div class="tssc-get-in-touch__field">
+          <label for="{{ form_id }}-name">Full Name<span aria-hidden="true">*</span></label>
+          <input
+            id="{{ form_id }}-name"
+            type="text"
+            name="contact[name]"
+            value="{{ form.name | default: customer.name | escape }}"
+            autocomplete="name"
+            placeholder="Your name"
+            required
+            aria-required="true"
+            maxlength="100"
+          >
+        </div>
+
+        <div class="tssc-get-in-touch__field">
+          <label for="{{ form_id }}-email">Email<span aria-hidden="true">*</span></label>
+          <input
+            id="{{ form_id }}-email"
+            data-contact-email
+            type="email"
+            name="contact[email]"
+            value="{{ form.email | default: customer.email | escape }}"
+            autocomplete="email"
+            autocapitalize="off"
+            spellcheck="false"
+            placeholder="Enter your email"
+            required
+            aria-required="true"
+            maxlength="254"
+            pattern="[^\s@]+@[^\s@]+\.[A-Za-z]{2,}"
+            title="Enter a complete email address, for example name@example.com."
+            aria-describedby="{{ form_id }}-email-error"
+            {% if form.errors contains 'email' %}aria-invalid="true"{% endif %}
+          >
+          <p
+            id="{{ form_id }}-email-error"
+            class="tssc-get-in-touch__field-error"
+            role="alert"
+            hidden
+            data-contact-email-error
+          ></p>
+        </div>
+
+        <fieldset class="tssc-get-in-touch__field tssc-get-in-touch__phone-field">
+          <legend>Phone Number</legend>
+          <div class="tssc-get-in-touch__phone-controls">
+            <div class="tssc-get-in-touch__phone-part tssc-get-in-touch__phone-part--code">
+              <label class="visually-hidden" for="{{ form_id }}-country-code">Country code</label>
+              <div class="tssc-get-in-touch__country-select">
+                <select
+                  id="{{ form_id }}-country-code"
+                  name="contact[Country code]"
+                  autocomplete="tel-country-code"
+                >
+                  <option value="+44" selected>United Kingdom (+44)</option>
+                  <option value="+1">United States / Canada (+1)</option>
+                  <option value="+353">Ireland (+353)</option>
+                  <option value="+61">Australia (+61)</option>
+                  <option value="+43">Austria (+43)</option>
+                  <option value="+32">Belgium (+32)</option>
+                  <option value="+45">Denmark (+45)</option>
+                  <option value="+358">Finland (+358)</option>
+                  <option value="+33">France (+33)</option>
+                  <option value="+49">Germany (+49)</option>
+                  <option value="+39">Italy (+39)</option>
+                  <option value="+31">Netherlands (+31)</option>
+                  <option value="+64">New Zealand (+64)</option>
+                  <option value="+47">Norway (+47)</option>
+                  <option value="+351">Portugal (+351)</option>
+                  <option value="+27">South Africa (+27)</option>
+                  <option value="+34">Spain (+34)</option>
+                  <option value="+46">Sweden (+46)</option>
+                  <option value="+41">Switzerland (+41)</option>
+                  <option value="+971">United Arab Emirates (+971)</option>
+                </select>
+                <svg aria-hidden="true" focusable="false" viewBox="0 0 16 16">
+                  <path d="m3 6 5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </div>
+
+            <div class="tssc-get-in-touch__phone-part">
+              <label class="visually-hidden" for="{{ form_id }}-phone">Phone number</label>
+              <input
+                id="{{ form_id }}-phone"
+                data-contact-phone
+                type="tel"
+                name="contact[phone]"
+                value="{{ form.phone | escape }}"
+                autocomplete="tel-national"
+                inputmode="tel"
+                placeholder="Enter your number"
+                pattern="[0-9 ()-]*[0-9][0-9 ()-]*"
+                minlength="6"
+                maxlength="20"
+                title="Enter a valid phone number using numbers, spaces, brackets or hyphens."
+                aria-describedby="{{ form_id }}-phone-hint {{ form_id }}-phone-error"
+              >
+            </div>
+          </div>
+          <p id="{{ form_id }}-phone-hint" class="tssc-get-in-touch__field-hint">
+            Optional.
+          </p>
+          <p
+            id="{{ form_id }}-phone-error"
+            class="tssc-get-in-touch__field-error"
+            role="alert"
+            hidden
+            data-contact-phone-error
+          ></p>
+        </fieldset>
+
+        <div class="tssc-get-in-touch__field">
+          <label for="{{ form_id }}-enquiry">Enquiry<span aria-hidden="true">*</span></label>
+          <div class="tssc-get-in-touch__select">
+            <select id="{{ form_id }}-enquiry" name="contact[Enquiry]" required aria-required="true">
+              <option value="General enquiry">General enquiry</option>
+              <option value="Bespoke work">Bespoke work</option>
+              <option value="Sustainable textile consultancy">Sustainable textile consultancy</option>
+            </select>
+            <svg aria-hidden="true" focusable="false" viewBox="0 0 16 16">
+              <path d="m3 6 5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="tssc-get-in-touch__field">
+          <label for="{{ form_id }}-message">Your Message<span aria-hidden="true">*</span></label>
+          <textarea
+            id="{{ form_id }}-message"
+            name="contact[body]"
+            rows="6"
+            placeholder="Write here..."
+            required
+            aria-required="true"
+            maxlength="5000"
+          >{{ form.body }}</textarea>
+        </div>
+
+        <button class="tssc-get-in-touch__submit" type="submit">
+          <span>{{ section.settings.button_label | escape }}</span>
+          <svg aria-hidden="true" focusable="false" viewBox="0 0 20 20" width="18" height="18">
+            <path d="M4 10h11M11 6l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      {% endform %}
+    </div>
+  </div>
+</section>
+
+<script>
+  (() => {
+    const section = document.getElementById('TsscGetInTouch-{{ section.id }}');
+    const form = document.getElementById('{{ form_id }}');
+    const email = section?.querySelector('[data-contact-email]');
+    const emailError = section?.querySelector('[data-contact-email-error]');
+    const phone = section?.querySelector('[data-contact-phone]');
+    const phoneError = section?.querySelector('[data-contact-phone-error]');
+
+    if (!section || !form || !email || !emailError || !phone || !phoneError) return;
+
+    const commonEmailCorrections = {
+      'gmail.cok': 'gmail.com',
+      'gmail.con': 'gmail.com',
+      'gmail.co': 'gmail.com',
+      'gmai.com': 'gmail.com',
+      'gmial.com': 'gmail.com',
+      'gmal.com': 'gmail.com',
+      'hotmail.cok': 'hotmail.com',
+      'hotmail.con': 'hotmail.com',
+      'outlook.cok': 'outlook.com',
+      'outlook.con': 'outlook.com',
+      'yahoo.cok': 'yahoo.com',
+      'yahoo.con': 'yahoo.com'
+    };
+
+    const showFieldError = (field, errorElement, message) => {
+      field.setCustomValidity(message);
+      field.toggleAttribute('aria-invalid', Boolean(message));
+      errorElement.textContent = message;
+      errorElement.hidden = !message;
+      return !message;
+    };
+
+    const validateEmail = () => {
+      const value = email.value.trim();
+      let message = '';
+
+      if (!value) {
+        message = 'Enter your email address.';
+      } else if (!/^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/.test(value)) {
+        message = 'Enter a complete email address, for example name@example.com.';
+      } else {
+        const domain = value.split('@').pop().toLowerCase();
+        const suggestedDomain = commonEmailCorrections[domain];
+        if (suggestedDomain) {
+          message = `Check the email domain. Did you mean ${suggestedDomain}?`;
+        }
+      }
+
+      return showFieldError(email, emailError, message);
+    };
+
+    const validatePhone = () => {
+      const value = phone.value.trim();
+      const isValid = value === '' || /^(?=.*[0-9])[0-9 ()-]{6,20}$/.test(value);
+      const message = isValid
+        ? ''
+        : 'Enter a valid phone number using numbers, spaces, brackets or hyphens.';
+
+      return showFieldError(phone, phoneError, message);
+    };
+
+    email.addEventListener('blur', validateEmail);
+    phone.addEventListener('blur', validatePhone);
+
+    email.addEventListener('input', () => {
+      if (!emailError.hidden) validateEmail();
+    });
+    phone.addEventListener('input', () => {
+      if (!phoneError.hidden) validatePhone();
+    });
+
+    form.addEventListener(
+      'invalid',
+      (event) => {
+        if (event.target === email) validateEmail();
+        if (event.target === phone) validatePhone();
+      },
+      true
+    );
+
+    form.addEventListener('submit', (event) => {
+      const emailIsValid = validateEmail();
+      const phoneIsValid = validatePhone();
+      if (emailIsValid && phoneIsValid) return;
+
+      event.preventDefault();
+      (emailIsValid ? phone : email).focus();
+    });
+  })();
+</script>
+
+{% style %}
+  #TsscGetInTouch-{{ section.id }},
+  #TsscGetInTouch-{{ section.id }} * {
+    box-sizing: border-box;
+  }
+
+  #TsscGetInTouch-{{ section.id }} {
+    width: 100%;
+    padding-block: var(--contact-padding-top) var(--contact-padding-bottom);
+    color: var(--contact-text);
+    background: var(--contact-background);
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(360px, 1.1fr);
+    gap: clamp(64px, 9vw, 136px);
+    align-items: start;
+    width: min(100%, 1220px);
+    margin-inline: auto;
+    padding-inline: clamp(24px, 5vw, 64px);
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__heading {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 0.22em;
+    margin: 0 0 18px;
+    color: var(--contact-text);
+    font-family: var(--font-h3--family, var(--font-heading--family));
+    font-size: clamp(34px, 3.35vw, 48px);
+    font-weight: var(--font-h3--weight, 400);
+    line-height: 1.12;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__heading em {
+    font-style: italic;
+    font-weight: inherit;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__intro {
+    max-width: 42ch;
+    font-family: var(--font-paragraph--family);
+    font-size: 16px;
+    line-height: 1.55;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__intro p {
+    margin: 0;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__contact-list {
+    display: block;
+    margin: 32px 0 0;
+    border-top: 1px solid var(--contact-border);
+    font-style: normal;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__contact-row {
+    display: grid;
+    grid-template-columns: 28px minmax(0, 1fr);
+    gap: 14px;
+    padding-block: 22px;
+    border-bottom: 1px solid var(--contact-border);
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__contact-icon {
+    width: 24px;
+    height: 24px;
+    color: var(--contact-accent);
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__contact-label {
+    margin: 0 0 8px;
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__contact-row :is(a, p:not(.tssc-get-in-touch__contact-label)) {
+    margin: 0;
+    color: var(--contact-text);
+    font-family: var(--font-paragraph--family);
+    font-size: 16px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+    text-decoration: none;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__contact-row a:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__socials {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+    margin-top: 28px;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__social-heading {
+    margin: 0;
+    color: var(--contact-text);
+    font-family: var(--font-h4--family, var(--font-heading--family));
+    font-size: 20px;
+    font-weight: var(--font-h4--weight, 400);
+    line-height: 1.3;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__social-list {
+    display: flex;
+    gap: 4px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__social-list a {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    color: var(--contact-text);
+    text-decoration: none;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__social-list svg {
+    width: 30px;
+    height: 30px;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__form {
+    display: grid;
+    gap: 20px;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__form-column {
+    container-type: inline-size;
+    container-name: tssc-contact-form;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__required-note {
+    margin: 0 0 -4px;
+    color: var(--contact-text);
+    font-family: var(--font-paragraph--family);
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__field {
+    display: grid;
+    gap: 8px;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__field label {
+    color: var(--contact-text);
+    font-family: var(--font-paragraph--family);
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.35;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__phone-field {
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__phone-field legend {
+    margin: 0;
+    padding: 0;
+    color: var(--contact-text);
+    font-family: var(--font-paragraph--family);
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.35;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__phone-controls {
+    display: grid;
+    grid-template-columns: minmax(132px, 0.65fr) minmax(0, 1.35fr);
+    gap: 0;
+    border: 1px solid var(--contact-border);
+    background: var(--contact-background);
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__phone-part {
+    display: grid;
+    min-width: 0;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__phone-part--code {
+    border-inline-end: 1px solid var(--contact-border);
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__country-select {
+    position: relative;
+    min-width: 0;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__select {
+    position: relative;
+    min-width: 0;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__select select {
+    appearance: none;
+    -webkit-appearance: none;
+    display: block;
+    padding-inline: 16px 48px;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__select svg {
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    width: 16px;
+    height: 16px;
+    color: var(--contact-text);
+    pointer-events: none;
+    transform: translateY(-50%);
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__field .tssc-get-in-touch__country-select select {
+    appearance: none;
+    -webkit-appearance: none;
+    display: block;
+    padding: 12px 48px 12px 16px;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__country-select svg {
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    width: 16px;
+    height: 16px;
+    color: var(--contact-text);
+    pointer-events: none;
+    transform: translateY(-50%);
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__field-hint {
+    margin: 0;
+    color: color-mix(in srgb, var(--contact-text) 72%, transparent);
+    font-family: var(--font-paragraph--family);
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__field-error {
+    margin: 0;
+    color: #a51f3d;
+    font-family: var(--font-paragraph--family);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__field-error[hidden] {
+    display: none;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__field :is(input, select, textarea) {
+    width: 100%;
+    min-height: 48px;
+    margin: 0;
+    padding: 12px 14px;
+    border: 1px solid var(--contact-border);
+    border-radius: 0;
+    color: var(--contact-text);
+    background: var(--contact-background);
+    font-family: var(--font-paragraph--family);
+    font-size: 16px;
+    line-height: 1.4;
+  }
+
+  #TsscGetInTouch-{{ section.id }}
+    .tssc-get-in-touch__phone-controls
+    :is(input, select) {
+    min-height: 48px;
+    border: 0;
+    background-color: transparent;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__field textarea {
+    min-height: 130px;
+    resize: vertical;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__field :is(input, select, textarea)::placeholder {
+    color: color-mix(in srgb, var(--contact-text) 55%, transparent);
+    opacity: 1;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__field :is(input, select, textarea)[aria-invalid='true'] {
+    border-color: #a51f3d;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__phone-controls:has(input[aria-invalid='true']) {
+    border-color: #a51f3d;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    justify-self: start;
+    gap: 8px;
+    min-height: 44px;
+    padding: 10px 18px;
+    border: 1px solid var(--contact-accent);
+    border-radius: 0;
+    color: #ffffff;
+    background: var(--contact-accent);
+    font-family: var(--font-paragraph--family);
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.3;
+    cursor: pointer;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__submit svg {
+    transition: transform 180ms ease;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__submit:hover svg {
+    transform: translateX(3px);
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__message {
+    margin: 0;
+    padding: 16px;
+    border: 1px solid currentColor;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__message--success {
+    color: #285b37;
+    background: #eef8f0;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__message--error {
+    color: #8a1f2f;
+    background: #fff1f3;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__message :is(p, ul) {
+    margin: 0;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__message ul {
+    margin-top: 8px;
+    padding-left: 20px;
+  }
+
+  html.tssc-contact-dialog-open {
+    overflow: hidden;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__dialog {
+    width: min(540px, calc(100% - 32px));
+    max-width: none;
+    margin: auto;
+    padding: 0;
+    border: 0;
+    border-top: 5px solid var(--contact-accent);
+    border-radius: 0;
+    color: var(--contact-text);
+    background: var(--contact-background);
+    box-shadow: 0 24px 70px rgb(50 21 29 / 24%);
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__dialog::backdrop {
+    background: rgb(0 0 0 / 72%);
+    backdrop-filter: blur(2px);
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__dialog-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: clamp(42px, 7vw, 64px) clamp(24px, 7vw, 56px) clamp(32px, 6vw, 48px);
+    text-align: center;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__dialog-icon-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    color: var(--contact-text);
+    background: transparent;
+    cursor: pointer;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__dialog-icon-close svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__dialog-status-icon {
+    display: grid;
+    place-items: center;
+    width: 58px;
+    height: 58px;
+    margin-bottom: 20px;
+    color: var(--contact-accent);
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__dialog-status-icon svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__dialog-heading {
+    margin: 0;
+    color: var(--contact-text);
+    font-family: var(--font-h3--family, var(--font-heading--family));
+    font-size: clamp(30px, 5vw, 42px);
+    font-weight: var(--font-h3--weight, 400);
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__dialog-text {
+    max-width: 38ch;
+    margin: 16px 0 0;
+    color: var(--contact-text);
+    font-family: var(--font-paragraph--family);
+    font-size: 16px;
+    line-height: 1.55;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__dialog-button {
+    min-width: 132px;
+    min-height: 48px;
+    margin-top: 28px;
+    padding: 12px 22px;
+    border: 1px solid var(--contact-accent);
+    border-radius: 0;
+    color: #ffffff;
+    background: var(--contact-accent);
+    font-family: var(--font-paragraph--family);
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.3;
+    cursor: pointer;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__dialog-button:hover,
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__dialog-button:focus-visible {
+    filter: brightness(0.9);
+  }
+
+  #TsscGetInTouch-{{ section.id }} :is(a, button, input, select, textarea):focus-visible {
+    outline: 2px solid var(--contact-accent);
+    outline-offset: 3px;
+  }
+
+  #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__phone-controls:focus-within {
+    outline: 2px solid var(--contact-accent);
+    outline-offset: 3px;
+  }
+
+  #TsscGetInTouch-{{ section.id }}
+    .tssc-get-in-touch__phone-controls
+    :is(input, select):focus-visible {
+    outline: 0;
+  }
+
+  @media screen and (max-width: 899px) {
+    #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__inner {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 56px;
+      padding-inline: 40px;
+    }
+
+    #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__details,
+    #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__form-column {
+      width: min(100%, 680px);
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #TsscGetInTouch-{{ section.id }} {
+      padding-block: min(var(--contact-padding-top), 56px) min(var(--contact-padding-bottom), 56px);
+    }
+
+    #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__inner {
+      gap: 48px;
+      padding-inline: 20px;
+    }
+
+    #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__heading {
+      font-size: clamp(32px, 9vw, 40px);
+    }
+  }
+
+  @media screen and (max-width: 479px) {
+    #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__inner {
+      padding-inline: 16px;
+    }
+
+    #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__contact-row {
+      gap: 10px;
+    }
+
+    #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__submit {
+      width: 100%;
+      justify-self: stretch;
+    }
+
+    #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__dialog {
+      width: calc(100% - 24px);
+    }
+
+    #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__dialog-content {
+      padding-inline: 20px;
+    }
+
+    #TsscGetInTouch-{{ section.id }} .tssc-get-in-touch__dialog-button {
+      width: 100%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #TsscGetInTouch-{{ section.id }} *,
+    #TsscGetInTouch-{{ section.id }} *::before,
+    #TsscGetInTouch-{{ section.id }} *::after {
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+    }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "TSSC Get in touch",
+  "tag": "div",
+  "class": "tssc-get-in-touch-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Get in"
+    },
+    {
+      "type": "text",
+      "id": "italic_heading",
+      "label": "Italic heading text",
+      "default": "Touch"
+    },
+    {
+      "type": "richtext",
+      "id": "intro_text",
+      "label": "Introduction",
+      "default": "<p>For general enquiries, project proposals or press, you can reach us here.</p>"
+    },
+    {
+      "type": "textarea",
+      "id": "address",
+      "label": "Address",
+      "default": "Unit 6 Lower Stalls, Iford Farm, Iford, Lewes, BN7 3EU"
+    },
+    {
+      "type": "url",
+      "id": "address_link",
+      "label": "Address map link"
+    },
+    {
+      "type": "text",
+      "id": "phone_display",
+      "label": "Displayed phone number",
+      "default": "+44 (0)7790 867141"
+    },
+    {
+      "type": "text",
+      "id": "phone_link",
+      "label": "Phone link number",
+      "info": "Use numbers and an optional leading + only.",
+      "default": "+447790867141"
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Email",
+      "default": "rachel@thesustainablesequincompany.com"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram"
+    },
+    {
+      "type": "url",
+      "id": "facebook_url",
+      "label": "Facebook"
+    },
+    {
+      "type": "url",
+      "id": "linkedin_url",
+      "label": "LinkedIn"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Send Message"
+    },
+    {
+      "type": "text",
+      "id": "success_heading",
+      "label": "Success pop-up heading",
+      "default": "Thanks for getting in touch"
+    },
+    {
+      "type": "textarea",
+      "id": "success_text",
+      "label": "Success pop-up message",
+      "default": "Your message has been sent successfully. We’ll get back to you as soon as we can."
+    },
+    {
+      "type": "text",
+      "id": "success_button_label",
+      "label": "Success pop-up button",
+      "default": "Close"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#32151D"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent",
+      "default": "#962648"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Borders",
+      "default": "#D9D9D9"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 32,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 32,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "default": 72
+    }
+  ],
+  "presets": [
+    {
+      "name": "TSSC Get in touch",
+      "category": "TSSC",
+      "settings": {
+        "address_link": "https://www.google.com/maps/search/?api=1&query=Unit+6+Lower+Stalls%2C+Iford+Farm%2C+Iford%2C+Lewes%2C+BN7+3EU",
+        "instagram_url": "https://www.instagram.com/thesustainablesequincompany",
+        "facebook_url": "https://www.facebook.com/thesustainablesequincompany/",
+        "linkedin_url": "https://www.linkedin.com/company/the-sustainable-sequin-company/"
+      }
+    }
+  ]
+}
+{% endschema %}

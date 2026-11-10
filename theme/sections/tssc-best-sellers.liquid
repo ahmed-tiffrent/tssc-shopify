@@ -1,0 +1,428 @@
+{% liquid
+  assign source_collection = section.settings.source_collection | default: collections.all
+  assign card_limit = section.settings.products_to_show | default: 4
+  assign qualifying_tag = section.settings.qualifying_tag | strip
+  assign source_product_count = source_collection.products.size
+  assign rendered_product_keys = '|'
+  assign displayed_count = 0
+
+  assign day_seed = 'now' | date: '%s' | divided_by: 86400
+  assign random_seed = day_seed | plus: section.index
+
+  assign view_all_link = section.settings.view_all_link
+  if view_all_link == blank
+    assign view_all_link = source_collection.url | default: routes.all_products_collection_url
+  endif
+%}
+
+<section
+  id="TsscBestSellers-{{ section.id }}"
+  class="tssc-best-sellers"
+  aria-labelledby="TsscBestSellersHeading-{{ section.id }}"
+  style="
+    --tssc-best-bg: {{ section.settings.background_color }};
+    --tssc-best-text: {{ section.settings.text_color }};
+    --tssc-best-accent: {{ section.settings.accent_color }};
+    --tssc-best-padding-top: {{ section.settings.padding_top }}px;
+    --tssc-best-padding-bottom: {{ section.settings.padding_bottom }}px;
+  "
+>
+  <div class="tssc-best-sellers__inner">
+    <header class="tssc-best-sellers__header">
+      <h3 id="TsscBestSellersHeading-{{ section.id }}" class="tssc-best-sellers__heading">
+        {{ section.settings.heading | escape }}
+      </h3>
+
+      {% if section.settings.view_all_label != blank and view_all_link != blank %}
+        <a class="tssc-best-sellers__view-all" href="{{ view_all_link }}">
+          {{ section.settings.view_all_label | escape }}
+        </a>
+      {% endif %}
+    </header>
+
+    {% if source_product_count > 0 %}
+      <ul class="tssc-best-sellers__grid" role="list">
+        {% comment %}
+          Shopify storefront Liquid cannot access order totals. Products tagged
+          with the configured threshold tag are therefore treated as qualified
+          best sellers and retain the source collection's merchandising order.
+        {% endcomment %}
+        {% if qualifying_tag != blank %}
+          {% for product in source_collection.products %}
+            {% if displayed_count >= card_limit %}{% break %}{% endif %}
+
+            {% if product.tags contains qualifying_tag %}
+              {% liquid
+                assign product_key = '|' | append: product.id | append: '|'
+                assign rendered_product_keys = rendered_product_keys | append: product.id | append: '|'
+                assign displayed_count = displayed_count | plus: 1
+              %}
+              {% render 'tssc-best-seller-card',
+                product: product,
+                item_index: displayed_count,
+                random_seed: random_seed,
+                section_id: section.id,
+                image_sizes: '(min-width: 1200px) 25vw, 50vw'
+              %}
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+
+        {% comment %}Fill remaining positions from a stable, daily-rotating product order.{% endcomment %}
+        {% if displayed_count < card_limit %}
+          {% assign last_product_offset = source_product_count | minus: 1 %}
+          {% for offset in (0..last_product_offset) %}
+            {% if displayed_count >= card_limit %}{% break %}{% endif %}
+
+            {% liquid
+              assign product_index = random_seed | plus: offset | modulo: source_product_count
+              assign product = source_collection.products[product_index]
+              assign product_key = '|' | append: product.id | append: '|'
+            %}
+
+            {% unless rendered_product_keys contains product_key %}
+              {% liquid
+                assign rendered_product_keys = rendered_product_keys | append: product.id | append: '|'
+                assign displayed_count = displayed_count | plus: 1
+              %}
+              {% render 'tssc-best-seller-card',
+                product: product,
+                item_index: displayed_count,
+                random_seed: random_seed,
+                section_id: section.id,
+                image_sizes: '(min-width: 1200px) 25vw, 50vw'
+              %}
+            {% endunless %}
+          {% endfor %}
+        {% endif %}
+      </ul>
+    {% elsif request.design_mode %}
+      <p class="tssc-best-sellers__empty">
+        Select a collection containing products to preview this section.
+      </p>
+    {% endif %}
+  </div>
+</section>
+
+{% style %}
+  #TsscBestSellers-{{ section.id }},
+  #TsscBestSellers-{{ section.id }} * {
+    box-sizing: border-box;
+  }
+
+  #TsscBestSellers-{{ section.id }} {
+    width: 100%;
+    padding-block: var(--tssc-best-padding-top) var(--tssc-best-padding-bottom);
+    color: var(--tssc-best-text);
+    background: var(--tssc-best-bg);
+  }
+
+  #TsscBestSellers-{{ section.id }} .tssc-best-sellers__inner {
+    width: min(100%, 1536px);
+    margin-inline: auto;
+    padding-inline: clamp(20px, 5vw, 80px);
+  }
+
+  #TsscBestSellers-{{ section.id }} .tssc-best-sellers__header {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: clamp(32px, 4vw, 56px);
+  }
+
+  #TsscBestSellers-{{ section.id }} .tssc-best-sellers__heading {
+    margin: 0;
+    color: var(--tssc-best-text);
+  }
+
+  #TsscBestSellers-{{ section.id }} .tssc-best-sellers__view-all {
+    display: inline-flex;
+    align-items: center;
+    flex: 0 0 auto;
+    min-height: 44px;
+    color: var(--tssc-best-accent);
+    font-size: 16px;
+    line-height: 1.4;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 5px;
+  }
+
+  #TsscBestSellers-{{ section.id }} .tssc-best-sellers__view-all:hover {
+    text-decoration-thickness: 2px;
+  }
+
+  #TsscBestSellers-{{ section.id }} :is(a, button):focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+  }
+
+  #TsscBestSellers-{{ section.id }} .tssc-best-sellers__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(20px, 2.2vw, 32px);
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    align-items: start;
+  }
+
+  #TsscBestSellers-{{ section.id }} .variant-split-card-item {
+    display: flex;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  #TsscBestSellers-{{ section.id }} .variant-split-card {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-width: 0;
+    width: 100%;
+    color: var(--tssc-best-text);
+    background: var(--tssc-best-bg);
+  }
+
+  #TsscBestSellers-{{ section.id }} .variant-split-card-image-link {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
+    background: #f5f5f5;
+    text-decoration: none;
+  }
+
+  #TsscBestSellers-{{ section.id }} .variant-split-card-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  #TsscBestSellers-{{ section.id }} .variant-split-card-placeholder {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    color: var(--tssc-best-text);
+    text-align: center;
+  }
+
+  #TsscBestSellers-{{ section.id }} .variant-split-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding-top: 20px;
+    color: var(--tssc-best-text);
+  }
+
+  #TsscBestSellers-{{ section.id }} :is(.variant-split-card-colour, .variant-split-card-title, .variant-split-card-price) {
+    margin: 0;
+    line-height: 1.35;
+  }
+
+  #TsscBestSellers-{{ section.id }} .variant-split-card-colour {
+    margin-bottom: 16px;
+    color: var(--tssc-best-accent);
+    font-size: 18px;
+  }
+
+  #TsscBestSellers-{{ section.id }} .variant-split-card-title-link {
+    color: var(--tssc-best-text);
+    text-decoration: none;
+  }
+
+  #TsscBestSellers-{{ section.id }} .variant-split-card-title {
+    color: inherit;
+    font-family: var(--font-h4--family, var(--font-h3--family));
+    font-size: var(--font-h4--size);
+    font-weight: var(--font-h4--weight, var(--font-h3--weight));
+    line-height: var(--font-h4--line-height, 1.2);
+  }
+
+  #TsscBestSellers-{{ section.id }} .variant-split-card-price {
+    margin-top: 16px;
+    color: var(--tssc-best-text);
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  #TsscBestSellers-{{ section.id }} .tssc-best-sellers__empty {
+    margin: 0;
+  }
+
+  @media screen and (max-width: 1199px) {
+    #TsscBestSellers-{{ section.id }} .tssc-best-sellers__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media screen and (min-width: 750px) and (max-width: 1199px) {
+    /* Match the compact shop cards: do not reserve extra title lines, and
+       keep the price visually connected to the product title. */
+    #TsscBestSellers-{{ section.id }} .tssc-card-info__title {
+      min-height: 0;
+    }
+
+    #TsscBestSellers-{{ section.id }} .tssc-card-info__details-row {
+      margin-top: 6px !important;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #TsscBestSellers-{{ section.id }} {
+      padding-block: min(var(--tssc-best-padding-top), 56px) min(var(--tssc-best-padding-bottom), 56px);
+    }
+
+    #TsscBestSellers-{{ section.id }} .tssc-best-sellers__inner {
+      padding-inline: 16px;
+    }
+
+    #TsscBestSellers-{{ section.id }} .tssc-best-sellers__header {
+      align-items: baseline;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    #TsscBestSellers-{{ section.id }} .tssc-best-sellers__view-all {
+      font-size: 15px;
+    }
+
+    #TsscBestSellers-{{ section.id }} .tssc-best-sellers__grid {
+      gap: 28px 16px;
+    }
+
+    #TsscBestSellers-{{ section.id }} .variant-split-card-content {
+      padding-top: 16px;
+    }
+
+    #TsscBestSellers-{{ section.id }} .variant-split-card-colour {
+      margin-bottom: 12px;
+      font-size: 16px;
+    }
+
+    #TsscBestSellers-{{ section.id }} .variant-split-card-price {
+      margin-top: 12px;
+      font-size: 18px;
+    }
+  }
+
+  @media screen and (max-width: 479px) {
+    #TsscBestSellers-{{ section.id }} .tssc-best-sellers__header {
+      align-items: flex-start;
+    }
+
+    #TsscBestSellers-{{ section.id }} .tssc-best-sellers__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 24px 12px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #TsscBestSellers-{{ section.id }} *,
+    #TsscBestSellers-{{ section.id }} *::before,
+    #TsscBestSellers-{{ section.id }} *::after {
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+    }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "TSSC Best sellers",
+  "tag": "div",
+  "class": "tssc-best-sellers-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Our Best Sellers"
+    },
+    {
+      "type": "collection",
+      "id": "source_collection",
+      "label": "Product source collection",
+      "info": "Use a collection ordered by best-selling for accurate ranking after products qualify."
+    },
+    {
+      "type": "text",
+      "id": "qualifying_tag",
+      "label": "Best-seller qualification tag",
+      "default": "best-seller",
+      "info": "Products with this tag are shown first. Shopify Flow can apply it when your chosen sales threshold is reached."
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products to show",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "text",
+      "id": "view_all_label",
+      "label": "View-all link label",
+      "default": "View all shop"
+    },
+    {
+      "type": "url",
+      "id": "view_all_link",
+      "label": "View-all link"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#32151D"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent",
+      "default": "#962648"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 32,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 32,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "default": 80
+    }
+  ],
+  "presets": [
+    {
+      "name": "TSSC Best sellers"
+    }
+  ]
+}
+{% endschema %}

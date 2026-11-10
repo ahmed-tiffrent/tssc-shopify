@@ -1,0 +1,218 @@
+{% liquid
+  assign has_active_colour_filter = false
+  assign active_colour_keys = '|'
+  assign has_active_finish_filter = false
+  assign active_finish_keys = '|'
+
+  for filter in filters
+    assign filter_label = filter.label | downcase | strip
+
+    if filter_label == 'colour' or filter_label == 'colours' or filter_label == 'color' or filter_label == 'colors'
+      for active_value in filter.active_values
+        assign active_colour_key = active_value.label | handleize
+        assign active_colour_keys = active_colour_keys | append: active_colour_key | append: '|'
+        assign has_active_colour_filter = true
+      endfor
+    elsif filter_label == 'finish' or filter_label == 'finishes'
+      for active_value in filter.active_values
+        assign active_finish_key = active_value.label | handleize
+        assign active_finish_keys = active_finish_keys | append: active_finish_key | append: '|'
+        assign has_active_finish_filter = true
+      endfor
+    endif
+  endfor
+
+  assign split_card_index = 0
+%}
+
+{% for product in products %}
+  {% liquid
+    assign product_order = forloop.index
+    assign split_by_colour = true
+    assign colour_option_index = nil
+    assign colour_product_option = nil
+    assign finish_option_index = nil
+    assign finish_product_option = nil
+    assign finish_keys = '|'
+    assign colour_finish_pairs = '|'
+
+    if product.handle == 'seconds'
+      assign split_by_colour = false
+    endif
+
+    for option in product.options_with_values
+      assign option_name = option.name | downcase | strip
+
+      if split_by_colour
+        if option_name == 'colour' or option_name == 'color'
+          assign colour_option_index = option.position | minus: 1
+          assign colour_product_option = option
+        endif
+      endif
+
+      if option_name == 'finish'
+        assign finish_option_index = option.position | minus: 1
+        assign finish_product_option = option
+      endif
+    endfor
+
+    if finish_product_option != nil
+      for finish_value in finish_product_option.values
+        assign finish_key = finish_value.name | default: finish_value | handleize
+        assign finish_keys = finish_keys | append: finish_key | append: '|'
+      endfor
+    endif
+
+    if split_by_colour and colour_option_index != nil and finish_option_index != nil
+      for matrix_variant in product.variants
+        assign matrix_colour = matrix_variant.options[colour_option_index] | handleize
+        assign matrix_finish = matrix_variant.options[finish_option_index] | handleize
+        assign matrix_token = '|' | append: matrix_colour | append: ':' | append: matrix_finish | append: '|'
+
+        unless colour_finish_pairs contains matrix_token
+          assign colour_finish_pairs = colour_finish_pairs | append: matrix_colour | append: ':' | append: matrix_finish | append: '|'
+        endunless
+      endfor
+    endif
+  %}
+
+  {% if split_by_colour and colour_product_option != nil %}
+    {% for colour_option_value in colour_product_option.values %}
+      {% liquid
+        assign colour = colour_option_value.name
+        assign colour_key = '|' | append: colour | handleize | append: '|'
+        assign colour_handle = colour | handleize
+        assign colour_family_key = colour_key
+        assign colour_finish_keys = '|'
+
+        if finish_product_option != nil
+          for finish_value in finish_product_option.values
+            assign colour_finish_key = finish_value.name | default: finish_value | handleize
+            assign colour_finish_pair = '|' | append: colour_handle | append: ':' | append: colour_finish_key | append: '|'
+
+            if colour_finish_pairs contains colour_finish_pair
+              assign colour_finish_keys = colour_finish_keys | append: colour_finish_key | append: '|'
+            endif
+          endfor
+        endif
+
+        case colour_handle
+          when 'jet-black', 'black-liquorice'
+            assign colour_family_key = '|black|'
+          when 'blue-lagoon', 'aegean', 'admiral', 'fresh-air', 'hello-sailor', 'midnight', 'double-denim'
+            assign colour_family_key = '|blue|'
+          when 'rose-tea', 'chestnut', 'dark-chocolate', 'nostalgia', 'sandcastle', 'sugar-spice'
+            assign colour_family_key = '|brown|'
+          when 'artichoke', 'pale-peridot', 'racing-green', 'sea-serpent', 'asparagus', 'forest', 'aqua-green', 'sea-foam'
+            assign colour_family_key = '|green|'
+          when 'gunmetal', 'dark-silver', 'spacesuit', 'slate-grey', 'rocket-man', 'silver-lining'
+            assign colour_family_key = '|grey-silver|'
+          when 'clear-rainbow', 'disco-dancer', 'bobby-dazzler'
+            assign colour_family_key = '|multi-colour|'
+          when 'pink-lemonade', 'peony', 'blush', 'seashell', 'pink-petal', 'carnation', 'fluoro-flamingo'
+            assign colour_family_key = '|pink|'
+          when 'lavender', 'silver-lilac', 'iris', 'pale-heather'
+            assign colour_family_key = '|purple|'
+          when 'lipstick', 'geranium', 'chilli-pepper', 'claret', 'russet', 'sea-star'
+            assign colour_family_key = '|red|'
+          when 'snow-white', 'crystal-clear'
+            assign colour_family_key = '|white-clear|'
+          when 'marmalade', 'sunshine', 'comet', 'fluoro-canary', 'fluoro-tangerine'
+            assign colour_family_key = '|yellow-orange|'
+        endcase
+      %}
+
+      {% if colour != blank %}
+        {% if has_active_colour_filter %}
+          {% unless active_colour_keys contains colour_family_key %}
+            {% continue %}
+          {% endunless %}
+        {% endif %}
+
+        {% liquid
+          assign display_variant = colour_option_value.variant
+          assign display_variant_matches_finish = true
+
+          if has_active_finish_filter and finish_option_index != nil and display_variant != nil
+            assign display_finish_key = '|' | append: display_variant.options[finish_option_index] | handleize | append: '|'
+
+            unless active_finish_keys contains display_finish_key
+              assign display_variant_matches_finish = false
+            endunless
+          endif
+
+          if display_variant == nil or display_variant.available == false or display_variant_matches_finish == false
+            assign fallback_variant = display_variant
+            assign display_variant = nil
+
+            for candidate_variant in product.variants
+              if candidate_variant.options[colour_option_index] == colour
+                assign candidate_matches_finish = true
+
+                if has_active_finish_filter and finish_option_index != nil
+                  assign candidate_finish_key = '|' | append: candidate_variant.options[finish_option_index] | handleize | append: '|'
+
+                  unless active_finish_keys contains candidate_finish_key
+                    assign candidate_matches_finish = false
+                  endunless
+                endif
+
+                if candidate_matches_finish and display_variant == nil
+                  assign display_variant = candidate_variant
+                endif
+
+                if candidate_matches_finish and candidate_variant.available
+                  assign display_variant = candidate_variant
+                  break
+                endif
+              endif
+            endfor
+
+            if display_variant == nil and display_variant_matches_finish
+              assign display_variant = fallback_variant
+            endif
+          endif
+        %}
+
+        {% if display_variant != nil %}
+          {% assign split_card_index = split_card_index | plus: 1 %}
+
+          {% if split_card_index > 12 %}<template data-tssc-deferred-card>{% endif %}
+          {% render 'variant-split-card',
+            product: product,
+            variant: display_variant,
+            colour: colour,
+            colour_option_index: colour_option_index,
+            colour_family_key: colour_family_key,
+            finish_option_index: finish_option_index,
+            finish_keys: colour_finish_keys,
+            section_id: section.id,
+            page_number: paginate.current_page,
+            item_index: split_card_index,
+            product_order: product_order
+          %}
+          {% if split_card_index > 12 %}</template>{% endif %}
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+  {% else %}
+    {% assign display_variant = product.selected_or_first_available_variant %}
+    {% assign split_card_index = split_card_index | plus: 1 %}
+
+    {% if split_card_index > 12 %}<template data-tssc-deferred-card>{% endif %}
+    {% render 'variant-split-card',
+      product: product,
+      variant: display_variant,
+      colour: blank,
+      colour_option_index: nil,
+      colour_family_key: blank,
+      finish_option_index: finish_option_index,
+      finish_keys: finish_keys,
+      section_id: section.id,
+      page_number: paginate.current_page,
+      item_index: split_card_index,
+      product_order: product_order
+    %}
+    {% if split_card_index > 12 %}</template>{% endif %}
+  {% endif %}
+{% endfor %}

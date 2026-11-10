@@ -1,0 +1,72 @@
+{%- comment -%}
+  Compact trigger and accessible full-screen viewer for the sequin size/shape
+  and colour reference charts. Pass the current section to make IDs unique.
+{%- endcomment -%}
+{%- liquid
+  assign modal_id = 'TsscSequinsGuideModal-' | append: section.id
+  assign heading_id = modal_id | append: '-heading'
+  assign status_id = modal_id | append: '-status'
+  assign size_chart_url = 'https://cdn.shopify.com/s/files/1/0978/1139/8980/files/size_chart.webp?v=1783944419'
+-%}
+
+<button
+  type="button"
+  class="collection-grid-controls__guide-link"
+  aria-haspopup="dialog"
+  aria-controls="{{ modal_id }}"
+  data-sequins-guide-open="{{ modal_id }}"
+>
+  Sequins guide
+</button>
+
+<dialog
+  id="{{ modal_id }}"
+  class="tssc-sequins-guide-modal"
+  aria-labelledby="{{ heading_id }}"
+  aria-describedby="{{ status_id }}"
+  data-sequins-guide-modal
+>
+  <div class="tssc-sequins-guide-modal__content">
+    <h2 id="{{ heading_id }}" class="visually-hidden" data-guide-title>Shapes &amp; sizes guide</h2>
+    <button type="button" class="tssc-sequins-guide-modal__close" data-guide-close aria-label="Close sequins guide">
+      <span aria-hidden="true">×</span>
+    </button>
+
+    <div class="tssc-sequins-guide-modal__viewer">
+      <button type="button" class="tssc-sequins-guide-modal__arrow tssc-sequins-guide-modal__arrow--previous" data-guide-previous aria-label="Previous guide image">
+        <span aria-hidden="true">←</span>
+      </button>
+
+      <figure class="tssc-sequins-guide-modal__figure">
+        <img
+          class="tssc-sequins-guide-modal__image"
+          alt="Sequin shapes and sizes guide"
+          width="2560"
+          height="2420"
+          data-guide-image
+        >
+        <figcaption id="{{ status_id }}" class="tssc-sequins-guide-modal__caption" aria-live="polite" data-guide-status>
+          Shapes &amp; sizes guide, image 1 of 2
+        </figcaption>
+      </figure>
+
+      <button type="button" class="tssc-sequins-guide-modal__arrow tssc-sequins-guide-modal__arrow--next" data-guide-next aria-label="Next guide image">
+        <span aria-hidden="true">→</span>
+      </button>
+    </div>
+
+    <footer class="tssc-sequins-guide-modal__footer">
+      <a
+        class="tssc-sequins-guide-modal__download"
+        href="{{ size_chart_url }}"
+        download="tssc-sequin-shapes-and-sizes-guide.jpg"
+        data-guide-download
+      >
+        Download image
+      </a>
+      <p class="tssc-sequins-guide-modal__hint">Use the arrow keys to browse the guides.</p>
+    </footer>
+  </div>
+
+  <script src="{{ 'tssc-sequins-guide-modal.js' | asset_url }}" type="module"></script>
+</dialog>

@@ -1,0 +1,247 @@
+{% liquid
+  assign card_variant = variant | default: product.selected_or_first_available_variant
+  assign card_product_url = product.url | split: '?' | first
+  assign card_url = card_product_url
+  if card_variant != blank
+    assign card_url = card_product_url | append: '?variant=' | append: card_variant.id
+  endif
+
+  assign title_parts = product.title | split: ' | '
+  assign core_title = title_parts.first | strip
+  assign material_title = blank
+  assign display_colour = colour
+  assign colour_count = 0
+  assign colour_option_index = nil
+  assign colour_product_option = blank
+  assign weight_min = blank
+  assign weight_max = blank
+  assign availability_unit = blank
+  assign attribute_count = 0
+  assign selector_option = product.options_with_values.last
+  assign selector_option_index = product.options.size | minus: 1
+  assign selected_card_variant = card_variant
+  assign product_form_id = 'TsscCardProductForm-' | append: product.id | append: '-' | append: card_variant.id
+
+  for title_part in title_parts offset: 1
+    assign title_part_clean = title_part | strip
+    assign title_part_key = title_part_clean | downcase
+    if title_part_key contains 'recycled plastic'
+      assign material_title = title_part_clean
+    else
+      assign attribute_count = attribute_count | plus: 1
+    endif
+  endfor
+
+  if material_title != blank
+    assign core_title = core_title | append: ' | ' | append: material_title
+  else
+    assign core_title = product.title
+  endif
+
+  for product_option in product.options_with_values
+    assign option_key = product_option.name | downcase | strip
+
+    if option_key == 'colour' or option_key == 'color'
+      assign colour_count = product_option.values.size
+      assign colour_option_index = product_option.position | minus: 1
+      assign colour_product_option = product_option
+    endif
+
+    if option_key contains 'weight' or option_key == 'quantity'
+      for option_value in product_option.values
+        assign option_value_text = option_value.name | default: option_value
+        assign option_weight = option_value_text | split: '|' | first | strip
+        if forloop.first
+          assign weight_min = option_weight
+        endif
+        if forloop.last
+          assign weight_max = option_weight
+        endif
+      endfor
+    elsif option_key contains 'length'
+      assign availability_unit = 'yards'
+      for option_value in product_option.values
+        assign option_value_text = option_value.name | default: option_value
+        assign option_length = option_value_text | split: ' ' | first | strip
+        if forloop.first
+          assign weight_min = option_length
+        endif
+        if forloop.last
+          assign weight_max = option_length
+        endif
+      endfor
+    endif
+  endfor
+
+  if hide_colour_heading
+    assign display_colour = blank
+  elsif display_colour == blank and colour_option_index != nil and card_variant != blank
+    assign display_colour = card_variant.options[colour_option_index]
+  endif
+
+  assign weight_range = blank
+  if weight_min != blank and weight_max != blank
+    if weight_min == weight_max
+      assign weight_range = weight_min
+    else
+      assign weight_range = weight_min | append: '–' | append: weight_max
+    endif
+  endif
+
+  assign selected_colour_value = blank
+  if display_colour != blank and colour_product_option != blank
+    assign display_colour_key = display_colour | handleize
+    for colour_value in colour_product_option.values
+      assign colour_value_key = colour_value.name | handleize
+      if colour_value_key == display_colour_key
+        assign selected_colour_value = colour_value
+        break
+      endif
+    endfor
+  endif
+%}
+
+<div class="tssc-card-info">
+  {% if display_colour != blank %}
+    <div class="tssc-card-info__colour-heading">
+      <span
+        class="tssc-card-info__swatch tssc-card-info__swatch--selected"
+        data-tssc-colour-swatch
+        data-colour-name="{{ display_colour | escape }}"
+        aria-hidden="true"
+        style="
+          {% if selected_colour_value.swatch.image != blank %}
+            --tssc-card-swatch-background: url('{{ selected_colour_value.swatch.image | image_url: width: 40 }}');
+          {% elsif selected_colour_value.swatch.color != blank %}
+            --tssc-card-swatch-background: rgb({{ selected_colour_value.swatch.color.rgb }});
+          {% elsif selected_colour_value.variant.featured_image != blank %}
+            --tssc-card-swatch-background: url('{{ selected_colour_value.variant.featured_image | image_url: width: 40 }}');
+          {% endif %}
+        "
+      ></span>
+      <p class="tssc-card-info__colour">{{ display_colour | escape }}</p>
+    </div>
+  {% endif %}
+
+  <a class="tssc-card-info__title-link" href="{{ card_url }}">
+    <h2 class="tssc-card-info__title">{{ core_title | escape }}</h2>
+  </a>
+
+  <div class="tssc-card-info__details-row">
+    {% if attribute_count > 0 %}
+      <ul class="tssc-card-info__attributes" aria-label="Product attributes">
+        {% for title_part in title_parts offset: 1 %}
+          {% liquid
+            assign attribute = title_part | strip
+            assign attribute_key = attribute | downcase
+          %}
+          {% unless attribute_key contains 'recycled plastic' %}
+            <li class="tssc-card-info__attribute">{{ attribute | escape }}</li>
+          {% endunless %}
+        {% endfor %}
+      </ul>
+    {% endif %}
+    <p class="tssc-card-info__price" data-tssc-card-price>{{ selected_card_variant.price | money }}</p>
+  </div>
+
+  {% if colour_count > 0 and colour_product_option != blank %}
+    <div class="tssc-card-info__colour-summary">
+      <span class="tssc-card-info__swatches" aria-hidden="true">
+        {% for colour_value in colour_product_option.values limit: 4 %}
+          {% liquid
+            assign colour_swatch = colour_value.swatch
+            assign colour_swatch_image = colour_swatch.image
+            assign colour_variant_image = colour_value.variant.featured_image
+          %}
+          <span
+            class="tssc-card-info__swatch"
+            data-tssc-colour-swatch
+            data-colour-name="{{ colour_value.name | escape }}"
+            style="
+              {% if colour_swatch_image != blank %}
+                --tssc-card-swatch-background: url('{{ colour_swatch_image | image_url: width: 40 }}');
+              {% elsif colour_swatch.color != blank %}
+                --tssc-card-swatch-background: rgb({{ colour_swatch.color.rgb }});
+              {% elsif colour_variant_image != blank %}
+                --tssc-card-swatch-background: url('{{ colour_variant_image | image_url: width: 40 }}');
+              {% endif %}
+            "
+          ></span>
+        {% endfor %}
+      </span>
+      <span class="tssc-card-info__colour-count">
+        {{ colour_count }} {% if colour_count == 1 %}colour{% else %}colours{% endif %}
+      </span>
+    </div>
+  {% endif %}
+
+  <product-form-component
+    class="tssc-card-info__product-form"
+    data-product-id="{{ product.id }}"
+    data-tssc-card-product-url="{{ card_product_url }}.js"
+    data-tssc-card-options="{{ selected_card_variant.options | json | escape }}"
+    data-tssc-card-original-options="{{ selected_card_variant.options | json | escape }}"
+    data-tssc-card-currency="{{ shop.currency }}"
+    on:submit="/handleSubmit"
+  >
+    <div class="visually-hidden" aria-live="polite" role="status" aria-atomic="true" ref="liveRegion" data-tssc-card-status></div>
+
+    {%- form 'product', product, id: product_form_id, novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+      <input
+        type="hidden"
+        name="id"
+        ref="variantId"
+        value="{{ selected_card_variant.id }}"
+        {% unless selected_card_variant.available %}disabled{% endunless %}
+        data-tssc-card-variant-id
+      >
+      <input type="hidden" name="quantity" value="1">
+
+      {% if selector_option != blank and selector_option.values.size > 1 %}
+        <div class="tssc-card-info__selector-field">
+          <label for="TsscCardOption-{{ product.id }}-{{ card_variant.id }}">Choose {{ selector_option.name | escape }}</label>
+          <select
+            id="TsscCardOption-{{ product.id }}-{{ card_variant.id }}"
+            name="tssc-card-option"
+            data-tssc-card-variant-select
+            data-product-url="{{ product.url }}.js"
+            data-option-index="{{ selector_option_index }}"
+            data-card-options="{{ card_variant.options | json | escape }}"
+            data-currency="{{ shop.currency }}"
+          >
+            {% for option_value in selector_option.values %}
+              <option
+                value="{{ option_value.name | default: option_value | escape }}"
+                {% if option_value.name == selected_card_variant.options[selector_option_index] or option_value == selected_card_variant.options[selector_option_index] %}selected{% endif %}
+              >
+                {{ option_value.name | default: option_value | escape }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+      {% elsif weight_range != blank %}
+        <p class="tssc-card-info__availability">
+          {{- weight_range | escape -}}{% if availability_unit != blank %} {{ availability_unit }}{% endif %} available
+        </p>
+      {% endif %}
+
+      <p
+        id="TsscCardStockMessage-{{ product.id }}-{{ card_variant.id }}"
+        class="visually-hidden"
+        data-tssc-card-stock-message
+        {% if selected_card_variant.available %}hidden{% endif %}
+      >
+        This option is currently sold out.
+      </p>
+
+      {% render 'add-to-cart-button',
+        add_to_cart_text: 'Add to cart',
+        class: 'tssc-card-info__add-button add-to-cart-button',
+        can_add_to_cart: selected_card_variant.available,
+        match_header_icon: true,
+        product: product
+      %}
+    {%- endform -%}
+  </product-form-component>
+
+</div>

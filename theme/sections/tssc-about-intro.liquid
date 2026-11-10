@@ -1,0 +1,139 @@
+<div
+  class="tssc-about"
+  style="--tssc-about-padding-top: {{ section.settings.padding_top }}px; --tssc-about-padding-bottom: {{ section.settings.padding_bottom }}px;"
+>
+  <div class="tssc-about__container">
+
+    <div class="tssc-about__media">
+      <div class="tssc-about__image tssc-about__image--1">
+        {%- if section.settings.image_1 != blank -%}
+          <img
+            src="{{ section.settings.image_1 | image_url: width: 1200 }}"
+            srcset="{{ section.settings.image_1 | image_url: width: 555 }} 555w,
+                    {{ section.settings.image_1 | image_url: width: 1110 }} 1110w"
+            sizes="(max-width: 749px) 100vw, 555px"
+            alt="{{ section.settings.image_1.alt | escape | default: 'Recycled PET sequin samples' }}"
+            loading="lazy"
+            width="555"
+            height="416"
+          >
+        {%- else -%}
+          <img
+            src="https://cdn.shopify.com/s/files/1/0978/1139/8980/files/About_1.webp?v=1787498132"
+            alt="Recycled PET sequin samples"
+            loading="lazy"
+            width="555"
+            height="416"
+          >
+        {%- endif -%}
+      </div>
+
+      <div class="tssc-about__image tssc-about__image--2">
+        {%- if section.settings.image_2 != blank -%}
+          <img
+            src="{{ section.settings.image_2 | image_url: width: 1200 }}"
+            srcset="{{ section.settings.image_2 | image_url: width: 555 }} 555w,
+                    {{ section.settings.image_2 | image_url: width: 1110 }} 1110w"
+            sizes="(max-width: 749px) 100vw, 555px"
+            alt="{{ section.settings.image_2.alt | escape | default: 'Sustainable sequin production process' }}"
+            loading="lazy"
+            width="555"
+            height="416"
+          >
+        {%- else -%}
+          <img
+            src="https://cdn.shopify.com/s/files/1/0978/1139/8980/files/About_2.webp?v=1787498131"
+            alt="Sustainable sequin production process"
+            loading="lazy"
+            width="555"
+            height="416"
+          >
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="tssc-about__content">
+      <div class="tssc-about__text-block tssc-about__text-block--top">
+        {%- if section.settings.top_text != blank -%}
+          <div class="tssc-about__rte">{{ section.settings.top_text }}</div>
+        {%- endif -%}
+      </div>
+
+      <div class="tssc-about__text-block tssc-about__text-block--bottom">
+        {%- if section.settings.bottom_text != blank -%}
+          <div class="tssc-about__rte">{{ section.settings.bottom_text }}</div>
+        {%- endif -%}
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "TSSC About Story",
+  "tag": "section",
+  "class": "tssc-about-story-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Image 1 (left, cropped)"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Image 2 (right)"
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "richtext",
+      "id": "top_text",
+      "label": "Top paragraph(s)",
+      "default": "<p>Most sequins are made from virgin PET plastic; the same material as single-use bottles produced in bulk overseas with little transparency about what goes into them or where they end up.</p><p>We started The Sustainable Sequin Company because we believed the embellishment industry could do better. That you shouldn't have to choose between beautiful materials and responsible ones.</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "bottom_text",
+      "label": "Bottom paragraph",
+      "default": "<p>So we set out to make sequins differently. Our recycled PET film is produced in China, then the sequins are punched and cut in our UK workshop.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Section spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "default": 80
+    }
+  ],
+  "presets": [
+    {
+      "name": "TSSC About Story"
+    }
+  ]
+}
+{% endschema %}

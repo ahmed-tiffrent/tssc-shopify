@@ -1,0 +1,83 @@
+{% liquid
+  assign colour_option_index = nil
+  assign colour_product_option = nil
+  assign split_by_colour = true
+
+  if product.handle == 'seconds' or product.handle contains 'punchinella'
+    assign split_by_colour = false
+  endif
+
+  if split_by_colour
+    for option in product.options_with_values
+      assign option_name = option.name | downcase | strip
+      if option_name == 'colour' or option_name == 'color'
+        assign colour_option_index = option.position | minus: 1
+        assign colour_product_option = option
+        break
+      endif
+    endfor
+  endif
+
+  assign display_variant = product.selected_or_first_available_variant
+  assign colour = blank
+
+  if colour_product_option != nil and colour_product_option.values.size > 0
+    assign colour_seed = random_seed | plus: product.id | plus: item_index
+    assign colour_index = colour_seed | modulo: colour_product_option.values.size
+    assign colour_option_value = colour_product_option.values[colour_index]
+    assign colour = colour_option_value.name
+
+    comment
+      An option value's shortcut variant can be based on the product's current
+      option-selection context, so it is not guaranteed to carry that colour.
+      Resolve the card variant explicitly to keep its image, link, price and
+      colour heading in sync. Prefer an available variant with an image.
+    endcomment
+    assign first_colour_variant = blank
+    assign available_colour_variant = blank
+    assign imaged_colour_variant = blank
+    assign preferred_colour_variant = blank
+
+    for candidate_variant in product.variants
+      assign candidate_colour = candidate_variant.options[colour_option_index]
+      if candidate_colour == colour
+        if first_colour_variant == blank
+          assign first_colour_variant = candidate_variant
+        endif
+        if candidate_variant.available and available_colour_variant == blank
+          assign available_colour_variant = candidate_variant
+        endif
+        if candidate_variant.featured_image != blank and imaged_colour_variant == blank
+          assign imaged_colour_variant = candidate_variant
+        endif
+        if candidate_variant.available and candidate_variant.featured_image != blank
+          assign preferred_colour_variant = candidate_variant
+          break
+        endif
+      endif
+    endfor
+
+    assign display_variant = preferred_colour_variant | default: available_colour_variant | default: imaged_colour_variant | default: first_colour_variant | default: display_variant
+
+    comment
+      Some products only have a generic product photo and no variant-linked
+      colour photography. In that case, do not claim the generic image is a
+      randomly selected colour.
+    endcomment
+    if display_variant.featured_image == blank
+      assign colour = blank
+      assign display_variant = product.selected_or_first_available_variant
+    endif
+  endif
+%}
+
+{% render 'variant-split-card',
+  product: product,
+  variant: display_variant,
+  colour: colour,
+  colour_option_index: colour_option_index,
+  item_index: item_index,
+  page_number: 1,
+  section_id: section_id,
+  image_sizes: image_sizes
+%}

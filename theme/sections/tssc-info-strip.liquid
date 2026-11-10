@@ -1,0 +1,104 @@
+<section class="tssc-info-strip tssc-section" id="tssc-info-strip-{{ section.id }}">
+  <div class="tssc-info-strip__inner">
+    {% for block in section.blocks %}
+      <article class="tssc-info-strip__item" {{ block.shopify_attributes }}>
+        <div class="tssc-info-strip__icon-wrap">
+          {% if block.settings.icon_url != blank %}
+            {% liquid
+              assign icon_url_separator = '?'
+              if block.settings.icon_url contains '?'
+                assign icon_url_separator = '&'
+              endif
+              assign optimised_icon_url = block.settings.icon_url | append: icon_url_separator | append: 'width=112'
+            %}
+            <img
+              src="{{ optimised_icon_url | escape }}"
+              alt="{{ block.settings.title | escape }}"
+              class="tssc-info-strip__icon"
+              loading="lazy"
+              width="224"
+              height="224"
+            >
+          {% endif %}
+        </div>
+        <div class="tssc-info-strip__text">
+          {% if block.settings.title != blank %}
+            <h4 class="tssc-info-strip__title">
+              <span class="tssc-italic">{{ block.settings.title }}</span>
+            </h4>
+          {% endif %}
+          {% if block.settings.description != blank %}
+            <h5 class="tssc-info-strip__description">
+              {{ block.settings.description }}
+            </h5>
+          {% endif %}
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "TSSC info strip",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Info item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon_url",
+          "label": "Icon URL"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title (H4, italic)",
+          "default": "Recycled Plastic"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Description (H5)",
+          "default": "Made from post-consumer waste"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 3,
+  "presets": [
+    {
+      "name": "TSSC info strip",
+      "category": "TSSC",
+      "blocks": [
+        {
+          "type": "item",
+          "settings": {
+            "icon_url": "https://cdn.shopify.com/s/files/1/0978/1139/8980/files/recycled.png?v=1783942152",
+            "title": "Recycled Plastic",
+            "description": "Made from post-consumer waste"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "icon_url": "https://cdn.shopify.com/s/files/1/0978/1139/8980/files/united-kingdom_flag.png?v=1783942152",
+            "title": "Cut in the UK",
+            "description": "Punched and cut in our UK workshop"
+          }
+        },
+        {
+          "type": "item",
+            "settings": {
+              "icon_url": "https://cdn.shopify.com/s/files/1/0978/1139/8980/files/tree_img.png?v=1783942152",
+              "title": "Tree Funding",
+              "description": "Tree funded for every order"
+            }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
